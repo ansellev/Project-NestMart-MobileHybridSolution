@@ -57,16 +57,16 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                         behavior: HitTestBehavior.opaque,
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.arrow_back_rounded,
-                            color: Colors.black,
-                            size: 26,
-                          ),
+                          // child: Icon(
+                          //   Icons.arrow_back_rounded,
+                          //   color: Colors.black,
+                          //   size: 26,
+                          // ),
                         ),
                       ),
                       Text(
                         'FAVOURITES',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.merriweather(
                           fontWeight: FontWeight.w900,
                           fontSize: 20,
                           color: const Color(0xFF7E4D2B), // Rich brown
@@ -81,6 +81,9 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                 // 2. Search container matching screenshot styling
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                  child: GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, '/search'),
+                    child: AbsorbPointer(
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 1),
                     decoration: BoxDecoration(
@@ -102,7 +105,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                               });
                             },
                             decoration: InputDecoration(
-                              hintText: 'What do you mostly like?',
+                              hintText: 'Belanja sekarang...',
                               hintStyle: GoogleFonts.inter(
                                 color: Colors.black54,
                                 fontWeight: FontWeight.bold,
@@ -124,6 +127,8 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                           size: 24,
                         ),
                       ],
+                    ),
+                  ),
                     ),
                   ),
                 ),
@@ -367,17 +372,17 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavTab(Icons.storefront_outlined, 'Shop', false, () {
+            _buildNavTab(Icons.storefront_outlined, 'Home', false, () {
               Navigator.pushReplacementNamed(context, '/menu');
             }),
             _buildNavTab(Icons.manage_search, 'Kategori', false, () {
               Navigator.pushReplacementNamed(context, '/category');
             }),
-            _buildNavTab(Icons.shopping_cart_outlined, 'Cart', false, () {
+            _buildNavTab(Icons.shopping_cart_outlined, 'Keranjang', false, () {
               Navigator.pushReplacementNamed(context, '/cart');
             }),
-            _buildNavTab(Icons.favorite, 'Favourite', true, () {}), // Set to active with filled heart
-            _buildNavTab(Icons.person_outline, 'Account', false, () {
+            _buildNavTab(Icons.favorite, 'Favorit', true, () {}), // Set to active with filled heart
+            _buildNavTab(Icons.person_outline, 'Akun', false, () {
               Navigator.pushReplacementNamed(context, '/account');
             }),
           ],

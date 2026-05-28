@@ -269,7 +269,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     _buildAccountItem(
                       context,
                       Icons.inventory_2_outlined,
-                      'MY ORDERS',
+                      'PESANAN SAYA',
                       () {
                         Navigator.pushNamed(context, '/orders');
                       },
@@ -277,7 +277,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     _buildAccountItem(
                       context,
                       Icons.badge_outlined,
-                      'MY DETAILS',
+                      'DETAIL AKUN',
                       () {
                         Navigator.pushNamed(context, '/my_details');
                       },
@@ -285,7 +285,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     _buildAccountItem(
                       context,
                       Icons.location_on_outlined,
-                      'DELIVERY ADDRESS',
+                      'DAFTAR ALAMAT',
                       () {
                         Navigator.pushNamed(context, '/delivery_address');
                       },
@@ -293,7 +293,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     _buildAccountItem(
                       context,
                       Icons.contact_support_outlined,
-                      'HELP AND SUPPORT',
+                      'PUSAT BANTUAN',
                       () {
                         Navigator.pushNamed(context, '/help_support');
                       },
@@ -326,19 +326,19 @@ class _AccountScreenState extends State<AccountScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _buildNavTab(context, Icons.storefront_outlined, 'Shop', false, () {
+                  _buildNavTab(context, Icons.storefront_outlined, 'Home', false, () {
                     Navigator.pushReplacementNamed(context, '/menu');
                   }),
                   _buildNavTab(context, Icons.manage_search, 'Kategori', false, () {
                     Navigator.pushReplacementNamed(context, '/category');
                   }),
-                  _buildNavTab(context, Icons.shopping_cart_outlined, 'Cart', false, () {
+                  _buildNavTab(context, Icons.shopping_cart_outlined, 'Keranjang', false, () {
                     Navigator.pushReplacementNamed(context, '/cart');
                   }),
-                  _buildNavTab(context, Icons.favorite_border_outlined, 'Favourite', false, () {
+                  _buildNavTab(context, Icons.favorite_border_outlined, 'Favorit', false, () {
                     Navigator.pushReplacementNamed(context, '/favourite');
                   }),
-                  _buildNavTab(context, Icons.person, 'Account', true, () {}), // Active brown tab with filled layout
+                  _buildNavTab(context, Icons.person, 'Akun', true, () {}), // Active brown tab with filled layout
                 ],
               ),
             ),

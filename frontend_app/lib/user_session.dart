@@ -29,4 +29,44 @@ class UserSession {
     ),
   ];
   String selectedAddressId = '1';
+
+  // Dynamic cart items shared session state
+  List<Map<String, dynamic>> cartItems = [
+    {
+      'name': 'LUXURY BAG',
+      'price': 23.16,
+      'qty': 1,
+      'img': 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400',
+    },
+    {
+      'name': 'URBAN BAG',
+      'price': 20.16,
+      'qty': 1,
+      'img': 'https://images.unsplash.com/photo-1547949003-9792a18a2601?w=400',
+    },
+    {
+      'name': 'YAMATO',
+      'price': 66.16,
+      'qty': 1,
+      'img': 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400',
+    },
+  ];
+
+  void addToCart(String name, double price, int qty, String img) {
+    final existingIndex = cartItems.indexWhere(
+      (item) => (item['name'] as String).toLowerCase() == name.toLowerCase()
+    );
+    if (existingIndex != -1) {
+      cartItems[existingIndex]['qty'] = (cartItems[existingIndex]['qty'] as int) + qty;
+    } else {
+      cartItems.add({
+        'name': name,
+        'price': price,
+        'qty': qty,
+        'img': img,
+      });
+    }
+  }
 }
+
+

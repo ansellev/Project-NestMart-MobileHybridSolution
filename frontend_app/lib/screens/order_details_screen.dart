@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'orders_screen.dart'; // import to access FlutterOrder model definition
+import '../favorites_state.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   final FlutterOrder order;
@@ -48,7 +49,7 @@ class OrderDetailsScreen extends StatelessWidget {
                     children: [
                       Text(
                         'RINCIAN PESANAN',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.merriweather(
                           fontSize: 18,
                           fontWeight: FontWeight.w900,
                           letterSpacing: 1.0,
@@ -163,7 +164,27 @@ class OrderDetailsScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Container(
+
+                      GestureDetector(
+                        onTap: () {
+                          // Mencari data produk yang sesuai berdasarkan nama produk di rincian pesanan
+                          final product = FavoritesState.getProductByOrderName(order.productName);
+                          // Navigasi ke halaman detail produk dengan menyertakan argumen yang diperlukan
+                          Navigator.pushNamed(
+                            context,
+                            '/product',
+                            arguments: {
+                              'id': product.id,
+                              'name': product.name,
+                              'price': product.price,
+                              'rating': FavoritesState.getProductAverageRating(product.id).toString(),
+                              'image': product.image,
+                              'description': product.description,
+                              'canReview': order.status == 'SELESAI',
+                            },
+                          );
+                        },
+                      child: Container(
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
                           color: const Color(0xFFFDFDFD),
@@ -222,6 +243,50 @@ class OrderDetailsScreen extends StatelessWidget {
                           ],
                         ),
                       ),
+                    ),
+
+                    if (order.status == 'SELESAI') ...[
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 38,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              final product = FavoritesState.getProductByOrderName(order.productName);
+                              Navigator.pushNamed(
+                                context,
+                                '/product',
+                                arguments: {
+                                  'id': product.id,
+                                  'name': product.name,
+                                  'price': product.price,
+                                  'rating': FavoritesState.getProductAverageRating(product.id).toString(),
+                                  'image': product.image,
+                                  'description': product.description,
+                                  'canReview': true,
+                                },
+                              );
+                            },
+                            icon: const Icon(Icons.rate_review_rounded, size: 16, color: Colors.white),
+                            label: Text(
+                              'BERI ULASAN SEKARANG',
+                              style: GoogleFonts.inter(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF7E4D2B),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                       const SizedBox(height: 24),
 
                       // 3. Alamat Pengiriman

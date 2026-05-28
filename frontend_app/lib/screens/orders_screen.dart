@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'order_details_screen.dart';
+import '../favorites_state.dart';
 
 class FlutterOrder {
   final String id;
@@ -145,8 +146,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       Image.asset('assets/LOGO.png'),
                       const SizedBox(height: 4),
                       Text(
-                        'MY ORDERS',
-                        style: GoogleFonts.poppins(
+                        'PESANAN SAYA',
+                        style: GoogleFonts.merriweather(
                           fontSize: 18,
                           fontWeight: FontWeight.w900,
                           letterSpacing: 1.5,
@@ -423,7 +424,26 @@ class _OrdersScreenState extends State<OrdersScreen> {
           const SizedBox(height: 12),
 
           // Product thumbnail + item Name & price row
-          Row(
+          GestureDetector(
+            onTap: () {
+              // Mencari data produk yang sesuai berdasarkan nama produk di pesanan
+              final product = FavoritesState.getProductByOrderName(order.productName);
+              // Navigasi ke halaman detail produk dengan menyertakan argumen yang diperlukan
+              Navigator.pushNamed(
+                context,
+                '/product',
+                arguments: {
+                  'id': product.id,
+                  'name': product.name,
+                  'price': product.price,
+                  'rating': FavoritesState.getProductAverageRating(product.id).toString(),
+                  'image': product.image,
+                  'description': product.description,
+                },
+              );
+            },
+
+          child: Row(
             children: [
               Container(
                 width: 64,
@@ -465,6 +485,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
               ),
             ],
           ),
+        ),
           const SizedBox(height: 16),
 
           // Lihat rincian button

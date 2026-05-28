@@ -114,8 +114,8 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
                       ),
                     ),
                     Text(
-                      'DELIVERY ADDRESS',
-                      style: GoogleFonts.poppins(
+                      'DAFTAR ALAMAT',
+                      style: GoogleFonts.merriweather(
                         fontSize: 20,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 1.2,

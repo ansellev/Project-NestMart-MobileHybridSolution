@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../favorites_state.dart';
 
 class FlutterProduct {
   final String id;
@@ -106,143 +107,22 @@ class _CategoryScreenState extends State<CategoryScreen> {
     }
   }
 
-  final List<FlutterProduct> _products = [
-    FlutterProduct(
-      id: '1',
-      name: 'Action Figure',
-      price: 10.0,
-      rating: 5.0,
-      category: 'Elektronik',
-      description: 'Mainan figur pahlawan Superman berkualitas premium dengan detail kostum, jubah, dan anatomi yang sangat presisi. Sangat cocok sebagai koleksi atau pajangan meja para penggemar komik dan film pahlawan super.',
-      image: 'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-11006803/gentleman_car_pajangan_action_figure_one_piece_luffy-_zoro-_sanji-_ace_-_anime_onepiece_full01_oiugs38u.jpg'
-    ),
-    FlutterProduct(
-      id: '2',
-      name: 'Iphone 17 Pro Max',
-      price: 1199.0,
-      rating: 5.0,
-      category: 'Elektronik',
-      description: 'Smartphone flagship masa depan dengan kamera telefoto beresolusi super tinggi, layar dinamis tajam, chipset mutakhir penunjang aktivitas multitasking harian Anda, serta baterai tahan lama sepanjang hari.',
-      image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=400&auto=format&fit=crop'
-    ),
-    FlutterProduct(
-      id: '3',
-      name: 'Adidas training fullset',
-      price: 124.0,
-      rating: 5.0,
-      category: 'Pakaian',
-      description: 'Satu set lengkap jaket training dan celana olahraga Adidas berbahan serat premium yang breathable dan nyaman digunakan untuk segala kegiatan aktif luar ruangan maupun santai sehari-hari.',
-      image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&auto=format&fit=crop'
-    ),
-    FlutterProduct(
-      id: '4',
-      name: 'Nike dunk retro',
-      price: 60.0,
-      rating: 5.0,
-      category: 'Pakaian',
-      description: 'Sepatu kasual legendaris Nike Dunk Retro dengan kombinasi warna hitam dan putih yang kontras and ikonik, kenyamanan maksimal untuk melengkapi penampilan kasual trendi Anda sepanjang hari.',
-      image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&auto=format&fit=crop'
-    ),
-    FlutterProduct(
-      id: '5',
-      name: 'Retro helmet',
-      price: 40.0,
-      rating: 5.0,
-      category: 'Fashion',
-      description: 'Helm premium bergaya retro klasik matte dengan visor antik dan busa bagian dalam yang tebal serta empuk demi keselamatan tinggi and kenyamanan maksimal saat berkendara di jalan raya.',
-      image: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=400'
-    ),
-    FlutterProduct(
-      id: '6',
-      name: 'Superman figure',
-      price: 35.0,
-      rating: 5.0,
-      category: 'Elektronik',
-      description: 'Action figure Superman berskala kolektor dalam pose aksi ikonik lengkap dengan jubah kain premium serta dudukan eksklusif untuk mempercantik lemari etalase pajangan Anda.',
-      image: 'https://images.unsplash.com/photo-1608889174637-3c44f6326f1a?w=400&auto=format&fit=crop'
-    ),
-    FlutterProduct(
-      id: '7',
-      name: 'Logitech Keyboard',
-      price: 50.0,
-      rating: 5.0,
-      category: 'Elektronik',
-      description: 'Keyboard mekanikal gaming Logitech dengan respon pengetikan instan, lampu latar RGB yang dapat dip kustomisasi, serta tata letak tombol ergonomis yang awet untuk penggunaan mengetik and bermain game jangka panjang.',
-      image: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&auto=format&fit=crop'
-    ),
-    FlutterProduct(
-      id: '8',
-      name: 'Luxury Leather Handbag',
-      price: 150.0,
-      rating: 4.9,
-      category: 'Fashion',
-      description: 'Tas genggam wanita berbahan kulit sapi asli berkualitas tinggi dengan jahitan tangan yang rapi, kompartemen luas, dan aksen logam emas yang mewah untuk menyempurnakan hari penting Anda.',
-      image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&auto=format&fit=crop'
-    ),
-    FlutterProduct(
-      id: '9',
-      name: 'Sleek Black Duffle Bag',
-      price: 85.0,
-      rating: 4.8,
-      category: 'Fashion',
-      description: 'Tas travel duffle olahraga modis tahan air dengan kapasitas penyimpanan besar dan tempat sepatu terpisah, sangat praktis untuk gym maupun bepergian akhir pekan.',
-      image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&auto=format&fit=crop'
-    ),
-    FlutterProduct(
-      id: '10',
-      name: 'Esthetic Skincare Serum Set',
-      price: 45.0,
-      rating: 5.0,
-      category: 'Kecantikan',
-      description: 'Paket serum wajah organik premium yang mengandung Hyaluronic Acid dan Niacinamide murni untuk hidrasi mendalam, mencerahkan bintik hitam, dan memberikan efek glowing alami sepanjang hari.',
-      image: 'https://images.unsplash.com/photo-1608248597481-496100c8c836?w=400&auto=format&fit=crop'
-    ),
-    FlutterProduct(
-      id: '11',
-      name: 'Organic Matte Lip Cream',
-      price: 24.0,
-      rating: 4.7,
-      category: 'Kecantikan',
-      description: 'Lip cream matte dengan formula super ringan tidak lengket yang diperkaya dengan Vitamin E dan Jojoba Oil untuk menjaga kelembapan bibir serta memberikan pigmen warna tahan lama sampai 12 jam.',
-      image: 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=400&auto=format&fit=crop'
-    ),
-    FlutterProduct(
-      id: '12',
-      name: 'Premium Oat & Nut Salad Pack',
-      price: 15.0,
-      rating: 4.9,
-      category: 'Makanan',
-      description: 'Camilan sehat kemasan kedap udara berisi campuran oat panggang renyah, kacang almond gurih, mete, kismis, serta buah-buahan kering pilihan tanpa bahan pengawet buatan.',
-      image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop'
-    ),
-    FlutterProduct(
-      id: '13',
-      name: 'Sleek Remote Car Key Fob',
-      price: 28.0,
-      rating: 4.8,
-      category: 'Otomotif',
-      description: 'Gantungan kunci mobil pintar premium berlapis kulit asli dan campuran logam zinc, dirancang eksklusif untuk melindung alat pelacak maupun kunci pintar kendaraan kesayangan Anda dari goresan.',
-      image: 'https://images.unsplash.com/photo-1542282088-fe8426682b8f?w=400&auto=format&fit=crop'
-    ),
-    FlutterProduct(
-      id: '14',
-      name: 'Pro Mirrorless Leather Straps',
-      price: 39.0,
-      rating: 5.0,
-      category: 'Hobi',
-      description: 'Tali bahu kamera mirrorless buatan pengrajin lokal berbahan kulit asli premium. Memberikan kenyamanan maksimum dan tampilan klasik retro estetik saat Anda melakukan aktivitas fotografi luar ruangan.',
-      image: 'https://images.unsplash.com/photo-1511556532299-8f662fc26c06?w=400&auto=format&fit=crop'
-    ),
-    FlutterProduct(
-      id: '15',
-      name: 'Specialty Cold Brew Bottle',
-      price: 18.0,
-      rating: 4.9,
-      category: 'Minuman',
-      description: 'Espresso cold brew organik segar siap minum, diekstrak perlahan selama 18 jam penuh dari biji kopi Arabika pilihan untuk rasa lembut tanpa pahit berlebih dan keasaman rendah yang nyaman di perut.',
-      image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&auto=format&fit=crop'
-    )
-  ];
+  List<FlutterProduct> get _products {
+    return FavoritesState.allProducts.map((p) {
+      final cleanPriceStr = p.price.replaceAll('\$', '').replaceAll('.', '');
+      final priceVal = double.tryParse(cleanPriceStr) ?? 0.0;
+      final ratingVal = FavoritesState.getProductAverageRating(p.id);
+      return FlutterProduct(
+        id: p.id,
+        name: p.name,
+        price: priceVal,
+        rating: ratingVal,
+        category: p.category,
+        description: p.description,
+        image: p.image,
+      );
+    }).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -274,18 +154,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     },
                     child: Container(
                       padding: const EdgeInsets.all(8),
-                      child: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.black,
-                        size: 26,
-                      ),
                     ),
                   ),
                   Text(
                     _selectedCategory ?? 'EXPLORE CATEGORIES',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.merriweather(
                       fontSize: 18,
                       fontWeight: FontWeight.w900,
                       color: const Color(0xFF864F1F),
@@ -350,17 +225,17 @@ class _CategoryScreenState extends State<CategoryScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavTab(Icons.storefront_outlined, 'Shop', false, () {
+            _buildNavTab(Icons.storefront_outlined, 'Home', false, () {
               Navigator.pushReplacementNamed(context, '/menu');
             }),
             _buildNavTab(Icons.manage_search, 'Kategori', true, () {}),
-            _buildNavTab(Icons.shopping_cart_outlined, 'Cart', false, () {
+            _buildNavTab(Icons.shopping_cart_outlined, 'Keranjang', false, () {
               Navigator.pushReplacementNamed(context, '/cart');
             }),
-            _buildNavTab(Icons.favorite_outline, 'Favourite', false, () {
+            _buildNavTab(Icons.favorite_outline, 'Favorit', false, () {
               Navigator.pushReplacementNamed(context, '/favourite');
             }),
-            _buildNavTab(Icons.person_outline, 'Account', false, () {
+            _buildNavTab(Icons.person_outline, 'Akun', false, () {
               Navigator.pushReplacementNamed(context, '/account');
             }),
           ],
@@ -465,103 +340,151 @@ class _CategoryScreenState extends State<CategoryScreen> {
       );
     }
 
-    return GridView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-      itemCount: filtered.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 16,
-        crossAxisSpacing: 16,
-        childAspectRatio: 0.72,
-      ),
-      itemBuilder: (context, index) {
-        final product = filtered[index];
+    /// ============================================================================
+    /// DETAIL REAKTIF KATEGORI: ValueListenableBuilder untuk Rating Dinamis
+    /// ============================================================================
+    /// Menyimak perubahan ulasan ('FavoritesState.reviews') agar saat halaman kategori dibuka,
+    /// seluruh item produk dalam grid langsung disesuaikan dengan ulasan terbaru pembeli secara live.
+    return ValueListenableBuilder<List<ProductReview>>(
+      valueListenable: FavoritesState.reviews,
+      builder: (context, reviewsList, child) {
+        // Memetakan ulang rata-rata rating secara dinamis dari FavoritesState
+        final refreshedProducts = filtered.map((p) {
+          return FlutterProduct(
+            id: p.id,
+            name: p.name,
+            price: p.price,
+            rating: FavoritesState.getProductAverageRating(p.id),
+            category: p.category,
+            description: p.description,
+            image: p.image,
+          );
+        }).toList();
 
-        return Container(
-          decoration: BoxDecoration(
-            color: const Color(0x0AECEAE6),
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: Colors.grey.shade100),
+        return GridView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          itemCount: refreshedProducts.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 16,
+            crossAxisSpacing: 16,
+            childAspectRatio: 0.72,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Product Image
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-                  child: Image.network(
-                    product.image,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) =>
-                        const Center(child: Icon(Icons.broken_image, color: Colors.grey)),
-                  ),
-                ),
-              ),
+          itemBuilder: (context, index) {
+            final product = refreshedProducts[index];
 
-              // Product Info
-              Padding(
-                padding: const EdgeInsets.all(12),
+            return GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  '/product',
+                  arguments: {
+                    'id': product.id,
+                    'name': product.name,
+                    'price': '\$${product.price == 1199 ? "1.199" : product.price.toStringAsFixed(0)}',
+                    'rating': product.rating.toStringAsFixed(1),
+                    'image': product.image,
+                    'description': product.description,
+                  },
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0x0AECEAE6),
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: Colors.grey.shade100),
+                ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
-                      product.name,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.inter(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.black,
+                    // Product Image
+                    Expanded(
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                        child: Image.network(
+                          product.image,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              const Center(child: Icon(Icons.broken_image, color: Colors.grey)),
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        const Icon(Icons.star, color: Colors.amber, size: 12),
-                        const SizedBox(width: 2),
-                        Text(
-                          product.rating.toStringAsFixed(1),
-                          style: GoogleFonts.inter(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.grey,
+
+                    // Product Info
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            product.name,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '\$${product.price == 1199 ? "1.199" : product.price.toStringAsFixed(0)}',
-                          style: GoogleFonts.inter(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w900,
-                            color: const Color(0xFF864F1F),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              Row(
+                                children: List.generate(5, (starIdx) {
+                                  final bool isFilled = starIdx < product.rating.round();
+                                  return Icon(
+                                    isFilled ? Icons.star_rounded : Icons.star_border_rounded,
+                                    color: isFilled ? Colors.amber : Colors.grey.shade300,
+                                    size: 12,
+                                  );
+                                }),
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                product.rating.toStringAsFixed(1),
+                                style: GoogleFonts.inter(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w900,
+                                  color: const Color(0xFF7E4D2B),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        Container(
-                          width: 28,
-                          height: 28,
-                          decoration: const BoxDecoration(
-                            color: Color(0xFF864F1F),
-                            shape: BoxShape.circle,
+                          const SizedBox(height: 8),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '\$${product.price == 1199 ? "1.199" : product.price.toStringAsFixed(0)}',
+                                style: GoogleFonts.inter(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w900,
+                                  color: const Color(0xFF864F1F),
+                                ),
+                              ),
+                              Container(
+                                width: 28,
+                                height: 28,
+                                decoration: const BoxDecoration(
+                                  color: Color(0xFF864F1F),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
+                              ),
+                            ],
                           ),
-                          child: const Icon(
-                            Icons.add,
-                            color: Colors.white,
-                            size: 16,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );

@@ -83,9 +83,31 @@ class MenuScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFECEAE6), // Beige cream background matching physical layout
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
+      body: ValueListenableBuilder<List<ProductReview>>(
+        valueListenable: FavoritesState.reviews,
+        builder: (context, reviewsList, child) {
+          // Melakukan evaluasi ulang produk di dalam builder agar rating dinamis terbaru terambil
+          final recomendations = FavoritesState.allProducts.take(3).map((p) => {
+            'id': p.id,
+            'name': p.name,
+            'price': p.price,
+            'rating': FavoritesState.getProductAverageRating(p.id).toString(),
+            'image': p.image,
+            'description': p.description,
+          }).toList();
+
+          final justForYou = FavoritesState.allProducts.skip(3).take(4).map((p) => {
+            'id': p.id,
+            'name': p.name,
+            'price': p.price,
+            'rating': FavoritesState.getProductAverageRating(p.id).toString(),
+            'image': p.image,
+            'description': p.description,
+          }).toList();
+
+          return SingleChildScrollView(
+            child: Column(
+              children: [
             // 1. Organic top gold-brown curve header with logo elements
             Container(
               decoration: const BoxDecoration(
@@ -100,17 +122,19 @@ class MenuScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      // GestureDetector(
+                      //   onTap: () => Navigator.pop(context),
+                      //   child: const Icon(
+                      //     Icons.arrow_back,
+                      //     color: Colors.black, // Dark outline inside mockup
+                      //     size: 26,
+                      //   ),
+                      // ),
                       GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: const Icon(
-                          Icons.arrow_back,
-                          color: Colors.black, // Dark outline inside mockup
-                          size: 26,
-                        ),
-                      ),
-                      Stack(
+                        onTap: () => Navigator.pushNamed(context, '/notification'),
+                      child: Stack(
                         children: [
                           const Icon(
                             Icons.notifications_none_rounded,
@@ -131,12 +155,13 @@ class MenuScreen extends StatelessWidget {
                           )
                         ],
                       ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 20),
                   Text(
                     'HI ANDI',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.merriweather(
                       fontWeight: FontWeight.w900,
                       fontSize: 24,
                       color: Colors.white,
@@ -145,53 +170,59 @@ class MenuScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 18),
                   // Search Pill Container as in mockup
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.06),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'What do you mostly like?',
-                              hintStyle: GoogleFonts.inter(
-                                color: Colors.black45,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 13,
+                  GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, '/search'),
+                    child: AbsorbPointer(
+                      child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.06),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              enabled: false, // Memaksa navigasi ke halaman pencarian penuh
+                              decoration: InputDecoration(
+                                hintText: 'Belanja sekarang...',
+                                hintStyle: GoogleFonts.inter(
+                                  color: Colors.black45,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 13,
+                                ),
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.symmetric(vertical: 12),
                               ),
-                              border: InputBorder.none,
-                              contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                            ),
-                            style: GoogleFonts.inter(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
+                              style: GoogleFonts.inter(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                              ),
                             ),
                           ),
-                        ),
-                        const Icon(
-                          Icons.search,
-                          color: Colors.black54,
-                          size: 24,
-                        ),
-                      ],
+                          const Icon(
+                            Icons.search,
+                            color: Colors.black54,
+                            size: 24,
+                          ),
+                        ],
+                      ),
+                    ),
                     ),
                   ),
                 ],
               ),
             ),
-
+          
             // 2. Sections Container
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
@@ -203,7 +234,7 @@ class MenuScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Category',
+                        'Kategori',
                         style: GoogleFonts.inter(
                           fontWeight: FontWeight.w900,
                           fontSize: 15,
@@ -290,21 +321,21 @@ class MenuScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Product Recommendation',
+                        'Rekomendasi Produk',
                         style: GoogleFonts.inter(
                           fontWeight: FontWeight.w900,
                           fontSize: 15,
                           color: Colors.black,
                         ),
                       ),
-                      Text(
-                        'See all',
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 11,
-                          color: Colors.black54,
-                        ),
-                      ),
+                      // Text(
+                      //   'See all',
+                      //   style: GoogleFonts.inter(
+                      //     fontWeight: FontWeight.w700,
+                      //     fontSize: 11,
+                      //     color: Colors.black54,
+                      //   ),
+                      // ),
                     ],
                   ),
                   const SizedBox(height: 14),
@@ -400,7 +431,7 @@ class MenuScreen extends StatelessWidget {
 
                   // SPECIAL PROMO BANNER AS REQUESTED
                   Text(
-                    'Special Promo',
+                    'Promo Special',
                     style: GoogleFonts.inter(
                       fontWeight: FontWeight.w900,
                       fontSize: 13,
@@ -434,8 +465,7 @@ class MenuScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 4),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                                //itemsAlignment: PlaceholderAlignment.middle,
                                 children: [
                                   Text(
                                     'Hingga ',
@@ -457,20 +487,23 @@ class MenuScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 12),
                               // Belanja sekarang button capsule
-                              Container(
+                              GestureDetector(
+                                onTap: () => Navigator.pushNamed(context, '/search'),
+                              child: Container(
                                 decoration: BoxDecoration(
                                   color: const Color(0xFF864F1F),
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                                 child: Text(
-                                  'Belanja sekarang >',
+                                  'Belanja Sekarang >',
                                   style: GoogleFonts.inter(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w800,
                                     fontSize: 9,
                                   ),
                                 ),
+                              ),
                               ),
                             ],
                           ),
@@ -512,7 +545,7 @@ class MenuScreen extends StatelessWidget {
 
                   // JUST FOR YOU SECTION
                   Text(
-                    'Just For You',
+                    'Untuk Kamu',
                     style: GoogleFonts.inter(
                       fontWeight: FontWeight.w900,
                       fontSize: 15,
@@ -668,6 +701,8 @@ class MenuScreen extends StatelessWidget {
             ),
           ],
         ),
+          );
+        },
       ),
       // 3. Persistent customized bottom navigation bar mapping to screenshots
       bottomNavigationBar: Container(
@@ -689,17 +724,17 @@ class MenuScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavTab(Icons.storefront_outlined, 'Shop', true, () {}),
+            _buildNavTab(Icons.storefront_outlined, 'Home', true, () {}),
             _buildNavTab(Icons.manage_search, 'Kategori', false, () {
               Navigator.pushNamed(context, '/category');
             }),
-            _buildNavTab(Icons.shopping_cart_outlined, 'Cart', false, () {
+            _buildNavTab(Icons.shopping_cart_outlined, 'Keranjang', false, () {
               Navigator.pushNamed(context, '/cart');
             }),
-            _buildNavTab(Icons.favorite_outline, 'Favourite', false, () {
+            _buildNavTab(Icons.favorite_outline, 'Favorit', false, () {
               Navigator.pushNamed(context, '/favourite');
             }),
-            _buildNavTab(Icons.person_outline, 'Account', false, () {
+            _buildNavTab(Icons.person_outline, 'Akun', false, () {
               Navigator.pushNamed(context, '/account');
             }),
           ],

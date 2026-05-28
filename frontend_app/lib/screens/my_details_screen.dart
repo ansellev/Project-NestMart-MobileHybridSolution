@@ -91,8 +91,8 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                       ),
                     ),
                     Text(
-                      'MY DETAILS',
-                      style: GoogleFonts.poppins(
+                      'DETAIL AKUN',
+                      style: GoogleFonts.merriweather(
                         fontSize: 20,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 1.2,

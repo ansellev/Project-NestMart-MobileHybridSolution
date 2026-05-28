@@ -12,6 +12,10 @@ import 'screens/my_details_screen.dart';
 import 'screens/delivery_address_screen.dart';
 import 'screens/help_support_screen.dart';
 import 'screens/category_screen.dart';
+import 'screens/search_screen.dart';
+import 'screens/store_screen.dart';
+import 'screens/checkout_screen.dart';
+import 'screens/notification_screen.dart';
 import 'theme.dart';
 
 void main() {
@@ -42,6 +46,10 @@ class NestmartApp extends StatelessWidget {
         '/delivery_address': (context) => const DeliveryAddressScreen(),
         '/help_support': (context) => const HelpSupportScreen(),
         '/category': (context) => const CategoryScreen(),
+        '/search': (context) => const SearchScreen(),
+        '/store': (context) => const StoreScreen(),
+        '/checkout': (context) => const CheckoutScreen(),
+        '/notification': (context) => const NotificationScreen(),
       },
     );
   }

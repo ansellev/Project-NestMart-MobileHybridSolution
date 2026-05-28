@@ -161,8 +161,8 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                       ),
                     ),
                     Text(
-                      'HELP & SUPPORT',
-                      style: GoogleFonts.poppins(
+                      'PUSAT BANTUAN',
+                      style: GoogleFonts.merriweather(
                         fontSize: 20,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 1.2,
