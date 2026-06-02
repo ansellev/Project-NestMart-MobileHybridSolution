@@ -45,41 +45,24 @@ class _CategoryScreenState extends State<CategoryScreen> {
     }
   }
 
+  // ==========================================
+  // 1. UBAH DATA URL KE FORMAT ASSETS LOKAL
+  // ==========================================
   final List<Map<String, String>> _categories = [
-    {
-      'name': 'Elektronik',
-      'image': 'https://images.unsplash.com/photo-1496181130204-755241524eab?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      'name': 'Pakaian',
-      'image': 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      'name': 'Fashion',
-      'image': 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      'name': 'Kecantikan',
-      'image': 'https://images.unsplash.com/photo-1608248597481-496100c8c836?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      'name': 'Makanan',
-      'image': 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      'name': 'Otomotif',
-      'image': 'https://images.unsplash.com/photo-1542282088-fe8426682b8f?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      'name': 'Hobi',
-      'image': 'https://images.unsplash.com/photo-1511556532299-8f662fc26c06?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      'name': 'Minuman',
-      'image': 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&auto=format&fit=crop&q=80'
-    }
+    {'name': 'Elektronik', 'image': 'assets/elektronik.png'},
+    {'name': 'Pakaian', 'image': 'assets/pakaian.png'},
+    {'name': 'Fashion', 'image': 'assets/fashion.png'},
+    {'name': 'Kecantikan', 'image': 'assets/kecantikan.png'},
+    {'name': 'Makanan', 'image': 'assets/Makanan.png'},
+    {'name': 'Otomotif', 'image': 'assets/otomotif.png'},
+    {'name': 'Hobi', 'image': 'assets/Hobi.png'},
+    {'name': 'Minuman', 'image': 'assets/minuman.png'},
+    {'name': 'Olahraga', 'image': 'assets/olahraga.png'},
+    {'name': 'Perabotan', 'image': 'assets/perabotan.png'},
   ];
 
+  // Fungsi ini tetap dipertahankan sebagai "Fallback" (cadangan)
+  // jika gambar asset gagal dimuat atau belum ditambahkan ke pubspec.yaml
   IconData _getCategoryIcon(String name) {
     switch (name.toLowerCase()) {
       case 'elektronik':
@@ -128,7 +111,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget build(BuildContext context) {
     final filtered = _selectedCategory == null
         ? <FlutterProduct>[]
-        : _products.where((p) => p.category.toLowerCase() == _selectedCategory!.toLowerCase()).toList();
+        : _products
+              .where(
+                (p) =>
+                    p.category.toLowerCase() ==
+                    _selectedCategory!.toLowerCase(),
+              )
+              .toList();
 
     return Scaffold(
       backgroundColor: const Color(0xFFECEAE6),
@@ -138,7 +127,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
           children: [
             // Header
             Padding(
-              padding: const EdgeInsets.only(top: 56, left: 16, right: 16, bottom: 12),
+              padding: const EdgeInsets.only(
+                top: 56,
+                left: 16,
+                right: 16,
+                bottom: 12,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -154,6 +148,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     },
                     child: Container(
                       padding: const EdgeInsets.all(8),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: Color(0xFF864F1F),
+                        size: 20,
+                      ),
                     ),
                   ),
                   Text(
@@ -271,7 +270,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 aspectRatio: 1.0,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: const Color(0xFF864F1F),
+                    color: const Color(
+                      0xFF864F1F,
+                    ), // Background coklat dipertahankan
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: const [
                       BoxShadow(
@@ -281,11 +282,24 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       ),
                     ],
                   ),
-                  child: Center(
-                    child: Icon(
-                      _getCategoryIcon(name),
-                      color: Colors.white,
-                      size: 48,
+                  // ==========================================
+                  // 2. GANTI ICON MENJADI IMAGE.ASSET DI SINI
+                  // ==========================================
+                  child: Padding(
+                    padding: const EdgeInsets.all(
+                      20.0,
+                    ), // Jarak agar gambar tidak terlalu full menyentuh garis kotak
+                    child: Center(
+                      child: Image.asset(
+                        imageUrl,
+                        fit: BoxFit.contain,
+                        // Jika gambar belum disiapkan di file, akan muncul icon sebagai fallback
+                        errorBuilder: (context, error, stackTrace) => Icon(
+                          _getCategoryIcon(name),
+                          color: Colors.white54,
+                          size: 48,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -340,15 +354,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
       );
     }
 
-    /// ============================================================================
-    /// DETAIL REAKTIF KATEGORI: ValueListenableBuilder untuk Rating Dinamis
-    /// ============================================================================
-    /// Menyimak perubahan ulasan ('FavoritesState.reviews') agar saat halaman kategori dibuka,
-    /// seluruh item produk dalam grid langsung disesuaikan dengan ulasan terbaru pembeli secara live.
     return ValueListenableBuilder<List<ProductReview>>(
       valueListenable: FavoritesState.reviews,
       builder: (context, reviewsList, child) {
-        // Memetakan ulang rata-rata rating secara dinamis dari FavoritesState
         final refreshedProducts = filtered.map((p) {
           return FlutterProduct(
             id: p.id,
@@ -381,7 +389,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   arguments: {
                     'id': product.id,
                     'name': product.name,
-                    'price': '\$${product.price == 1199 ? "1.199" : product.price.toStringAsFixed(0)}',
+                    'price':
+                        '\$${product.price == 1199 ? "1.199" : product.price.toStringAsFixed(0)}',
                     'rating': product.rating.toStringAsFixed(1),
                     'image': product.image,
                     'description': product.description,
@@ -397,20 +406,24 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // Product Image
                     Expanded(
                       child: ClipRRect(
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(24),
+                        ),
                         child: Image.network(
                           product.image,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) =>
-                              const Center(child: Icon(Icons.broken_image, color: Colors.grey)),
+                              const Center(
+                                child: Icon(
+                                  Icons.broken_image,
+                                  color: Colors.grey,
+                                ),
+                              ),
                         ),
                       ),
                     ),
-
-                    // Product Info
                     Padding(
                       padding: const EdgeInsets.all(12),
                       child: Column(
@@ -431,10 +444,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             children: [
                               Row(
                                 children: List.generate(5, (starIdx) {
-                                  final bool isFilled = starIdx < product.rating.round();
+                                  final bool isFilled =
+                                      starIdx < product.rating.round();
                                   return Icon(
-                                    isFilled ? Icons.star_rounded : Icons.star_border_rounded,
-                                    color: isFilled ? Colors.amber : Colors.grey.shade300,
+                                    isFilled
+                                        ? Icons.star_rounded
+                                        : Icons.star_border_rounded,
+                                    color: isFilled
+                                        ? Colors.amber
+                                        : Colors.grey.shade300,
                                     size: 12,
                                   );
                                 }),
@@ -490,7 +508,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
-  Widget _buildNavTab(IconData icon, String label, bool active, VoidCallback onTap) {
+  Widget _buildNavTab(
+    IconData icon,
+    String label,
+    bool active,
+    VoidCallback onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,

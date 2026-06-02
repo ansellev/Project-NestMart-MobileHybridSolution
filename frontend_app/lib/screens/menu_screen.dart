@@ -392,7 +392,7 @@ class MenuScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(
-                    height: 8,
+                    height: 0,
                   ), // DI SINI: Jarak diperkecil agar grid kotak produk naik
                   GridView.builder(
                     shrinkWrap: true,

@@ -80,6 +80,10 @@ flutter:
     - assets/Logitech.png
     - assets/Superman.png
     - assets/Figure.png
+    - assets/otomotif.png
+    - assets/Hobi.png
+    - assets/Makanan.png
+    - assets/minuman.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
