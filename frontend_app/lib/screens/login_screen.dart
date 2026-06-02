@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../theme.dart';
-import '../widgets/nestmart_logo.dart';
 import '../widgets/nestmart_checkbox.dart';
 import '../user_session.dart';
 
@@ -35,7 +33,8 @@ class _LoginScreenState extends State<LoginScreen> {
     final inputEmail = _emailController.text.trim();
     if (inputEmail.isNotEmpty) {
       session.email = inputEmail.toUpperCase();
-      if (inputEmail.toUpperCase() != 'ANDI@GMAIL.COM' && session.name == 'ANDI') {
+      if (inputEmail.toUpperCase() != 'ANDI@GMAIL.COM' &&
+          session.name == 'ANDI') {
         session.name = inputEmail.split('@')[0].toUpperCase();
       }
     }
@@ -50,7 +49,10 @@ class _LoginScreenState extends State<LoginScreen> {
         child: LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 24.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 32.0,
+                vertical: 24.0,
+              ),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: constraints.maxHeight - 48,
@@ -82,9 +84,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 36),
 
-                      _buildPillTextField(hint: 'Email', controller: _emailController, inputType: TextInputType.emailAddress),
+                      _buildPillTextField(
+                        hint: 'Email',
+                        controller: _emailController,
+                        inputType: TextInputType.emailAddress,
+                      ),
                       const SizedBox(height: 16),
-                      _buildPillTextField(hint: 'Password', controller: _passwordController, isObscured: true),
+                      _buildPillTextField(
+                        hint: 'Password',
+                        controller: _passwordController,
+                        isObscured: true,
+                      ),
                       const SizedBox(height: 18),
 
                       Row(
@@ -167,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildPillTextField({
-    required String hint, 
+    required String hint,
     required TextEditingController controller,
     bool isObscured = false,
     TextInputType inputType = TextInputType.text,
@@ -176,10 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFFE2DFDC),
         borderRadius: BorderRadius.circular(30),
-        border: Border.all(
-          color: Colors.black,
-          width: 1.2,
-        ),
+        border: Border.all(color: Colors.black, width: 1.2),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 2),
       child: TextField(

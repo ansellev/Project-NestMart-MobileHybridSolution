@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../user_session.dart';
-import '../theme.dart';
 
 class MyDetailsScreen extends StatefulWidget {
   const MyDetailsScreen({super.key});
@@ -55,12 +54,16 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF4CEB4), // Peach background matching React environment structure
+      backgroundColor: const Color(
+        0xFFF4CEB4,
+      ), // Peach background matching React environment structure
       body: SafeArea(
         bottom: false,
         child: Container(
           decoration: const BoxDecoration(
-            color: Color(0xFFEFEFEF), // Sleek grey inner page wrapper matching mockup
+            color: Color(
+              0xFFEFEFEF,
+            ), // Sleek grey inner page wrapper matching mockup
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(40.0),
               topRight: Radius.circular(40.0),
@@ -70,7 +73,10 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
             children: [
               // Top Header with back arrow and Title
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 20.0,
+                ),
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -115,7 +121,10 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                     ),
                   ),
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0,
+                      vertical: 32.0,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -161,7 +170,11 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                         _buildEditableContainer(
                           isEditing: _isEditingPassword,
                           controller: _passwordController,
-                          displayValue: '*' * (_session.password.length > 8 ? _session.password.length : 12),
+                          displayValue:
+                              '*' *
+                              (_session.password.length > 8
+                                  ? _session.password.length
+                                  : 12),
                           onEditToggle: () {
                             if (_isEditingPassword) {
                               _saveField('password');
@@ -203,12 +216,22 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                     _buildNavTab(Icons.manage_search, 'Kategori', false, () {
                       Navigator.pushReplacementNamed(context, '/category');
                     }),
-                    _buildNavTab(Icons.shopping_cart_outlined, 'Cart', false, () {
-                      Navigator.pushReplacementNamed(context, '/cart');
-                    }),
-                    _buildNavTab(Icons.favorite_border_outlined, 'Favourite', false, () {
-                      Navigator.pushReplacementNamed(context, '/favourite');
-                    }),
+                    _buildNavTab(
+                      Icons.shopping_cart_outlined,
+                      'Cart',
+                      false,
+                      () {
+                        Navigator.pushReplacementNamed(context, '/cart');
+                      },
+                    ),
+                    _buildNavTab(
+                      Icons.favorite_border_outlined,
+                      'Favourite',
+                      false,
+                      () {
+                        Navigator.pushReplacementNamed(context, '/favourite');
+                      },
+                    ),
                     _buildNavTab(Icons.person, 'Account', true, () {
                       Navigator.pushReplacementNamed(context, '/account');
                     }),
@@ -292,7 +315,10 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
             onTap: onEditToggle,
             behavior: HitTestBehavior.opaque,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+              padding: const EdgeInsets.symmetric(
+                vertical: 8.0,
+                horizontal: 4.0,
+              ),
               child: Text(
                 isEditing ? 'Save' : 'Edit',
                 style: GoogleFonts.inter(
@@ -308,7 +334,12 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
     );
   }
 
-  Widget _buildNavTab(IconData icon, String label, bool active, VoidCallback onTap) {
+  Widget _buildNavTab(
+    IconData icon,
+    String label,
+    bool active,
+    VoidCallback onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,

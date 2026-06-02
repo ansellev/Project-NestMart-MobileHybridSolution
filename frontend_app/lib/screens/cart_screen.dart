@@ -15,22 +15,30 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-
   final UserSession _session = UserSession();
 
   FavoriteProduct _getProductForCartItem(String name) {
     final cleanName = name.toLowerCase().replaceAll(' ', '');
     // Pencocokan id secara langsung untuk item keranjang bawaan
     if (cleanName.contains('luxury')) {
-      return FavoritesState.allProducts.firstWhere((p) => p.id == '8', orElse: () => FavoritesState.allProducts[0]);
+      return FavoritesState.allProducts.firstWhere(
+        (p) => p.id == '8',
+        orElse: () => FavoritesState.allProducts[0],
+      );
     }
     if (cleanName.contains('urban')) {
-      return FavoritesState.allProducts.firstWhere((p) => p.id == '9', orElse: () => FavoritesState.allProducts[1]);
+      return FavoritesState.allProducts.firstWhere(
+        (p) => p.id == '9',
+        orElse: () => FavoritesState.allProducts[1],
+      );
     }
     if (cleanName.contains('yamato')) {
-      return FavoritesState.allProducts.firstWhere((p) => p.id == '13', orElse: () => FavoritesState.allProducts[2]);
+      return FavoritesState.allProducts.firstWhere(
+        (p) => p.id == '13',
+        orElse: () => FavoritesState.allProducts[2],
+      );
     }
-    
+
     // Fallback pencarian teks jika nama item mengalami modifikasi
     for (var p in FavoritesState.allProducts) {
       final pName = p.name.toLowerCase().replaceAll(' ', '');
@@ -44,7 +52,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     final cartList = _session.cartItems;
-    
+
     // Hitung total harga dan jumlah barang secara dinamis
     double total = 0;
     int totalItems = 0;
@@ -70,7 +78,11 @@ class _CartScreenState extends State<CartScreen> {
                 child: Text(
                   'MY CART',
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.merriweather(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 2),
+                  style: GoogleFonts.merriweather(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
@@ -78,11 +90,7 @@ class _CartScreenState extends State<CartScreen> {
                 child: ListView.builder(
                   itemCount: cartList.length,
                   itemBuilder: (context, index) {
-                    return _buildCartItem(
-                      context,
-                      cartList[index],
-                      index,
-                    );
+                    return _buildCartItem(context, cartList[index], index);
                   },
                 ),
               ),
@@ -98,8 +106,21 @@ class _CartScreenState extends State<CartScreen> {
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('TOTAL (3 ITEMS)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                        Text('\$79.48', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: AppColors.primary)),
+                        Text(
+                          'TOTAL (3 ITEMS)',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                        Text(
+                          '\$79.48',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: AppColors.primary,
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 24),
@@ -112,9 +133,17 @@ class _CartScreenState extends State<CartScreen> {
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
                         ),
-                        child: Text('CHECKOUT', style: GoogleFonts.merriweather(color: Colors.white, fontWeight: FontWeight.bold)),
+                        child: Text(
+                          'CHECKOUT',
+                          style: GoogleFonts.merriweather(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -164,7 +193,12 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget _buildNavTab(IconData icon, String label, bool active, VoidCallback onTap) {
+  Widget _buildNavTab(
+    IconData icon,
+    String label,
+    bool active,
+    VoidCallback onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
@@ -190,18 +224,24 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget _buildCartItem(BuildContext context, Map<String, dynamic> item, int index) {
+  Widget _buildCartItem(
+    BuildContext context,
+    Map<String, dynamic> item,
+    int index,
+  ) {
     final String name = item['name'] as String;
     final double price = (item['price'] as num).toDouble();
     final int qty = (item['qty'] as num).toInt();
-    
+
     final prod = _getProductForCartItem(name);
     return Container(
-      key: ValueKey('${prod.id}_$index'), // Unique key to guarantee clean state updates in Flutter list reconciliation
+      key: ValueKey(
+        '${prod.id}_$index',
+      ), // Unique key to guarantee clean state updates in Flutter list reconciliation
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white, 
+        color: Colors.white,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
@@ -223,7 +263,9 @@ class _CartScreenState extends State<CartScreen> {
                   'id': prod.id,
                   'name': prod.name,
                   'price': prod.price,
-                  'rating': FavoritesState.getProductAverageRating(prod.id).toStringAsFixed(1),
+                  'rating': FavoritesState.getProductAverageRating(
+                    prod.id,
+                  ).toStringAsFixed(1),
                   'image': prod.image,
                   'description': prod.description,
                 },
@@ -232,7 +274,12 @@ class _CartScreenState extends State<CartScreen> {
             behavior: HitTestBehavior.opaque,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: Image.network(prod.image, width: 70, height: 70, fit: BoxFit.cover),
+              child: Image.network(
+                prod.image,
+                width: 70,
+                height: 70,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           const SizedBox(width: 16),
@@ -255,7 +302,9 @@ class _CartScreenState extends State<CartScreen> {
                               'id': prod.id,
                               'name': prod.name,
                               'price': prod.price,
-                              'rating': FavoritesState.getProductAverageRating(prod.id).toStringAsFixed(1),
+                              'rating': FavoritesState.getProductAverageRating(
+                                prod.id,
+                              ).toStringAsFixed(1),
                               'image': prod.image,
                               'description': prod.description,
                             },
@@ -264,7 +313,10 @@ class _CartScreenState extends State<CartScreen> {
                         behavior: HitTestBehavior.opaque,
                         child: Text(
                           prod.name.toUpperCase(),
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -278,14 +330,18 @@ class _CartScreenState extends State<CartScreen> {
                         });
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('${prod.name} dihapus dari keranjang'),
+                            content: Text(
+                              '${prod.name} dihapus dari keranjang',
+                            ),
                             duration: const Duration(seconds: 1),
                           ),
                         );
                       },
                       behavior: HitTestBehavior.opaque,
                       child: Container(
-                        padding: const EdgeInsets.all(8.0), // Generous tap target
+                        padding: const EdgeInsets.all(
+                          8.0,
+                        ), // Generous tap target
                         decoration: BoxDecoration(
                           color: Colors.red.shade50,
                           shape: BoxShape.circle,
@@ -300,7 +356,7 @@ class _CartScreenState extends State<CartScreen> {
                   ],
                 ),
                 const SizedBox(height: 8),
-                
+
                 // Pengubah Kuantitas dan Harga Produk
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -318,7 +374,9 @@ class _CartScreenState extends State<CartScreen> {
                                 _session.cartItems.remove(item);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text('${prod.name} dihapus dari keranjang'),
+                                    content: Text(
+                                      '${prod.name} dihapus dari keranjang',
+                                    ),
                                     duration: const Duration(seconds: 1),
                                   ),
                                 );
@@ -331,8 +389,11 @@ class _CartScreenState extends State<CartScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 14),
                           child: Text(
-                            '${item['qty']}', 
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                            '${item['qty']}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
                           ),
                         ),
                         // Button PLUS
@@ -350,7 +411,11 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                     Text(
                       '\$${(price * (item['qty'] as int)).toStringAsFixed(2)}',
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.primary),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: AppColors.primary,
+                      ),
                     ),
                   ],
                 ),
@@ -366,9 +431,11 @@ class _CartScreenState extends State<CartScreen> {
     return Container(
       width: 24,
       height: 24,
-      decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade300), borderRadius: BorderRadius.circular(4)),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(4),
+      ),
       child: Icon(icon, size: 12),
     );
   }
 }
-\\test

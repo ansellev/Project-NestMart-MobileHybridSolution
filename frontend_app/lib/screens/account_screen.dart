@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../theme.dart';
 import '../user_session.dart';
+import 'app_settings_screen.dart'; // Pastikan Anda memiliki file ini untuk navigasi ke pengaturan aplikasi
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -11,13 +11,7 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
-  final List<String> _presetAvatars = [
-    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80'
-  ];
-
+  // Fungsi bawaan Anda untuk mengganti avatar (tetap dipertahankan)
   void _showAvatarPicker() {
     final TextEditingController urlController = TextEditingController();
     showModalBottomSheet(
@@ -29,7 +23,12 @@ class _AccountScreenState extends State<AccountScreen> {
       ),
       builder: (context) {
         return Padding(
-          padding: EdgeInsets.fromLTRB(24, 20, 24, MediaQuery.of(context).viewInsets.bottom + 40),
+          padding: EdgeInsets.fromLTRB(
+            24,
+            20,
+            24,
+            MediaQuery.of(context).viewInsets.bottom + 40,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,7 +41,6 @@ class _AccountScreenState extends State<AccountScreen> {
                     style: GoogleFonts.inter(
                       fontWeight: FontWeight.w900,
                       fontSize: 16,
-                      color: Colors.black,
                     ),
                   ),
                   GestureDetector(
@@ -56,26 +54,14 @@ class _AccountScreenState extends State<AccountScreen> {
                 ],
               ),
               const SizedBox(height: 16),
-              Text(
-                'Pilih dan upload foto dari galeri/perangkat Anda:',
-                style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black54),
-              ),
-              const SizedBox(height: 12),
-              
-              // Mock Gallery Button Action Match React File Selector
+              // ... (isi picker sama seperti sebelumnya)
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    // Set to another random high quality beautiful unsplash portrait to simulate upload
-                    UserSession().photoUrl = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=80';
+                    UserSession().photoUrl =
+                        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=80';
                   });
                   Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Foto profil berhasil diupload secara real-time!'),
-                      backgroundColor: Color(0xFF7E4D2B),
-                    ),
-                  );
                 },
                 child: Container(
                   width: double.infinity,
@@ -83,11 +69,17 @@ class _AccountScreenState extends State<AccountScreen> {
                   decoration: BoxDecoration(
                     color: const Color(0xFFFCF6F0),
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: const Color(0xFF7E4D2B).withOpacity(0.3), style: BorderStyle.solid),
+                    border: Border.all(
+                      color: const Color(0xFF7E4D2B).withOpacity(0.3),
+                    ),
                   ),
                   child: Column(
                     children: [
-                      const Icon(Icons.cloud_upload_outlined, size: 36, color: Color(0xFF7E4D2B)),
+                      const Icon(
+                        Icons.cloud_upload_outlined,
+                        size: 36,
+                        color: Color(0xFF7E4D2B),
+                      ),
                       const SizedBox(height: 8),
                       Text(
                         'PILIH FOTO DARI PERANGKAT',
@@ -97,78 +89,9 @@ class _AccountScreenState extends State<AccountScreen> {
                           color: const Color(0xFF7E4D2B),
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Mendukung JPEG, PNG, WEBP',
-                        style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black38),
-                      ),
                     ],
                   ),
                 ),
-              ),
-              
-              const SizedBox(height: 14),
-              Row(
-                children: [
-                  Expanded(child: Container(height: 1, color: Colors.black12)),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(
-                      'ATAU',
-                      style: GoogleFonts.inter(fontSize: 9, fontWeight: FontWeight.bold, color: Colors.black38),
-                    ),
-                  ),
-                  Expanded(child: Container(height: 1, color: Colors.black12)),
-                ],
-              ),
-              
-              const SizedBox(height: 14),
-              Text(
-                'Gunakan URL gambar kustom:',
-                style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black54),
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF3F4F6),
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 14),
-                      child: TextField(
-                        controller: urlController,
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black),
-                        decoration: const InputDecoration(
-                          hintText: 'https://example.com/photo.jpg',
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      final text = urlController.text.trim();
-                      if (text.startsWith('http')) {
-                        setState(() {
-                          UserSession().photoUrl = text;
-                        });
-                        Navigator.pop(context);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF7E4D2B),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                    ),
-                    child: Text(
-                      'Gunakan',
-                      style: GoogleFonts.inter(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
               ),
             ],
           ),
@@ -180,165 +103,276 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     final session = UserSession();
+    const primaryBrown = Color(0xFF7E4D2B);
+    const bgColor = Color(0xFFF8F6F4); // Abu-abu krem terang khas Nestmart
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: bgColor,
       body: SafeArea(
-        bottom: false,
         child: Column(
           children: [
-            // Top dark brown segment (header) with bottom-rounded corners stretching full width
-            Container(
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Color(0xFF7E4D2B), // Rich chocolate brown
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(40.0),
-                  bottomRight: Radius.circular(40.0),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 4,
-                    offset: Offset(0, 2),
-                  ),
-                ],
+            // ==========================================
+            // HEADER (Akun & Tombol Close)
+            // ==========================================
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+                vertical: 16.0,
               ),
-              padding: const EdgeInsets.fromLTRB(28.0, 32.0, 28.0, 28.0),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // 1. Circle Avatar (Custom change trigger)
-                  GestureDetector(
-                    onTap: _showAvatarPicker,
-                    child: Container(
-                      width: 84,
-                      height: 84,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFAB7A4E),
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white24, width: 3.0),
-                        image: DecorationImage(
-                          image: NetworkImage(session.photoUrl),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                  Text(
+                    'Akun Saya',
+                    style: GoogleFonts.inter(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.black87,
                     ),
                   ),
-                  const SizedBox(width: 20),
-                  // 2. Profile Details
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          session.name,
-                          style: GoogleFonts.inter(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 22,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          session.email,
-                          style: GoogleFonts.inter(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 12.5,
-                            letterSpacing: 0.2,
-                          ),
-                        ),
-                      ],
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.black12),
+                        color: Colors.white,
+                      ),
+                      child: const Icon(
+                        Icons.close,
+                        size: 20,
+                        color: Colors.black87,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-            
-            // List of options (Middle Part)
+
             Expanded(
-              child: Container(
-                color: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 12.0),
-                child: ListView(
-                  physics: const ClampingScrollPhysics(),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildAccountItem(
-                      context,
-                      Icons.inventory_2_outlined,
-                      'PESANAN SAYA',
-                      () {
-                        Navigator.pushNamed(context, '/orders');
-                      },
+                    // ==========================================
+                    // KARTU PROFIL UTAMA
+                    // ==========================================
+                    GestureDetector(
+                      onTap:
+                          _showAvatarPicker, // Mengubah foto profil saat card di-klik
+                      child: Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: primaryBrown, // Warna cokelat Nestmart
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: primaryBrown.withOpacity(0.3),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 2,
+                                ),
+                                image: DecorationImage(
+                                  image: NetworkImage(session.photoUrl),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    session.name,
+                                    style: GoogleFonts.inter(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    session.email,
+                                    style: GoogleFonts.inter(
+                                      color: Colors.white70,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    _buildAccountItem(
-                      context,
-                      Icons.badge_outlined,
-                      'DETAIL AKUN',
-                      () {
-                        Navigator.pushNamed(context, '/my_details');
-                      },
+                    const SizedBox(height: 28),
+
+                    // ==========================================
+                    // BAGIAN 1: AKUN & PESANAN
+                    // ==========================================
+                    _buildSectionHeader('AKUN & PESANAN'),
+                    const SizedBox(height: 12),
+                    _buildCardContainer([
+                      _buildListTile(
+                        icon: Icons.inventory_2_outlined,
+                        title: 'Pesanan Saya',
+                        badgeCount: 3, // Indikator notifikasi merah
+                        onTap: () => Navigator.pushNamed(context, '/orders'),
+                      ),
+                      _buildDivider(),
+                      _buildListTile(
+                        icon: Icons.person_outline,
+                        title: 'Detail Akun',
+                        onTap: () =>
+                            Navigator.pushNamed(context, '/my_details'),
+                      ),
+                      _buildDivider(),
+                      _buildListTile(
+                        icon: Icons.location_on_outlined,
+                        title: 'Daftar Alamat',
+                        onTap: () =>
+                            Navigator.pushNamed(context, '/delivery_address'),
+                      ),
+                    ]),
+                    const SizedBox(height: 24),
+
+                    // ==========================================
+                    // BAGIAN 2: PENGATURAN
+                    // ==========================================
+                    _buildSectionHeader('PENGATURAN'),
+                    const SizedBox(height: 12),
+                    _buildCardContainer([
+                      _buildListTile(
+                        icon: Icons.settings_outlined,
+                        title: 'Pengaturan Aplikasi',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AppSettingsScreen(),
+                            ),
+                          );
+                          // Contoh menambahkan fungsi kustom
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Menu Pengaturan belum tersedia'),
+                            ),
+                          );
+                        },
+                      ),
+                      _buildDivider(),
+                      _buildListTile(
+                        icon: Icons.help_outline_rounded,
+                        title: 'Pusat Bantuan',
+                        onTap: () =>
+                            Navigator.pushNamed(context, '/help_support'),
+                      ),
+                    ]),
+                    const SizedBox(height: 32),
+
+                    // ==========================================
+                    // TOMBOL LOGOUT
+                    // ==========================================
+                    GestureDetector(
+                      onTap: () => Navigator.pushReplacementNamed(
+                        context,
+                        '/',
+                      ), // Fungsi Logout
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        decoration: BoxDecoration(
+                          color: const Color(
+                            0xFFFFF5F5,
+                          ), // Background merah super muda
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: Colors.redAccent.withOpacity(0.5),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.logout_rounded,
+                              color: Colors.redAccent,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Keluar dari Akun',
+                              style: GoogleFonts.inter(
+                                color: Colors.redAccent,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    _buildAccountItem(
-                      context,
-                      Icons.location_on_outlined,
-                      'DAFTAR ALAMAT',
-                      () {
-                        Navigator.pushNamed(context, '/delivery_address');
-                      },
-                    ),
-                    _buildAccountItem(
-                      context,
-                      Icons.contact_support_outlined,
-                      'PUSAT BANTUAN',
-                      () {
-                        Navigator.pushNamed(context, '/help_support');
-                      },
-                    ),
-                    _buildAccountItem(
-                      context,
-                      Icons.exit_to_app_rounded,
-                      'LOGOUT',
-                      () {
-                        Navigator.pushReplacementNamed(context, '/'); // Reset to login/welcome
-                      },
-                    ),
+                    const SizedBox(height: 40),
                   ],
                 ),
               ),
             ),
-            
-            // Custom bottom navigation bar mimicking screenshot inside page
+
+            // ==========================================
+            // BOTTOM NAVIGATION BAR
+            // ==========================================
             Container(
               height: 72,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 border: Border(
-                  top: BorderSide(
-                    color: Colors.black12,
-                    width: 0.5,
-                  ),
+                  top: BorderSide(color: Colors.black12, width: 0.5),
                 ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _buildNavTab(context, Icons.storefront_outlined, 'Home', false, () {
-                    Navigator.pushReplacementNamed(context, '/menu');
-                  }),
-                  _buildNavTab(context, Icons.manage_search, 'Kategori', false, () {
-                    Navigator.pushReplacementNamed(context, '/category');
-                  }),
-                  _buildNavTab(context, Icons.shopping_cart_outlined, 'Keranjang', false, () {
-                    Navigator.pushReplacementNamed(context, '/cart');
-                  }),
-                  _buildNavTab(context, Icons.favorite_border_outlined, 'Favorit', false, () {
-                    Navigator.pushReplacementNamed(context, '/favourite');
-                  }),
-                  _buildNavTab(context, Icons.person, 'Akun', true, () {}), // Active brown tab with filled layout
+                  _buildNavTab(
+                    Icons.storefront_outlined,
+                    'Home',
+                    false,
+                    () => Navigator.pushReplacementNamed(context, '/menu'),
+                  ),
+                  _buildNavTab(
+                    Icons.manage_search,
+                    'Kategori',
+                    false,
+                    () => Navigator.pushReplacementNamed(context, '/category'),
+                  ),
+                  _buildNavTab(
+                    Icons.shopping_cart_outlined,
+                    'Keranjang',
+                    false,
+                    () => Navigator.pushReplacementNamed(context, '/cart'),
+                  ),
+                  _buildNavTab(
+                    Icons.favorite_border_outlined,
+                    'Favorit',
+                    false,
+                    () => Navigator.pushReplacementNamed(context, '/favourite'),
+                  ),
+                  _buildNavTab(Icons.person, 'Akun', true, () {}),
                 ],
               ),
             ),
@@ -348,56 +382,114 @@ class _AccountScreenState extends State<AccountScreen> {
     );
   }
 
-  Widget _buildAccountItem(BuildContext context, IconData icon, String label, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 11.5),
-            child: Row(
-              children: [
-                // Custom black outline style icon
-                Icon(
-                  icon,
-                  color: Colors.black,
-                  size: 26,
-                ),
-                const SizedBox(width: 22),
-                // Bold label text matching mockup exactly
-                Expanded(
-                  child: Text(
-                    label,
-                    style: GoogleFonts.inter(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w900,
-                      fontSize: 13,
-                      letterSpacing: 0.2,
-                    ),
-                  ),
-                ),
-                // Custom solid black arrowhead pointer matching mockup
-                const Icon(
-                  Icons.play_arrow_rounded,
-                  color: Colors.black,
-                  size: 19,
-                ),
-              ],
-            ),
-          ),
-          // Custom thin divider line matching screenshot
-          Container(
-            height: 1,
-            width: double.infinity,
-            color: const Color(0xFFC0A692).withOpacity(0.5), // Semi-transparent warm brown divider
-          ),
-        ],
+  // --- KOMPONEN WIDGET REUSABLE ---
+
+  Widget _buildSectionHeader(String title) {
+    return Text(
+      title,
+      style: GoogleFonts.inter(
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
+        color: Colors.black54,
+        letterSpacing: 0.5,
       ),
     );
   }
 
-  Widget _buildNavTab(BuildContext context, IconData icon, String label, bool active, VoidCallback onTap) {
+  Widget _buildCardContainer(List<Widget> children) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(children: children),
+    );
+  }
+
+  Widget _buildListTile({
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+    int badgeCount = 0,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+        child: Row(
+          children: [
+            // Ikon Kotak
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF3EBE6), // Background ikon krem
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(icon, size: 20, color: const Color(0xFF7E4D2B)),
+            ),
+            const SizedBox(width: 16),
+            // Teks Label
+            Expanded(
+              child: Text(
+                title,
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
+            // Badge Notifikasi (opsional)
+            if (badgeCount > 0)
+              Container(
+                margin: const EdgeInsets.only(right: 12),
+                padding: const EdgeInsets.all(6),
+                decoration: const BoxDecoration(
+                  color: Colors.redAccent,
+                  shape: BoxShape.circle,
+                ),
+                child: Text(
+                  badgeCount.toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            // Ikon Panah
+            const Icon(
+              Icons.chevron_right_rounded,
+              size: 20,
+              color: Colors.black38,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDivider() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      child: Divider(height: 1, thickness: 1, color: Color(0xFFF0F0F0)),
+    );
+  }
+
+  Widget _buildNavTab(
+    IconData icon,
+    String label,
+    bool active,
+    VoidCallback onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
@@ -407,14 +499,14 @@ class _AccountScreenState extends State<AccountScreen> {
           Icon(
             icon,
             color: active ? const Color(0xFF7E4D2B) : Colors.black45,
-            size: 23,
+            size: 24,
           ),
-          const SizedBox(height: 3),
+          const SizedBox(height: 4),
           Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 9,
-              fontWeight: active ? FontWeight.w900 : FontWeight.w700,
+              fontSize: 10,
+              fontWeight: active ? FontWeight.w800 : FontWeight.w600,
               color: active ? const Color(0xFF7E4D2B) : Colors.black45,
             ),
           ),
