@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../theme.dart';
 import '../favorites_state.dart';
 
 class FavouritesScreen extends StatefulWidget {
@@ -29,14 +28,22 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
 
             // Filter by search query & category
             final filteredFavs = allFavs.where((p) {
-              final matchesQuery = p.name.toLowerCase().contains(_searchQuery.toLowerCase());
-              
+              final matchesQuery = p.name.toLowerCase().contains(
+                _searchQuery.toLowerCase(),
+              );
+
               if (_selectedCategory == 'All') {
                 return matchesQuery;
               }
               // Normalizing category names (e.g. "Elektronik" vs "Elekronik")
-              final normalCategory = p.category.replaceAll('k', '').replaceAll('c', '').toLowerCase();
-              final normalSelected = _selectedCategory.replaceAll('k', '').replaceAll('c', '').toLowerCase();
+              final normalCategory = p.category
+                  .replaceAll('k', '')
+                  .replaceAll('c', '')
+                  .toLowerCase();
+              final normalSelected = _selectedCategory
+                  .replaceAll('k', '')
+                  .replaceAll('c', '')
+                  .toLowerCase();
               return matchesQuery && (normalCategory == normalSelected);
             }).toList();
 
@@ -45,7 +52,12 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
               children: [
                 // 1. Customized top header matching screenshots
                 Padding(
-                  padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 18.0, bottom: 8.0),
+                  padding: const EdgeInsets.only(
+                    left: 16.0,
+                    right: 16.0,
+                    top: 18.0,
+                    bottom: 8.0,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -73,69 +85,81 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                           letterSpacing: 0.5,
                         ),
                       ),
-                      const SizedBox(width: 42), // Visual spacer to center the title
+                      const SizedBox(
+                        width: 42,
+                      ), // Visual spacer to center the title
                     ],
                   ),
                 ),
 
                 // 2. Search container matching screenshot styling
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0,
+                    vertical: 8.0,
+                  ),
                   child: GestureDetector(
                     onTap: () => Navigator.pushNamed(context, '/search'),
                     child: AbsorbPointer(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 1),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFE5E2DE), // Soft gray background matching mockup
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: Colors.black12,
-                        width: 1.0,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            onChanged: (val) {
-                              setState(() {
-                                _searchQuery = val;
-                              });
-                            },
-                            decoration: InputDecoration(
-                              hintText: 'Belanja sekarang...',
-                              hintStyle: GoogleFonts.inter(
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 1,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(
+                            0xFFE5E2DE,
+                          ), // Soft gray background matching mockup
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.black12, width: 1.0),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                onChanged: (val) {
+                                  setState(() {
+                                    _searchQuery = val;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  hintText: 'Belanja sekarang...',
+                                  hintStyle: GoogleFonts.inter(
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                  ),
+                                  border: InputBorder.none,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                  ),
+                                ),
+                                style: GoogleFonts.inter(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13,
+                                ),
                               ),
-                              border: InputBorder.none,
-                              contentPadding: const EdgeInsets.symmetric(vertical: 12),
                             ),
-                            style: GoogleFonts.inter(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13,
+                            const Icon(
+                              Icons.search_rounded,
+                              color: Colors.black54,
+                              size: 24,
                             ),
-                          ),
+                          ],
                         ),
-                        const Icon(
-                          Icons.search_rounded,
-                          color: Colors.black54,
-                          size: 24,
-                        ),
-                      ],
-                    ),
-                  ),
+                      ),
                     ),
                   ),
                 ),
 
                 // 3. Category filters horizontal scrollbar-hide container
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 14.0,
+                    horizontal: 20.0,
+                  ),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     physics: const BouncingScrollPhysics(),
@@ -151,9 +175,14 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                               });
                             },
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 18,
+                                vertical: 8,
+                              ),
                               decoration: BoxDecoration(
-                                color: isSelected ? const Color(0xFF864F1F) : Colors.white,
+                                color: isSelected
+                                    ? const Color(0xFF864F1F)
+                                    : Colors.white,
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
                                   color: const Color(0xFF864F1F),
@@ -163,7 +192,9 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                               child: Text(
                                 cat,
                                 style: GoogleFonts.inter(
-                                  color: isSelected ? Colors.white : const Color(0xFF864F1F),
+                                  color: isSelected
+                                      ? Colors.white
+                                      : const Color(0xFF864F1F),
                                   fontWeight: FontWeight.w900,
                                   fontSize: 13,
                                 ),
@@ -213,26 +244,35 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: GridView.builder(
                             physics: const BouncingScrollPhysics(),
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 16,
-                              mainAxisSpacing: 16,
-                              childAspectRatio: 0.76, // Matches "Just for you" format
-                            ),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 16,
+                                  mainAxisSpacing: 16,
+                                  childAspectRatio:
+                                      0.76, // Matches "Just for you" format
+                                ),
                             itemCount: filteredFavs.length,
                             itemBuilder: (context, idx) {
                               final item = filteredFavs[idx];
                               return GestureDetector(
                                 onTap: () {
-                                  Navigator.pushNamed(context, '/product', arguments: item.toMap());
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/product',
+                                    arguments: item.toMap(),
+                                  );
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFE2DFDC), // Light grey matching screenshots
+                                    color: const Color(
+                                      0xFFE2DFDC,
+                                    ), // Light grey matching screenshots
                                     borderRadius: BorderRadius.circular(24),
                                   ),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       // Top cell image and favorite heart
                                       Expanded(
@@ -240,7 +280,10 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                                         child: Stack(
                                           children: [
                                             ClipRRect(
-                                              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                                              borderRadius:
+                                                  const BorderRadius.vertical(
+                                                    top: Radius.circular(24),
+                                                  ),
                                               child: Image.network(
                                                 item.image,
                                                 width: double.infinity,
@@ -253,11 +296,15 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                                               right: 10,
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  FavoritesState.toggleFavorite(item.id);
+                                                  FavoritesState.toggleFavorite(
+                                                    item.id,
+                                                  );
                                                 },
                                                 child: const Icon(
                                                   Icons.favorite,
-                                                  color: Color(0xFF7E4D2B), // Brown filled heart
+                                                  color: Color(
+                                                    0xFF7E4D2B,
+                                                  ), // Brown filled heart
                                                   size: 21,
                                                 ),
                                               ),
@@ -279,27 +326,37 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                                               bottomRight: Radius.circular(24),
                                             ),
                                           ),
-                                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 10,
+                                            vertical: 8,
+                                          ),
                                           child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     item.name,
                                                     maxLines: 1,
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     style: GoogleFonts.inter(
-                                                      fontWeight: FontWeight.w800,
+                                                      fontWeight:
+                                                          FontWeight.w800,
                                                       fontSize: 11,
                                                       color: Colors.black,
                                                     ),
                                                   ),
                                                   const SizedBox(height: 1),
                                                   Row(
-                                                    children: List.generate(5, (starIdx) {
+                                                    children: List.generate(5, (
+                                                      starIdx,
+                                                    ) {
                                                       return const Icon(
                                                         Icons.star,
                                                         color: Colors.amber,
@@ -310,21 +367,28 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                                                 ],
                                               ),
                                               Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   Text(
                                                     item.price,
                                                     style: GoogleFonts.inter(
-                                                      fontWeight: FontWeight.w900,
+                                                      fontWeight:
+                                                          FontWeight.w900,
                                                       fontSize: 13,
-                                                      color: const Color(0xFF7E4D2B),
+                                                      color: const Color(
+                                                        0xFF7E4D2B,
+                                                      ),
                                                     ),
                                                   ),
                                                   Container(
                                                     width: 24,
                                                     height: 24,
                                                     decoration: const BoxDecoration(
-                                                      color: Color(0xFF864F1F), // Brown button with white plus inside
+                                                      color: Color(
+                                                        0xFF864F1F,
+                                                      ), // Brown button with white plus inside
                                                       shape: BoxShape.circle,
                                                     ),
                                                     child: const Icon(
@@ -381,7 +445,12 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
             _buildNavTab(Icons.shopping_cart_outlined, 'Keranjang', false, () {
               Navigator.pushReplacementNamed(context, '/cart');
             }),
-            _buildNavTab(Icons.favorite, 'Favorit', true, () {}), // Set to active with filled heart
+            _buildNavTab(
+              Icons.favorite,
+              'Favorit',
+              true,
+              () {},
+            ), // Set to active with filled heart
             _buildNavTab(Icons.person_outline, 'Akun', false, () {
               Navigator.pushReplacementNamed(context, '/account');
             }),
@@ -391,7 +460,12 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
     );
   }
 
-  Widget _buildNavTab(IconData icon, String label, bool active, VoidCallback onTap) {
+  Widget _buildNavTab(
+    IconData icon,
+    String label,
+    bool active,
+    VoidCallback onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,

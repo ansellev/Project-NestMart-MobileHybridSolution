@@ -12,62 +12,62 @@ class MenuScreen extends StatelessWidget {
     // ==========================================
     // 1. DATA KATEGORI
     // ==========================================
-    final categories = [
-      {'name': 'Elektronik', 'icon': Icons.devices_other_rounded},
-      {'name': 'Pakaian', 'icon': Icons.checkroom_rounded},
-      {'name': 'Olahraga', 'icon': Icons.fitness_center_rounded},
-      {'name': 'Perabotan', 'icon': Icons.chair_rounded},
-      {'name': 'Kecantikan', 'icon': Icons.spa_rounded},
+    final List<Map<String, String>> categories = [
+      {'name': 'Elektronik', 'image': 'assets/elektronik.png'},
+      {'name': 'Pakaian', 'image': 'assets/pakaian.png'},
+      {'name': 'Olahraga', 'image': 'assets/olahraga.png'},
+      {'name': 'Perabotan', 'image': 'assets/perabotan.png'},
+      {'name': 'Kecantikan', 'image': 'assets/kecantikan.png'},
     ];
 
     // ==========================================
-    // 2. DATA PRODUK (Rekomendasi & Untuk Kamu)
+    // 2. DATA PRODUK
     // ==========================================
     final recomendations = [
       {
         'id': '1',
         'name': 'Action Figure',
-        'price': '\$10',
-        'image': 'assets/images/action_figure.png',
+        'price': 'Rp250.000',
+        'image': 'assets/Figure.png',
       },
       {
         'id': '2',
         'name': 'Iphone 17 Pro Max',
-        'price': '\$1.199',
-        'image': 'assets/images/iphone.png',
+        'price': 'Rp15.999.000',
+        'image': 'assets/IPhone17pm.png',
       },
       {
         'id': '3',
-        'name': 'Adidas training fullset',
-        'price': '\$124',
-        'image': 'assets/images/adidas.png',
+        'name': 'Adidas Training',
+        'price': 'Rp824.000',
+        'image': 'assets/adidas.png',
       },
     ];
 
     final justForYou = [
       {
         'id': '4',
-        'name': 'Nike dunk retro',
-        'price': '\$60',
-        'image': 'assets/images/nike.png',
+        'name': 'Nike Dunk Retro',
+        'price': 'Rp1.200.000',
+        'image': 'assets/nike.png',
       },
       {
         'id': '5',
-        'name': 'Retro helmet',
-        'price': '\$40',
-        'image': 'assets/images/helmet.png',
+        'name': 'Retro Helmet',
+        'price': 'Rp440.000',
+        'image': 'assets/retro.png',
       },
       {
         'id': '6',
-        'name': 'Superman figure',
-        'price': '\$35',
-        'image': 'assets/images/superman.png',
+        'name': 'Superman Figure',
+        'price': 'Rp35.000',
+        'image': 'assets/Superman.png',
       },
       {
         'id': '7',
         'name': 'Logitech Keyboard',
-        'price': '\$50',
-        'image': 'assets/images/keyboard.png',
+        'price': 'Rp150.000',
+        'image': 'assets/Logitech.png',
       },
     ];
 
@@ -82,7 +82,7 @@ class MenuScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // ==========================================
-            // HEADER COKLAT MELENGKUNG
+            // HEADER COKLAT
             // ==========================================
             Container(
               decoration: const BoxDecoration(
@@ -93,10 +93,10 @@ class MenuScreen extends StatelessWidget {
                 ),
               ),
               padding: const EdgeInsets.only(
-                top: 56,
+                top: 64,
                 left: 24,
                 right: 24,
-                bottom: 28,
+                bottom: 32,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,17 +118,21 @@ class MenuScreen extends StatelessWidget {
                             const Icon(
                               Icons.notifications_none_rounded,
                               color: Colors.white,
-                              size: 28,
+                              size: 30,
                             ),
                             Positioned(
                               top: 2,
                               right: 2,
                               child: Container(
-                                width: 8,
-                                height: 8,
-                                decoration: const BoxDecoration(
-                                  color: Colors.orange,
+                                width: 10,
+                                height: 10,
+                                decoration: BoxDecoration(
+                                  color: Colors.orangeAccent,
                                   shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: primaryBrown,
+                                    width: 2,
+                                  ),
                                 ),
                               ),
                             ),
@@ -137,17 +141,18 @@ class MenuScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 16),
                   Text(
                     'HI ANDI',
                     style: GoogleFonts.merriweather(
                       fontWeight: FontWeight.w900,
-                      fontSize: 24,
+                      fontSize: 26,
                       color: Colors.white,
                       letterSpacing: 0.5,
                     ),
                   ),
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 24),
+
                   // Search Bar
                   GestureDetector(
                     onTap: () {
@@ -164,31 +169,31 @@ class MenuScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.06),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
+                            color: Colors.black.withValues(alpha: 0.08),
+                            blurRadius: 15,
+                            offset: const Offset(0, 8),
                           ),
                         ],
                       ),
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 14,
+                        horizontal: 24,
+                        vertical: 16,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Belanja sekarang...',
+                            'Cari barang impianmu...',
                             style: GoogleFonts.inter(
-                              color: Colors.black45,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13,
+                              color: Colors.black38,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
                             ),
                           ),
                           const Icon(
-                            Icons.search,
+                            Icons.search_rounded,
                             color: Colors.black54,
-                            size: 24,
+                            size: 26,
                           ),
                         ],
                       ),
@@ -203,13 +208,13 @@ class MenuScreen extends StatelessWidget {
             // ==========================================
             Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: 20.0,
-                vertical: 24.0,
+                horizontal: 24.0,
+                vertical: 28.0,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // SECTION KATEGORI
+                  // --- SECTION KATEGORI ---
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -217,40 +222,34 @@ class MenuScreen extends StatelessWidget {
                         'Kategori',
                         style: GoogleFonts.inter(
                           fontWeight: FontWeight.w900,
-                          fontSize: 15,
-                          color: Colors.black,
+                          fontSize: 16,
+                          color: Colors.black87,
                         ),
                       ),
                       GestureDetector(
                         onTap: () => Navigator.pushNamed(context, '/category'),
                         child: Text(
-                          'See all',
+                          'Lihat Semua',
                           style: GoogleFonts.inter(
                             fontWeight: FontWeight.w700,
-                            fontSize: 11,
-                            color: Colors.black54,
+                            fontSize: 12,
+                            color: primaryBrown,
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 14),
-
-                  // ==========================================
-                  // KATEGORI BUTTON YANG SUDAH DIPERBESAR
-                  // ==========================================
+                  const SizedBox(height: 18),
                   SizedBox(
-                    height:
-                        120, // Diperbesar dari 100 agar teks tidak terpotong
+                    height: 110,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: categories.length,
                       physics: const BouncingScrollPhysics(),
                       itemBuilder: (context, idx) {
+                        final String imagePath = categories[idx]['image'] ?? '';
                         return Padding(
-                          padding: const EdgeInsets.only(
-                            right: 16.0,
-                          ), // Spasi antar item diperlebar sedikit
+                          padding: const EdgeInsets.only(right: 20.0),
                           child: GestureDetector(
                             onTap: () => Navigator.pushNamed(
                               context,
@@ -260,33 +259,44 @@ class MenuScreen extends StatelessWidget {
                             child: Column(
                               children: [
                                 Container(
-                                  width: 72, // Diperbesar dari 58
-                                  height: 72, // Diperbesar dari 58
+                                  width: 70,
+                                  height: 70,
                                   decoration: BoxDecoration(
                                     color: primaryBrown,
-                                    borderRadius: BorderRadius.circular(
-                                      24,
-                                    ), // Disesuaikan agar melengkungnya pas
+                                    borderRadius: BorderRadius.circular(20),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black.withOpacity(0.05),
-                                        blurRadius: 8,
+                                        color: primaryBrown.withValues(
+                                          alpha: 0.3,
+                                        ),
+                                        blurRadius: 10,
                                         offset: const Offset(0, 4),
                                       ),
                                     ],
                                   ),
-                                  child: Icon(
-                                    categories[idx]['icon'] as IconData,
-                                    color: Colors.white,
-                                    size: 34, // Ukuran ikon diperbesar dari 26
-                                  ),
+                                  padding: const EdgeInsets.all(16),
+                                  child: imagePath.isNotEmpty
+                                      ? Image.asset(
+                                          imagePath,
+                                          fit: BoxFit.contain,
+                                          errorBuilder:
+                                              (context, error, stackTrace) =>
+                                                  const Icon(
+                                                    Icons.broken_image_rounded,
+                                                    color: Colors.white54,
+                                                  ),
+                                        )
+                                      : const Icon(
+                                          Icons.category_rounded,
+                                          color: Colors.white54,
+                                        ),
                                 ),
-                                const SizedBox(height: 8),
+                                const SizedBox(height: 10),
                                 Text(
                                   categories[idx]['name'] as String,
                                   style: GoogleFonts.inter(
-                                    fontSize: 11, // Sedikit diperbesar dari 10
-                                    fontWeight: FontWeight.w800,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w700,
                                     color: Colors.black87,
                                   ),
                                 ),
@@ -297,193 +307,93 @@ class MenuScreen extends StatelessWidget {
                       },
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 28),
 
-                  // SECTION REKOMENDASI PRODUK
+                  // --- SECTION REKOMENDASI PRODUK ---
                   Text(
                     'Rekomendasi Produk',
                     style: GoogleFonts.inter(
                       fontWeight: FontWeight.w900,
-                      fontSize: 15,
-                      color: Colors.black,
+                      fontSize: 16,
+                      color: Colors.black87,
                     ),
                   ),
-                  const SizedBox(height: 14),
+                  const SizedBox(height: 18),
                   SizedBox(
-                    height: 210,
+                    height: 230,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: recomendations.length,
                       physics: const BouncingScrollPhysics(),
                       itemBuilder: (context, idx) {
-                        final item = recomendations[idx];
-                        return GestureDetector(
-                          onTap: () => Navigator.pushNamed(
-                            context,
-                            '/product',
-                            arguments: item,
-                          ),
-                          child: Container(
-                            width: 135,
-                            margin: const EdgeInsets.only(
-                              right: 14.0,
-                              bottom: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFE2DFDC),
-                              borderRadius: BorderRadius.circular(24),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.vertical(
-                                      top: Radius.circular(24),
-                                    ),
-                                    child: Image.asset(
-                                      item['image']!,
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) =>
-                                              Container(
-                                                color: Colors.grey[300],
-                                              ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        item['name']!,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: GoogleFonts.inter(
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: 11,
-                                          color: Colors.black87,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            item['price']!,
-                                            style: GoogleFonts.inter(
-                                              fontWeight: FontWeight.w900,
-                                              fontSize: 13,
-                                              color: primaryBrown,
-                                            ),
-                                          ),
-                                          Container(
-                                            width: 24,
-                                            height: 24,
-                                            decoration: const BoxDecoration(
-                                              color: Color(0xFF864F1F),
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: const Icon(
-                                              Icons.add,
-                                              color: Colors.white,
-                                              size: 14,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                        return _buildProductCard(
+                          context: context,
+                          item: recomendations[idx],
+                          width: 150,
                         );
                       },
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 32),
 
-                  // PROMO BANNER
+                  // --- PROMO BANNER ---
                   Text(
-                    'Promo Special',
+                    'Promo Spesial',
                     style: GoogleFonts.inter(
                       fontWeight: FontWeight.w900,
-                      fontSize: 13,
-                      color: Colors.black,
+                      fontSize: 16,
+                      color: Colors.black87,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(
+                    height: 8,
+                  ), // DI SINI: Jarak diperkecil agar gambar promo naik
                   Container(
                     width: double.infinity,
+                    height: 140,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFBEADB),
-                      border: Border.all(
-                        color: Colors.orange.withOpacity(0.18),
-                        width: 1.2,
-                      ),
                       borderRadius: BorderRadius.circular(24),
-                    ),
-                    padding: const EdgeInsets.all(18),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'DISKON SPESIAL',
-                                style: GoogleFonts.inter(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 16,
-                                  color: primaryBrown,
-                                  letterSpacing: 0.2,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Hingga ',
-                                    style: GoogleFonts.inter(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 12,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                  Text(
-                                    '20%',
-                                    style: GoogleFonts.inter(
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 22,
-                                      color: Colors.orange,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.05),
+                          blurRadius: 12,
+                          offset: const Offset(0, 6),
                         ),
                       ],
                     ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(24),
+                      child: Image.asset(
+                        'assets/promo.png',
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: const Color(0xFFFBEADB),
+                          child: const Center(
+                            child: Text(
+                              'Promo Image Not Found',
+                              style: TextStyle(color: Colors.orange),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 28),
+                  const SizedBox(height: 36),
 
-                  // UNTUK KAMU GRID
+                  // --- SECTION UNTUK KAMU ---
                   Text(
                     'Untuk Kamu',
                     style: GoogleFonts.inter(
                       fontWeight: FontWeight.w900,
-                      fontSize: 15,
-                      color: Colors.black,
+                      fontSize: 16,
+                      color: Colors.black87,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(
+                    height: 8,
+                  ), // DI SINI: Jarak diperkecil agar grid kotak produk naik
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -492,140 +402,13 @@ class MenuScreen extends StatelessWidget {
                           crossAxisCount: 2,
                           crossAxisSpacing: 16,
                           mainAxisSpacing: 20,
-                          childAspectRatio: 0.76,
+                          childAspectRatio: 0.70,
                         ),
                     itemCount: justForYou.length,
                     itemBuilder: (context, idx) {
-                      final item = justForYou[idx];
-                      return GestureDetector(
-                        onTap: () => Navigator.pushNamed(
-                          context,
-                          '/product',
-                          arguments: item,
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFE2DFDC),
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                flex: 6,
-                                child: Stack(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: const BorderRadius.vertical(
-                                        top: Radius.circular(24),
-                                      ),
-                                      child: Image.asset(
-                                        item['image']!,
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        fit: BoxFit.cover,
-                                        errorBuilder:
-                                            (context, error, stackTrace) =>
-                                                Container(
-                                                  color: Colors.grey[300],
-                                                ),
-                                      ),
-                                    ),
-                                    const Positioned(
-                                      top: 10,
-                                      right: 10,
-                                      child: Icon(
-                                        Icons.favorite_border,
-                                        color: primaryBrown,
-                                        size: 20,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                flex: 5,
-                                child: Container(
-                                  width: double.infinity,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.vertical(
-                                      bottom: Radius.circular(24),
-                                      top: Radius.circular(20),
-                                    ),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 8,
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            item['name']!,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: GoogleFonts.inter(
-                                              fontWeight: FontWeight.w800,
-                                              fontSize: 10.5,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 2),
-                                          Row(
-                                            children: List.generate(5, (
-                                              starIdx,
-                                            ) {
-                                              return const Icon(
-                                                Icons.star,
-                                                color: Colors.amber,
-                                                size: 11,
-                                              );
-                                            }),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            item['price']!,
-                                            style: GoogleFonts.inter(
-                                              fontWeight: FontWeight.w900,
-                                              fontSize: 13,
-                                              color: primaryBrown,
-                                            ),
-                                          ),
-                                          Container(
-                                            width: 24,
-                                            height: 24,
-                                            decoration: const BoxDecoration(
-                                              color: Color(0xFF864F1F),
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: const Icon(
-                                              Icons.add,
-                                              color: Colors.white,
-                                              size: 14,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                      return _buildProductCard(
+                        context: context,
+                        item: justForYou[idx],
                       );
                     },
                   ),
@@ -640,27 +423,24 @@ class MenuScreen extends StatelessWidget {
       // BOTTOM NAVIGATION BAR
       // ==========================================
       bottomNavigationBar: Container(
-        height: 72,
-        decoration: const BoxDecoration(
+        height: 76,
+        decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(24),
-            topRight: Radius.circular(24),
-          ),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
           boxShadow: [
             BoxShadow(
-              color: Colors.black12,
-              blurRadius: 10,
-              offset: Offset(0, -2),
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 15,
+              offset: const Offset(0, -4),
             ),
           ],
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildNavTab(Icons.storefront_outlined, 'Home', true, () {}),
+            _buildNavTab(Icons.storefront_rounded, 'Home', true, () {}),
             _buildNavTab(
-              Icons.manage_search,
+              Icons.manage_search_rounded,
               'Kategori',
               false,
               () => Navigator.pushNamed(context, '/category'),
@@ -672,13 +452,13 @@ class MenuScreen extends StatelessWidget {
               () => Navigator.pushNamed(context, '/cart'),
             ),
             _buildNavTab(
-              Icons.favorite_outline,
+              Icons.favorite_outline_rounded,
               'Favorit',
               false,
               () => Navigator.pushNamed(context, '/favourite'),
             ),
             _buildNavTab(
-              Icons.person_outline,
+              Icons.person_outline_rounded,
               'Akun',
               false,
               () => Navigator.pushNamed(context, '/account'),
@@ -689,6 +469,153 @@ class MenuScreen extends StatelessWidget {
     );
   }
 
+  // =========================================================================
+  // WIDGET REUSABLE: PRODUCT CARD
+  // =========================================================================
+  Widget _buildProductCard({
+    required BuildContext context,
+    required Map<String, String> item,
+    double? width,
+  }) {
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(context, '/product', arguments: item),
+      child: Container(
+        width: width,
+        margin: width != null
+            ? const EdgeInsets.only(right: 16.0, bottom: 8.0)
+            : null,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 12,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 5,
+              child: Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Color(0xFFF6F4F2),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                ),
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Center(
+                        child: Image.asset(
+                          item['image']!,
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) =>
+                              const Icon(
+                                Icons.broken_image_rounded,
+                                color: Colors.black26,
+                                size: 40,
+                              ),
+                        ),
+                      ),
+                    ),
+                    const Positioned(
+                      top: 12,
+                      right: 12,
+                      child: Icon(
+                        Icons.favorite_border_rounded,
+                        color: Color(0xFF7E4D2B),
+                        size: 22,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 4,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14.0,
+                  vertical: 12.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item['name']!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.inter(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 12,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: List.generate(
+                            5,
+                            (index) => const Icon(
+                              Icons.star_rounded,
+                              color: Colors.amber,
+                              size: 14,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            item['price']!,
+                            style: GoogleFonts.inter(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 13,
+                              color: const Color(0xFF7E4D2B),
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF864F1F),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.add,
+                            color: Colors.white,
+                            size: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // =========================================================================
+  // WIDGET REUSABLE: BOTTOM NAVIGATION TAB
+  // =========================================================================
   Widget _buildNavTab(
     IconData icon,
     String label,
@@ -703,16 +630,16 @@ class MenuScreen extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: active ? const Color(0xFF7E4D2B) : Colors.black45,
-            size: 24,
+            color: active ? const Color(0xFF7E4D2B) : Colors.black38,
+            size: 26,
           ),
-          const SizedBox(height: 3),
+          const SizedBox(height: 4),
           Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 9,
-              fontWeight: active ? FontWeight.w900 : FontWeight.w700,
-              color: active ? const Color(0xFF7E4D2B) : Colors.black45,
+              fontSize: 10,
+              fontWeight: active ? FontWeight.w800 : FontWeight.w600,
+              color: active ? const Color(0xFF7E4D2B) : Colors.black38,
             ),
           ),
         ],
