@@ -51,7 +51,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   final List<Map<String, String>> _categories = [
     {'name': 'Elektronik', 'image': 'assets/elektronik.png'},
     {'name': 'Pakaian', 'image': 'assets/pakaian.png'},
-    {'name': 'Fashion', 'image': 'assets/fashion.png'},
+    {'name': 'Fashion', 'image': 'assets/Fashion.png'},
     {'name': 'Kecantikan', 'image': 'assets/kecantikan.png'},
     {'name': 'Makanan', 'image': 'assets/Makanan.png'},
     {'name': 'Otomotif', 'image': 'assets/otomotif.png'},

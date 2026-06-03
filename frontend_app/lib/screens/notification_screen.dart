@@ -9,16 +9,23 @@ class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Filter orders that are in the successful payment 'DIPROSES' stage
-    final processedOrders = mockOrders.where((order) => order.status == 'DIPROSES').toList();
+    final processedOrders = mockOrders
+        .where((order) => order.status == 'DIPROSES')
+        .toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFECEAE6), // Matching beige cream background
+      backgroundColor: const Color(
+        0xFFECEAE6,
+      ), // Matching beige cream background
       body: SafeArea(
         child: Column(
           children: [
             // Custom Custom Header/App Bar
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 12.0,
+              ),
               child: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -26,7 +33,11 @@ class NotificationScreen extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Navigator.canPop(context)
                         ? IconButton(
-                            icon: const Icon(Icons.chevron_left, size: 32, color: Color(0xFF7E4D2B)),
+                            icon: const Icon(
+                              Icons.chevron_left,
+                              size: 32,
+                              color: Color(0xFF7E4D2B),
+                            ),
                             onPressed: () {
                               Navigator.pop(context);
                             },
@@ -91,7 +102,10 @@ class NotificationScreen extends StatelessWidget {
                     )
                   : ListView.builder(
                       physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0,
+                        vertical: 8.0,
+                      ),
                       itemCount: processedOrders.length,
                       itemBuilder: (context, index) {
                         final order = processedOrders[index];
@@ -135,7 +149,8 @@ class NotificationScreen extends StatelessWidget {
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'PEMBAYARAN BERHASIL!',
@@ -179,7 +194,9 @@ class NotificationScreen extends StatelessWidget {
                                     height: 1.5,
                                   ),
                                   children: [
-                                    const TextSpan(text: 'Pembayaran untuk produk '),
+                                    const TextSpan(
+                                      text: 'Pembayaran untuk produk ',
+                                    ),
                                     TextSpan(
                                       text: order.productName,
                                       style: const TextStyle(
@@ -195,7 +212,10 @@ class NotificationScreen extends StatelessWidget {
                                         color: Color(0xFF7E4D2B),
                                       ),
                                     ),
-                                    const TextSpan(text: ' telah kami terima dan pesanan Anda kini masuk ke tahap '),
+                                    const TextSpan(
+                                      text:
+                                          ' telah kami terima dan pesanan Anda kini masuk ke tahap ',
+                                    ),
                                     const TextSpan(
                                       text: '"Diproses"',
                                       style: TextStyle(
@@ -227,7 +247,9 @@ class NotificationScreen extends StatelessWidget {
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(12),
                                         image: DecorationImage(
-                                          image: NetworkImage(order.productImage),
+                                          image: NetworkImage(
+                                            order.productImage,
+                                          ),
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -235,7 +257,8 @@ class NotificationScreen extends StatelessWidget {
                                     const SizedBox(width: 12),
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'Order ID',
@@ -261,17 +284,27 @@ class NotificationScreen extends StatelessWidget {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => OrderDetailsScreen(order: order),
+                                            builder: (context) =>
+                                                OrderDetailsScreen(
+                                                  order: order,
+                                                ),
                                           ),
                                         );
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xFF7E4D2B),
+                                        backgroundColor: const Color(
+                                          0xFF7E4D2B,
+                                        ),
                                         foregroundColor: Colors.white,
                                         elevation: 0,
-                                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 10,
+                                        ),
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(14),
+                                          borderRadius: BorderRadius.circular(
+                                            14,
+                                          ),
                                         ),
                                       ),
                                       child: Text(

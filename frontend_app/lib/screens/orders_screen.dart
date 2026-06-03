@@ -33,73 +33,12 @@ class FlutterOrder {
   });
 }
 
-// Global mock list
-final List<FlutterOrder> mockOrders = [
-  const FlutterOrder(
-    id: 'o1',
-    orderId: '1247850912',
-    date: '12 MEI 2026',
-    status: 'SELESAI',
-    productName: 'LUXURY BAG',
-    productPrice: '\$23.16',
-    productImage:
-        'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400',
-    quantity: 1,
-    shippingAddress:
-        'JL. KEMANG RAYA NO. 12, JAKARTA SELATAN, DKI JAKARTA 12730',
-    paymentMethod: 'M-BANKING (BCA)',
-    shippingCost: '\$2.00',
-    totalPrice: '\$25.16',
-  ),
-  const FlutterOrder(
-    id: 'o2',
-    orderId: '1247851045',
-    date: '12 MEI 2026',
-    status: 'DIPROSES',
-    productName: 'IPHONE 17 PRO MAX',
-    productPrice: '\$1.199',
-    productImage:
-        'https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=400',
-    quantity: 1,
-    shippingAddress:
-        'JL. KEMANG RAYA NO. 12, JAKARTA SELATAN, DKI JAKARTA 12730',
-    paymentMethod: 'COD (BAYAR DI TEMPAT)',
-    shippingCost: '\$10.00',
-    totalPrice: '\$1.209',
-  ),
-  const FlutterOrder(
-    id: 'o3',
-    orderId: '1247851199',
-    date: '12 MEI 2026',
-    status: 'DIKIRIM',
-    productName: 'YAMATO',
-    productPrice: '\$23.16',
-    productImage:
-        'https://images.unsplash.com/photo-1615110141027-c17983c9902f?w=400',
-    quantity: 1,
-    shippingAddress:
-        'JL. KEMANG RAYA NO. 12, JAKARTA SELATAN, DKI JAKARTA 12730',
-    paymentMethod: 'E-WALLET (GOPAY)',
-    shippingCost: '\$3.00',
-    totalPrice: '\$26.16',
-  ),
-  const FlutterOrder(
-    id: 'o4',
-    orderId: '1247851321',
-    date: '12 MEI 2026',
-    status: 'BELUM BAYAR',
-    productName: 'RETRO HELMET',
-    productPrice: '\$40.00',
-    productImage:
-        'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=400',
-    quantity: 1,
-    shippingAddress:
-        'JL. KEMANG RAYA NO. 12, JAKARTA SELATAN, DKI JAKARTA 12730',
-    paymentMethod: 'M-BANKING (MANDIRI)',
-    shippingCost: '\$4.00',
-    totalPrice: '\$44.00',
-  ),
-];
+// ==========================================
+// KUNCI PERUBAHANNYA ADA DI SINI:
+// Kita ubah list ini menjadi kosong secara default.
+// Nantinya, file checkout_screen.dart akan otomatis mengisi list ini.
+// ==========================================
+List<FlutterOrder> mockOrders = [];
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
@@ -376,7 +315,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                   image: DecorationImage(
-                    image: NetworkImage(order.productImage),
+                    // Logika untuk menampilkan gambar dari Checkout (Mendukung link/aset lokal)
+                    image: order.productImage.startsWith('http')
+                        ? NetworkImage(order.productImage) as ImageProvider
+                        : AssetImage(order.productImage),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -387,14 +329,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      order.productName,
+                      order.productName, // Nama produk dari checkout
                       style: GoogleFonts.poppins(
                         fontSize: 12.5,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
                     Text(
-                      order.productPrice,
+                      order.productPrice, // Harga produk dari checkout
                       style: GoogleFonts.inter(
                         fontSize: 12.0,
                         fontWeight: FontWeight.w900,
