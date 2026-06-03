@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:math';
 import '../user_session.dart';
 import 'orders_screen.dart';
+// IMPORT INI PENTING: Menghubungkan halaman ini ke data Keranjang
+import '../widgets/cart_state.dart';
 
 class ShippingOption {
   final String id;
@@ -47,19 +49,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       id: 'ship1',
       name: 'J&T Regular',
       eta: '2-3 Hari',
-      price: 2.0,
+      price: 15000, // Disesuaikan menjadi Rupiah
     ),
     ShippingOption(
       id: 'ship2',
       name: 'JNE YES (Yakin Esok Sampai)',
       eta: '1 Hari',
-      price: 5.0,
+      price: 25000, // Disesuaikan menjadi Rupiah
     ),
     ShippingOption(
       id: 'ship3',
       name: 'SiCepat Gokil (Cargo)',
       eta: '4-6 Hari',
-      price: 1.0,
+      price: 35000, // Disesuaikan menjadi Rupiah
     ),
   ];
 
@@ -88,27 +90,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   String _selectedPayId = 'pay1';
   bool _isProcessing = false;
 
-  // Static cart items to represent the items from CartScreen
-  final List<Map<String, dynamic>> _cartItems = [
-    {
-      'name': 'LUXURY BAG',
-      'price': 23.16,
-      'qty': 1,
-      'img': 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400',
-    },
-    {
-      'name': 'URBAN BAG',
-      'price': 20.16,
-      'qty': 1,
-      'img': 'https://images.unsplash.com/photo-1547949003-9792a18a2601?w=400',
-    },
-    {
-      'name': 'YAMATO',
-      'price': 36.16,
-      'qty': 1,
-      'img': 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400',
-    },
-  ];
+  // HAPUS: List statis _cartItems sudah dihapus karena kita mengambil dari CartState
 
   String _getFormattedDate() {
     final months = [
@@ -130,6 +112,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   void _triggerPayment(double total) {
+    // Ambil data keranjang saat ini
+    final currentCartItems = CartState.cartItems.value;
+
+    // Jika keranjang kosong, cegah proses pembayaran
+    if (currentCartItems.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Keranjang Anda kosong!'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
     setState(() => _isProcessing = true);
 
     Future.delayed(const Duration(seconds: 2), () {
@@ -150,26 +146,26 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         orElse: () => _session.addresses[0],
       );
 
-      // Create new FlutterOrder and insert at top of global list
-      for (int i = 0; i < _cartItems.length; i++) {
-        final item = _cartItems[i];
+      // --- MEMASUKKAN BARANG DINAMIS KE DAFTAR PESANAN (ORDERS) ---
+      for (int i = 0; i < currentCartItems.length; i++) {
+        final item = currentCartItems[i];
         final newOrder = FlutterOrder(
           id: 'ord_${DateTime.now().millisecondsSinceEpoch}_$i',
           orderId: orderId,
           date: dateString,
-          status: 'DIPROSES', // Automatically set status direct to Diproses
-          productName: item['name'] as String,
-          productPrice: '\$${(item['price'] as double).toStringAsFixed(2)}',
-          productImage: item['img'] as String,
-          quantity: item['qty'] as int,
+          status: 'DIPROSES',
+          productName: item.name,
+          productPrice: CartState.formatRupiah(item.price),
+          productImage: item.image,
+          quantity: item.quantity,
           shippingAddress: activeAddress.fullAddress,
           paymentMethod: selectedPay.name.toUpperCase(),
-          shippingCost: '\$${selectedShip.price.toStringAsFixed(2)}',
-          totalPrice: '\$${total.toStringAsFixed(2)}',
+          shippingCost: CartState.formatRupiah(selectedShip.price),
+          totalPrice: CartState.formatRupiah(total),
         );
         mockOrders.insert(0, newOrder);
       }
-      // Show payment success dialog
+
       _showSuccessDialog(orderId, total);
     });
   }
@@ -252,7 +248,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ),
                         ),
                         Text(
-                          '\$${total.toStringAsFixed(2)}',
+                          CartState.formatRupiah(total),
                           style: GoogleFonts.inter(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
@@ -276,11 +272,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
                   onPressed: () {
-                    Navigator.pop(ctx); // Close dialog
-                    Navigator.pushReplacementNamed(
-                      context,
-                      '/orders',
-                    ); // Navigate to Orders Screen
+                    // MENGOSONGKAN KERANJANG SETELAH PEMBAYARAN BERHASIL
+                    CartState.cartItems.value = [];
+
+                    Navigator.pop(ctx);
+                    Navigator.pushReplacementNamed(context, '/orders');
                   },
                   child: Text(
                     'PANTAU PESANAN SAYA',
@@ -301,14 +297,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double subtotal = 0;
-    for (var item in _cartItems) {
-      subtotal += (item['price'] as double) * (item['qty'] as int);
-    }
+    // 1. Mengambil data keranjang secara langsung dari state global (CartState)
+    final currentCartItems = CartState.cartItems.value;
+
+    // 2. Menghitung Subtotal Harga Produk
+    final double subtotal = CartState.getTotalPrice();
+
     final selectedShip = _shipOptions.firstWhere(
       (s) => s.id == _selectedShipId,
     );
-    final double serviceFee = 1.0;
+
+    // 3. Biaya layanan aplikasi dinamis
+    final double serviceFee = 2500; // Rp2.500
+
+    // 4. Total Bayar Keseluruhan
     final double total = subtotal + selectedShip.price + serviceFee;
 
     final activeAddress = _session.addresses.firstWhere(
@@ -322,7 +324,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         children: [
           Column(
             children: [
-              // Beautiful primary custom top rounded header
+              // Header
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.only(
@@ -459,13 +461,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                     const SizedBox(height: 12),
 
-                    // Section 2: Katalog Belanja
+                    // Section 2: Katalog Belanja (DINAMIS)
                     _buildSectionCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'KATALOG BELANJA (${_cartItems.length} ITEM)',
+                            'KATALOG BELANJA (${currentCartItems.length} ITEM)',
                             style: GoogleFonts.inter(
                               fontSize: 10,
                               fontWeight: FontWeight.w800,
@@ -473,7 +475,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             ),
                           ),
                           const SizedBox(height: 12),
-                          ..._cartItems
+
+                          // Looping untuk menampilkan setiap barang dari CartState
+                          if (currentCartItems.isEmpty)
+                            Text(
+                              "Tidak ada barang di keranjang",
+                              style: GoogleFonts.inter(
+                                fontSize: 11,
+                                color: Colors.grey,
+                              ),
+                            ),
+
+                          ...currentCartItems
                               .map(
                                 (item) => Padding(
                                   padding: const EdgeInsets.only(bottom: 12.0),
@@ -481,12 +494,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     children: [
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(12),
-                                        child: Image.network(
-                                          item['img'],
-                                          width: 48,
-                                          height: 48,
-                                          fit: BoxFit.cover,
-                                        ),
+                                        // Logika untuk membaca gambar lokal maupun internet
+                                        child: item.image.startsWith('http')
+                                            ? Image.network(
+                                                item.image,
+                                                width: 48,
+                                                height: 48,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.asset(
+                                                item.image,
+                                                width: 48,
+                                                height: 48,
+                                                fit: BoxFit.cover,
+                                              ),
                                       ),
                                       const SizedBox(width: 12),
                                       Expanded(
@@ -495,7 +516,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              item['name'],
+                                              item.name,
                                               style: GoogleFonts.inter(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,
@@ -505,7 +526,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                             ),
                                             const SizedBox(height: 4),
                                             Text(
-                                              '${item['qty']} x \$${item['price'].toString()}',
+                                              '${item.quantity} x ${CartState.formatRupiah(item.price)}',
                                               style: GoogleFonts.inter(
                                                 fontSize: 10,
                                                 color: Colors.grey.shade500,
@@ -516,7 +537,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                         ),
                                       ),
                                       Text(
-                                        '\$${(item['price'] * item['qty']).toStringAsFixed(2)}',
+                                        CartState.formatRupiah(
+                                          item.price * item.quantity,
+                                        ),
                                         style: GoogleFonts.inter(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w800,
@@ -612,7 +635,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       ],
                                     ),
                                     Text(
-                                      '\$${ship.price.toStringAsFixed(2)}',
+                                      CartState.formatRupiah(ship.price),
                                       style: GoogleFonts.inter(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w800,
@@ -753,7 +776,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 ),
                               ),
                               Text(
-                                '\$${total.toStringAsFixed(2)}',
+                                CartState.formatRupiah(total),
                                 style: GoogleFonts.inter(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w900,
@@ -815,6 +838,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             ),
         ],
       ),
+
+      // Bottom Navigation Bar
       bottomNavigationBar: Container(
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
         decoration: BoxDecoration(
@@ -848,7 +873,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  '\$${total.toStringAsFixed(2)}',
+                  CartState.formatRupiah(total),
                   style: GoogleFonts.inter(
                     fontSize: 20,
                     fontWeight: FontWeight.w900,
@@ -939,7 +964,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             ),
           ),
           Text(
-            '\$${val.toStringAsFixed(2)}',
+            CartState.formatRupiah(val),
             style: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.bold),
           ),
         ],

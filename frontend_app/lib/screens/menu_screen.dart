@@ -29,18 +29,24 @@ class MenuScreen extends StatelessWidget {
         'name': 'Action Figure',
         'price': 'Rp250.000',
         'image': 'assets/Figure.png',
+        'description':
+            'Action figure eksklusif dengan detail karakter yang presisi dan cat berkualitas tinggi. Sangat cocok untuk melengkapi pajangan koleksi Anda di kamar atau meja kerja.',
       },
       {
         'id': '2',
         'name': 'Iphone 17 Pro Max',
         'price': 'Rp15.999.000',
         'image': 'assets/IPhone17pm.png',
+        'description':
+            'Smartphone flagship terbaru dengan performa chip tercanggih, kamera resolusi tinggi untuk fotografi profesional, dan daya tahan baterai seharian penuh.',
       },
       {
         'id': '3',
         'name': 'Adidas Training',
         'price': 'Rp824.000',
         'image': 'assets/adidas.png',
+        'description':
+            'Sepatu olahraga berkualitas tinggi dengan desain modern dan bahan yang nyaman digunakan selama aktivitas fisik.',
       },
     ];
 
@@ -50,24 +56,32 @@ class MenuScreen extends StatelessWidget {
         'name': 'Nike Dunk Retro',
         'price': 'Rp1.200.000',
         'image': 'assets/nike.png',
+        'description':
+            'Sepatu sneakers ikonik dengan gaya retro klasik. Terbuat dari bahan kulit premium yang nyaman dan awet untuk gaya hypebeast kamu.',
       },
       {
         'id': '5',
         'name': 'Retro Helmet',
         'price': 'Rp440.000',
         'image': 'assets/retro.png',
+        'description':
+            'Helm berdesain klasik retro yang sudah berstandar SNI. Memberikan keamanan maksimal sekaligus membuat tampilan riding kamu makin stylish.',
       },
       {
         'id': '6',
         'name': 'Superman Figure',
         'price': 'Rp35.000',
         'image': 'assets/Superman.png',
+        'description':
+            'Action figure Superman dengan detail yang presisi dan cat berkualitas tinggi. Sangat cocok untuk melengkapi pajangan koleksi Anda di kamar atau meja kerja.',
       },
       {
         'id': '7',
         'name': 'Logitech Keyboard',
         'price': 'Rp150.000',
         'image': 'assets/Logitech.png',
+        'description':
+            'Keyboard gaming berkualitas tinggi dengan respons key yang cepat dan desain ergonomis untuk kenyamanan penggunaan jangka panjang.',
       },
     ];
 

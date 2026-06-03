@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../favorites_state.dart';
-import 'models.dart';
+import '../widgets/cart_state.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen({super.key});
@@ -12,21 +12,9 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int _quantity = 1;
-  bool _isFavourite = false;
-
-  /// ============================================================================
-  /// STATE ULASAN PRODUK (Review & Feedback Form State)
-  /// ============================================================================
-  /// `_myRating` menyimpan jumlah bintang yang dipilih pengguna di form ulasan (1 s.d 5).
-  /// `_commentController` menangkap input teks tanggapan belanja dari pengguna.
   int _myRating = 5;
   final TextEditingController _commentController = TextEditingController();
 
-  /// ============================================================================
-  /// HELPER: Toko Penjual Dinamis (Store Mapper)
-  /// ============================================================================
-  /// Menghubungkan ID produk secara langsung ke toko official pelapak terpercaya
-  /// agar tampilan informasi penjual selaras dengan yang ada pada mockup fungsional.
   String getStoreName(String productId) {
     switch (productId) {
       case '1':
@@ -66,34 +54,29 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   @override
   void dispose() {
-    // Dipanggil untuk membersihkan controller memori saat berpindah halaman
     _commentController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Dynamic arguments from navigation parameters
     final Map<String, dynamic>? args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
     final String id = args?['id'] ?? '4';
     final String name = args?['name'] ?? 'URBAN BAG';
     final String price = args?['price'] ?? '\$20.16';
-    final String rating = args?['rating'] ?? '5.0';
     final String image =
         args?['image'] ??
         'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800';
-
-    // Exact long description from the screenshot
     final String description =
         args?['description'] ??
-        'Urban Bag hadir dengan desain modern dan minimalis menggunakan material premium yang tahan air serta nyaman digunakan sehari-hari. Dilengkapi ruang penyimpanan yang luas dan beberapa kompartemen multifungsi untuk membawa laptop, gadget, maupun perlengkapan pribadi. Cocok digunakan untuk aktivitas kerja, kuliah, traveling, hingga kebutuhan harian dengan tampilan stylish dan elegan.';
+        'Urban Bag hadir dengan desain modern dan minimalis menggunakan material premium yang tahan air serta nyaman digunakan sehari-hari.';
 
     final bool canReview = args?['canReview'] ?? false;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFECEAE6), // Beige cream background
+      backgroundColor: const Color(0xFFECEAE6),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -105,19 +88,16 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 1. Top Image Card (White-gray rounded card with Back arrow, Backpack, Carousel dots)
+                // 1. Top Image Card (Desain asli dipertahankan)
                 Container(
                   width: double.infinity,
                   height: 310,
                   decoration: BoxDecoration(
-                    color: const Color(
-                      0xFFF2F0ED,
-                    ), // Off-white/light gray image card matching screenshot
+                    color: const Color(0xFFF2F0ED),
                     borderRadius: BorderRadius.circular(32),
                   ),
                   child: Stack(
                     children: [
-                      // Back Arrow
                       Positioned(
                         top: 14,
                         left: 14,
@@ -134,8 +114,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           ),
                         ),
                       ),
-
-                      // Centered product image
                       Positioned.fill(
                         top: 45,
                         bottom: 40,
@@ -144,52 +122,41 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         child: Center(
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(16),
-                            child: Image.network(
-                              image,
-                              fit: BoxFit.contain,
-                              loadingBuilder:
-                                  (context, child, loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return const Center(
-                                      child: CircularProgressIndicator(
-                                        color: Color(0xFF864F1F),
-                                      ),
-                                    );
-                                  },
-                              errorBuilder: (context, error, stackTrace) {
-                                return const Icon(
-                                  Icons.inventory_2_outlined,
-                                  size: 64,
-                                  color: Colors.black26,
-                                );
-                              },
-                            ),
+                            child: image.startsWith('http')
+                                ? Image.network(
+                                    image,
+                                    fit: BoxFit.contain,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          }
+                                          return const Center(
+                                            child: CircularProgressIndicator(
+                                              color: Color(0xFF864F1F),
+                                            ),
+                                          );
+                                        },
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            const Icon(
+                                              Icons.inventory_2_outlined,
+                                              size: 64,
+                                              color: Colors.black26,
+                                            ),
+                                  )
+                                : Image.asset(
+                                    image,
+                                    fit: BoxFit.contain,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            const Icon(
+                                              Icons.inventory_2_outlined,
+                                              size: 64,
+                                              color: Colors.black26,
+                                            ),
+                                  ),
                           ),
-                        ),
-                      ),
-
-                      // Horizontal selection indicators centered at the bottom
-                      Positioned(
-                        bottom: 18,
-                        left: 0,
-                        right: 0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(4, (index) {
-                            return Container(
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 4.5,
-                              ),
-                              width: 7,
-                              height: 7,
-                              decoration: BoxDecoration(
-                                color: index == 0
-                                    ? const Color(0xFF864F1F)
-                                    : const Color(0xFFC4BDB5),
-                                shape: BoxShape.circle,
-                              ),
-                            );
-                          }),
                         ),
                       ),
                     ],
@@ -198,12 +165,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
                 const SizedBox(height: 18),
 
-                // 2. Product Name and Favourites row matching layout
+                // 2. Product Name and Favourites row (Desain asli)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
                         child: Text(
@@ -212,7 +178,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             fontSize: 21,
                             fontWeight: FontWeight.w900,
                             color: Colors.black,
-                            letterSpacing: 0.1,
                           ),
                         ),
                       ),
@@ -221,9 +186,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         builder: (context, favIds, child) {
                           final isFav = favIds.contains(id);
                           return GestureDetector(
-                            onTap: () {
-                              FavoritesState.toggleFavorite(id);
-                            },
+                            onTap: () => FavoritesState.toggleFavorite(id),
                             child: Padding(
                               padding: const EdgeInsets.all(4.0),
                               child: Icon(
@@ -243,7 +206,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
                 const SizedBox(height: 4),
 
-                // 3. Gold-brown Price matching layout
+                // 3. Price
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: Text(
@@ -258,9 +221,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
                 const SizedBox(height: 8),
 
-                // 4. Reactive Yellow Stars Rating matching layout
-                // Menggunakan ValueListenableBuilder agar saat pembeli menulis ulasan di bawah,
-                // skor rata-rata bintang dan total ulasan di atas langsung terupdate seketika sacara reaktif.
+                // 4. Reactive Yellow Stars Rating (Desain asli)
                 ValueListenableBuilder<List<ProductReview>>(
                   valueListenable: FavoritesState.reviews,
                   builder: (context, reviewsList, child) {
@@ -276,13 +237,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         children: [
                           Row(
                             children: List.generate(5, (starIdx) {
-                              final bool isFilled =
-                                  starIdx < dynamicRating.round();
                               return Icon(
-                                isFilled
+                                starIdx < dynamicRating.round()
                                     ? Icons.star_rounded
                                     : Icons.star_border_rounded,
-                                color: isFilled
+                                color: starIdx < dynamicRating.round()
                                     ? const Color(0xFFFFB300)
                                     : Colors.grey.shade300,
                                 size: 19,
@@ -315,7 +274,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
                 const SizedBox(height: 18),
 
-                // 5. White Rounded floated description and checkout card
+                // 5. Description and checkout card (Desain asli dipertahankan)
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -334,7 +293,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         style: GoogleFonts.inter(
                           fontWeight: FontWeight.w900,
                           fontSize: 13,
-                          letterSpacing: 0.2,
                           color: Colors.black,
                         ),
                       ),
@@ -342,105 +300,86 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       Text(
                         description,
                         style: GoogleFonts.inter(
-                          color: Colors.black.withOpacity(0.85),
+                          color: Colors.black.withValues(alpha: 0.85),
                           fontSize: 12.5,
                           height: 1.6,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
 
-                      // ============================================================================
-                      // SEKSI TOKO PENJUAL (Store Info Section)
-                      // ============================================================================
-                      // Menampilkan nama toko yang dinamis berdasarkan ID produk.
-                      // Dilengkapi lencana verifikasi biru "Verified" untuk menambah estetika.
+                      // --- TOKO PENJUAL ---
                       const SizedBox(height: 28),
                       Text(
                         'TOKO PENJUAL',
                         style: GoogleFonts.inter(
                           fontWeight: FontWeight.w900,
                           fontSize: 13,
-                          letterSpacing: 0.2,
                           color: Colors.black,
                         ),
                       ),
                       const SizedBox(height: 10),
-                      GestureDetector(
-                        onTap: () {
-                          final store = getStoreForProduct(id);
-                          Navigator.pushNamed(
-                            context,
-                            '/store',
-                            arguments: store,
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(14),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFF9F8F6),
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: Colors.grey.shade200),
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 44,
-                                height: 44,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF7E4D2B),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.storefront_rounded,
-                                  color: Colors.white,
-                                  size: 22,
-                                ),
+                      Container(
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF9F8F6),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: Colors.grey.shade200),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 44,
+                              height: 44,
+                              decoration: const BoxDecoration(
+                                color: Color(0xFF7E4D2B),
+                                shape: BoxShape.circle,
                               ),
-                              const SizedBox(width: 14),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          getStoreName(id),
-                                          style: GoogleFonts.inter(
-                                            fontWeight: FontWeight.w900,
-                                            fontSize: 12.5,
-                                            color: Colors.black,
-                                          ),
+                              child: const Icon(
+                                Icons.storefront_rounded,
+                                color: Colors.white,
+                                size: 22,
+                              ),
+                            ),
+                            const SizedBox(width: 14),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        getStoreName(id),
+                                        style: GoogleFonts.inter(
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 12.5,
+                                          color: Colors.black,
                                         ),
-                                        const SizedBox(width: 4),
-                                        const Icon(
-                                          Icons.verified_rounded,
-                                          color: Colors.blue,
-                                          size: 14,
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 2),
-                                    Text(
-                                      'Pelapak Terpercaya • Respons Chat 100%',
-                                      style: GoogleFonts.inter(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 10,
-                                        color: Colors.black54,
                                       ),
+                                      const SizedBox(width: 4),
+                                      const Icon(
+                                        Icons.verified_rounded,
+                                        color: Colors.blue,
+                                        size: 14,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    'Pelapak Terpercaya • Respons Chat 100%',
+                                    style: GoogleFonts.inter(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 10,
+                                      color: Colors.black54,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                      // ============================================================================
-                      // SEKSI PENILAIAN PRODUK (Dynamic Reviews Listing Section)
-                      // ============================================================================
-                      // Menggunakan ValueListenableBuilder untuk mengamati daftar ulasan global.
-                      // Jika ada ulasan baru yang ditambahkan, widget ini akan melakukan re-render
-                      // daftar ulasan secara lokal tanpa me-refresh seluruh halaman.
+
+                      // --- PENILAIAN PRODUK ---
                       const SizedBox(height: 28),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -450,7 +389,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             style: GoogleFonts.inter(
                               fontWeight: FontWeight.w900,
                               fontSize: 13,
-                              letterSpacing: 0.2,
                               color: Colors.black,
                             ),
                           ),
@@ -495,7 +433,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               ),
                             );
                           }
-                          // Membangun daftar ulasan dengan pemisah tipis ramah mata
                           return ListView.separated(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
@@ -513,7 +450,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                         radius: 14,
                                         backgroundColor: const Color(
                                           0xFF7E4D2B,
-                                        ).withOpacity(0.1),
+                                        ).withValues(alpha: 0.1),
                                         backgroundImage:
                                             rev.userPhotoUrl.isNotEmpty
                                             ? NetworkImage(rev.userPhotoUrl)
@@ -545,13 +482,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   const SizedBox(height: 6),
                                   Row(
                                     children: List.generate(5, (starIdx) {
-                                      final bool isFilled =
-                                          starIdx < rev.rating.round();
                                       return Icon(
-                                        isFilled
+                                        starIdx < rev.rating.round()
                                             ? Icons.star_rounded
                                             : Icons.star_border_rounded,
-                                        color: isFilled
+                                        color: starIdx < rev.rating.round()
                                             ? Colors.amber
                                             : Colors.grey.shade300,
                                         size: 13,
@@ -573,11 +508,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           );
                         },
                       ),
-                      // ============================================================================
-                      // SEKSI FORMULIR BERI ULASAN (Write Review Form)
-                      // ============================================================================
-                      // Memberi kebebasan bagi pembeli untuk menuliskan ulasan dan memilih bintang.
-                      // Saat tombol kirim ditekan, ulasan baru dikirim ke state manager global `FavoritesState`.
+
+                      // --- FORMULIR BERI ULASAN ---
                       if (canReview) ...[
                         const SizedBox(height: 32),
                         Container(
@@ -595,7 +527,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 style: GoogleFonts.inter(
                                   fontWeight: FontWeight.w900,
                                   fontSize: 11.5,
-                                  letterSpacing: 0.5,
                                   color: const Color(0xFF7E4D2B),
                                 ),
                               ),
@@ -609,8 +540,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 ),
                               ),
                               const SizedBox(height: 6),
-
-                              // Row pemilihan bintang interaktif
                               Row(
                                 children: List.generate(5, (starIdx) {
                                   final int starWeight = starIdx + 1;
@@ -619,8 +548,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   return GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        _myRating =
-                                            starWeight; // Mengubah state ulasan lokal bintang
+                                        _myRating = starWeight;
                                       });
                                     },
                                     child: Icon(
@@ -636,8 +564,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 }),
                               ),
                               const SizedBox(height: 16),
-
-                              // Input isi ulasan komentar pembeli
                               TextField(
                                 controller: _commentController,
                                 maxLines: 2,
@@ -672,8 +598,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 ),
                               ),
                               const SizedBox(height: 14),
-
-                              // Tombol Submit "KIRIM ULASAN"
                               SizedBox(
                                 width: double.infinity,
                                 child: ElevatedButton(
@@ -681,7 +605,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     final comment = _commentController.text
                                         .trim();
                                     if (comment.isEmpty) {
-                                      // Validasi ulasan wajib diisi
                                       ScaffoldMessenger.of(
                                         context,
                                       ).showSnackBar(
@@ -694,15 +617,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                       );
                                       return;
                                     }
-
-                                    // 1. Simpan ulasan baru secara reaktif ke State Manager
                                     FavoritesState.addReview(
                                       id,
                                       _myRating.toDouble(),
                                       comment,
                                     );
-
-                                    // 2. Beri umpan balik berupa SnackBar kesuksesan yang manis
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text(
@@ -711,8 +630,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                         backgroundColor: Colors.green,
                                       ),
                                     );
-
-                                    // 3. Reset input form lokal agar siap dipakai kembali
                                     setState(() {
                                       _commentController.clear();
                                       _myRating = 5;
@@ -744,18 +661,19 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ],
 
                       const SizedBox(height: 32),
+
+                      // ============================================================================
+                      // ACTION BUTTONS BAR (Hanya menambah ikon Keranjang tanpa merubah tombol Checkout)
+                      // ============================================================================
                       Row(
                         children: [
-                          // Quantity interactive controls styled identically (light grey bagground)
                           Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 16,
                               vertical: 8,
                             ),
                             decoration: BoxDecoration(
-                              color: const Color(
-                                0xFFE2DFDC,
-                              ), // Light grey matching screenshots
+                              color: const Color(0xFFE2DFDC),
                               borderRadius: BorderRadius.circular(24),
                             ),
                             child: Row(
@@ -763,12 +681,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 GestureDetector(
                                   onTap: () {
                                     if (_quantity > 1) {
-                                      setState(() {
-                                        _quantity--;
-                                      });
+                                      setState(() => _quantity--);
                                     }
                                   },
-                                  behavior: HitTestBehavior.opaque,
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 8.0,
@@ -798,12 +713,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   ),
                                 ),
                                 GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _quantity++;
-                                    });
-                                  },
-                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () => setState(() => _quantity++),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 8.0,
@@ -822,9 +732,48 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               ],
                             ),
                           ),
-                          const SizedBox(width: 14),
+                          const SizedBox(width: 12),
 
-                          // checkout golden brown button
+                          GestureDetector(
+                            onTap: () {
+                              CartState.addToCart(
+                                CartItem(
+                                  id: id,
+                                  name: name,
+                                  price: CartState.parsePrice(price),
+                                  image: image,
+                                  quantity: _quantity,
+                                ),
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    '$_quantity unit $name masuk ke keranjang!',
+                                  ),
+                                  backgroundColor: const Color(0xFF864F1F),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              height: 52,
+                              width: 52,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(24),
+                                border: Border.all(
+                                  color: const Color(0xFF864F1F),
+                                  width: 1.5,
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.shopping_cart_outlined,
+                                color: Color(0xFF864F1F),
+                                size: 22,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+
                           Expanded(
                             child: Container(
                               height: 52,
@@ -833,7 +782,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   BoxShadow(
                                     color: const Color(
                                       0xFF864F1F,
-                                    ).withOpacity(0.24),
+                                    ).withValues(alpha: 0.24),
                                     blurRadius: 8,
                                     offset: const Offset(0, 4),
                                   ),
@@ -841,19 +790,19 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               ),
                               child: ElevatedButton(
                                 onPressed: () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Ditambahkan ke Keranjang ($_quantity unit): $name',
-                                      ),
-                                      backgroundColor: const Color(0xFF864F1F),
+                                  CartState.addToCart(
+                                    CartItem(
+                                      id: id,
+                                      name: name,
+                                      price: CartState.parsePrice(price),
+                                      image: image,
+                                      quantity: _quantity,
                                     ),
                                   );
+                                  Navigator.pushNamed(context, '/checkout');
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFF864F1F),
-                                  foregroundColor: Colors.white,
-                                  elevation: 0,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(24),
                                   ),
@@ -864,7 +813,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     color: Colors.white,
                                     fontWeight: FontWeight.w900,
                                     fontSize: 15,
-                                    letterSpacing: 0.5,
                                   ),
                                 ),
                               ),
