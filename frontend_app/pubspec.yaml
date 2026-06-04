@@ -67,7 +67,25 @@ flutter:
     - assets/LOGO.png
     - assets/product.png
     - assets/actionfigure.jpg
-
+    - assets/promo.png
+    - assets/perabotan.png
+    - assets/elektronik.png
+    - assets/olahraga.png
+    - assets/pakaian.png
+    - assets/kecantikan.png
+    - assets/IPhone17pm.png
+    - assets/adidas.png
+    - assets/nike.png
+    - assets/retro.png
+    - assets/Logitech.png
+    - assets/Superman.png
+    - assets/Figure.png
+    - assets/otomotif.png
+    - assets/Hobi.png
+    - assets/Makanan.png
+    - assets/minuman.png
+    - assets/Fashion.png
+    - assets/SamsungS25U.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

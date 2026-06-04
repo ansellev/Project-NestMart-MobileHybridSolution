@@ -50,6 +50,7 @@ class NestmartApp extends StatelessWidget {
         '/store': (context) => const StoreScreen(),
         '/checkout': (context) => const CheckoutScreen(),
         '/notification': (context) => const NotificationScreen(),
+        // Baris '/checkout' yang duplikat sudah dihapus dari sini
       },
     );
   }

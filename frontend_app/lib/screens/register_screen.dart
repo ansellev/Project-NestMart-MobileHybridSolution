@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../theme.dart';
-import '../widgets/nestmart_logo.dart';
 import '../user_session.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -22,7 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80', // Elegant Female Portrait
     'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80', // Crisp Male Portrait
     'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80', // Friendly Female Portrait
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80'  // Cheerful Male Portrait
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80', // Cheerful Male Portrait
   ];
 
   late String _selectedPhoto;
@@ -46,13 +44,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void _handleRegister() {
     final session = UserSession();
-    session.name = _nameController.text.trim().isEmpty 
-        ? 'ANDI' 
+    session.name = _nameController.text.trim().isEmpty
+        ? 'ANDI'
         : _nameController.text.trim().toUpperCase();
-    session.email = _emailController.text.trim().isEmpty 
-        ? 'ANDI@GMAIL.COM' 
+    session.email = _emailController.text.trim().isEmpty
+        ? 'ANDI@GMAIL.COM'
         : _emailController.text.trim().toUpperCase();
-    session.photoUrl = _showCustomInput && _customUrlController.text.trim().startsWith('http')
+    session.photoUrl =
+        _showCustomInput && _customUrlController.text.trim().startsWith('http')
         ? _customUrlController.text.trim()
         : _selectedPhoto;
 
@@ -67,7 +66,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 20.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 32.0,
+                vertical: 20.0,
+              ),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: constraints.maxHeight - 40,
@@ -119,11 +121,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: const Color(0xFFE2DFDC),
-                            border: Border.all(color: const Color(0xFF7E4D2B), width: 2),
+                            border: Border.all(
+                              color: const Color(0xFF7E4D2B),
+                              width: 2,
+                            ),
                             image: DecorationImage(
-                              image: NetworkImage(_showCustomInput && _customUrlController.text.trim().startsWith('http')
-                                  ? _customUrlController.text.trim()
-                                  : _selectedPhoto),
+                              image: NetworkImage(
+                                _showCustomInput &&
+                                        _customUrlController.text
+                                            .trim()
+                                            .startsWith('http')
+                                    ? _customUrlController.text.trim()
+                                    : _selectedPhoto,
+                              ),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -135,12 +145,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onTap: () {
                           setState(() {
                             // Simulate selecting customized photo
-                            _selectedPhoto = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80';
+                            _selectedPhoto =
+                                'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80';
                             _showCustomInput = false;
                           });
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Foto profil berhasil diupload secara real-time!'),
+                              content: Text(
+                                'Foto profil berhasil diupload secara real-time!',
+                              ),
                               backgroundColor: Color(0xFF7E4D2B),
                             ),
                           );
@@ -151,11 +164,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           decoration: BoxDecoration(
                             color: const Color(0xFFFCF6F0),
                             borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: const Color(0xFF7E4D2B).withOpacity(0.3), style: BorderStyle.solid),
+                            border: Border.all(
+                              color: const Color(0xFF7E4D2B).withOpacity(0.3),
+                              style: BorderStyle.solid,
+                            ),
                           ),
                           child: Column(
                             children: [
-                              const Icon(Icons.cloud_upload_outlined, size: 28, color: Color(0xFF7E4D2B)),
+                              const Icon(
+                                Icons.cloud_upload_outlined,
+                                size: 28,
+                                color: Color(0xFF7E4D2B),
+                              ),
                               const SizedBox(height: 6),
                               Text(
                                 'AMBIL / PILIH FOTO DARI GALERI',
@@ -173,15 +193,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 14),
                       Row(
                         children: [
-                          Expanded(child: Container(height: 1, color: Colors.black12)),
+                          Expanded(
+                            child: Container(height: 1, color: Colors.black12),
+                          ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Text(
                               'ATAU GUNAKAN URL',
-                              style: GoogleFonts.inter(fontSize: 9, fontWeight: FontWeight.bold, color: Colors.black38),
+                              style: GoogleFonts.inter(
+                                fontSize: 9,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black38,
+                              ),
                             ),
                           ),
-                          Expanded(child: Container(height: 1, color: Colors.black12)),
+                          Expanded(
+                            child: Container(height: 1, color: Colors.black12),
+                          ),
                         ],
                       ),
 
@@ -204,7 +232,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               }
                             });
                           },
-                          style: GoogleFonts.inter(color: Colors.black, fontSize: 13, fontWeight: FontWeight.bold),
+                          style: GoogleFonts.inter(
+                            color: Colors.black,
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                          ),
                           decoration: const InputDecoration(
                             hintText: 'Masukkan URL Gambar (https://...)',
                             border: InputBorder.none,
@@ -216,11 +248,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 20),
 
                       // Form Fields
-                      _buildPillTextField(hint: 'Nama pengguna', controller: _nameController),
+                      _buildPillTextField(
+                        hint: 'Nama pengguna',
+                        controller: _nameController,
+                      ),
                       const SizedBox(height: 12),
-                      _buildPillTextField(hint: 'Email', controller: _emailController, inputType: TextInputType.emailAddress),
+                      _buildPillTextField(
+                        hint: 'Email',
+                        controller: _emailController,
+                        inputType: TextInputType.emailAddress,
+                      ),
                       const SizedBox(height: 12),
-                      _buildPillTextField(hint: 'Password', controller: _passwordController, isObscured: true),
+                      _buildPillTextField(
+                        hint: 'Password',
+                        controller: _passwordController,
+                        isObscured: true,
+                      ),
                       const SizedBox(height: 20),
 
                       // Create Account Button
@@ -277,7 +320,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget _buildPillTextField({
-    required String hint, 
+    required String hint,
     required TextEditingController controller,
     bool isObscured = false,
     TextInputType inputType = TextInputType.text,
@@ -286,10 +329,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFFE2DFDC),
         borderRadius: BorderRadius.circular(30),
-        border: Border.all(
-          color: Colors.black,
-          width: 1.2,
-        ),
+        border: Border.all(color: Colors.black, width: 1.2),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 2),
       child: TextField(

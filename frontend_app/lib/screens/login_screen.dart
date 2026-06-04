@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../theme.dart';
-import '../widgets/nestmart_logo.dart';
 import '../widgets/nestmart_checkbox.dart';
 import '../user_session.dart';
 
@@ -35,7 +33,8 @@ class _LoginScreenState extends State<LoginScreen> {
     final inputEmail = _emailController.text.trim();
     if (inputEmail.isNotEmpty) {
       session.email = inputEmail.toUpperCase();
-      if (inputEmail.toUpperCase() != 'ANDI@GMAIL.COM' && session.name == 'ANDI') {
+      if (inputEmail.toUpperCase() != 'ANDI@GMAIL.COM' &&
+          session.name == 'ANDI') {
         session.name = inputEmail.split('@')[0].toUpperCase();
       }
     }
@@ -50,7 +49,10 @@ class _LoginScreenState extends State<LoginScreen> {
         child: LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 24.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 32.0,
+                vertical: 24.0,
+              ),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: constraints.maxHeight - 48,
@@ -58,34 +60,55 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: IntrinsicHeight(
                   child: Column(
                     children: [
-                      const SizedBox(height: 30),
-                      Image.asset('assets/LOGO.png'),
-                      const SizedBox(height: 36),
+                      // Jarak atas agar tidak terlalu mentok SafeArea
+                      const SizedBox(height: 20),
 
+                      // --- GRUP 1: HEADER (Logo & Judul yang rapat) ---
+                      Image.asset(
+                        'assets/LOGO.png',
+                        height: 200, // Ukuran logo dipertahankan
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ), // Jarak sangat dekat agar menempel ke logo
                       Text(
                         'WELCOME BACK',
                         style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w800,
+                          fontWeight:
+                              FontWeight.w900, // Dipertebal seperti Figma
                           fontSize: 22,
                           letterSpacing: 0.5,
                           color: Colors.black,
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(
+                        height: 4,
+                      ), // Jarak sangat dekat ke subjudul
                       Text(
                         'Masukan email dan password',
                         style: GoogleFonts.inter(
                           color: Colors.black87,
                           fontWeight: FontWeight.w600,
-                          fontSize: 13,
+                          fontSize: 12.5,
                         ),
                       ),
-                      const SizedBox(height: 36),
 
-                      _buildPillTextField(hint: 'Email', controller: _emailController, inputType: TextInputType.emailAddress),
+                      // Jarak pemisah yang tegas antara Header dan Form
+                      const SizedBox(height: 40),
+
+                      // --- GRUP 2: FORM INPUT & LOGIN ---
+                      _buildPillTextField(
+                        hint: 'email',
+                        controller: _emailController,
+                        inputType: TextInputType.emailAddress,
+                      ),
+                      const SizedBox(height: 16), // Jarak seragam antar kolom
+                      _buildPillTextField(
+                        hint: 'password',
+                        controller: _passwordController,
+                        isObscured: true,
+                      ),
                       const SizedBox(height: 16),
-                      _buildPillTextField(hint: 'Password', controller: _passwordController, isObscured: true),
-                      const SizedBox(height: 18),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,15 +127,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Text(
                               'Forgot password?',
                               style: GoogleFonts.inter(
-                                color: const Color(0xFF7E4D2B),
+                                color: const Color(0xFF5C54A4),
                                 fontWeight: FontWeight.bold,
-                                fontSize: 13,
+                                fontSize: 12.5,
                               ),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 28), // Jarak ke tombol Login
 
                       SizedBox(
                         width: double.infinity,
@@ -127,16 +150,71 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           child: Text(
-                            'Sign In',
+                            'LOG IN',
                             style: GoogleFonts.inter(
                               color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 0.5,
                             ),
                           ),
                         ),
                       ),
 
+                      // Jarak pemisah yang tegas untuk opsi "Grup Alternatif"
+                      const SizedBox(height: 36),
+
+                      // --- GRUP 3: OPSI LOGIN LAIN ---
+                      Text(
+                        'Or continue with',
+                        style: GoogleFonts.inter(
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 12,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
+                      SizedBox(
+                        width: double.infinity,
+                        height: 56,
+                        child: OutlinedButton(
+                          onPressed: () {
+                            _handleSignIn();
+                          },
+                          style: OutlinedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            side: const BorderSide(
+                              color: Colors.black,
+                              width: 1.2,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            elevation: 0,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.network(
+                                'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/120px-Google_%22G%22_logo.svg.png',
+                                height: 24,
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                'Google',
+                                style: GoogleFonts.inter(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      // Spacer ini akan menekan elemen "Belum punya akun?" ke posisi paling bawah layar
                       const Spacer(),
 
                       Padding(
@@ -149,8 +227,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             'Belum punya akun?',
                             style: GoogleFonts.inter(
                               color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
+                              fontWeight: FontWeight.w900, // Dipertegas
+                              fontSize: 13,
                             ),
                           ),
                         ),
@@ -167,19 +245,16 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildPillTextField({
-    required String hint, 
+    required String hint,
     required TextEditingController controller,
     bool isObscured = false,
     TextInputType inputType = TextInputType.text,
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFE2DFDC),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(30),
-        border: Border.all(
-          color: Colors.black,
-          width: 1.2,
-        ),
+        border: Border.all(color: Colors.black, width: 1.2),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 2),
       child: TextField(
@@ -188,17 +263,21 @@ class _LoginScreenState extends State<LoginScreen> {
         keyboardType: inputType,
         style: GoogleFonts.inter(
           color: Colors.black,
-          fontWeight: FontWeight.w600,
-          fontSize: 15,
+          fontWeight: FontWeight.w700, // Teks isian lebih tegas
+          fontSize: 14,
         ),
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: GoogleFonts.inter(
-            color: Colors.black54,
-            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+            fontWeight:
+                FontWeight.w800, // Hint text tebal seperti desain Genshin
+            fontSize: 13,
           ),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 14),
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 16,
+          ), // Padding diperbesar sedikit agar proporsional dengan tinggi 56
         ),
       ),
     );
