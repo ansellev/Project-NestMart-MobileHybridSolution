@@ -48,6 +48,15 @@ class MenuScreen extends StatelessWidget {
         'description':
             'Sepatu olahraga berkualitas tinggi dengan desain modern dan bahan yang nyaman digunakan selama aktivitas fisik.',
       },
+
+      {
+        'id': '4',
+        'name': 'Samsung Galaxy S25 Ultra',
+        'price': 'Rp13.590.000',
+        'image': 'assets/SamsungS25U.png',
+        'description':
+            'Smartphone flagship terbaru dengan performa chip tercanggih, kamera resolusi tinggi untuk fotografi profesional, dan daya tahan baterai seharian penuh.',
+      },
     ];
 
     final justForYou = [
