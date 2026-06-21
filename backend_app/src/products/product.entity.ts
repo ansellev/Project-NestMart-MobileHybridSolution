@@ -1,3 +1,9 @@
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+} from 'typeorm';
+
 @Entity('products')
 export class Product {
   @PrimaryGeneratedColumn()
@@ -21,6 +27,8 @@ export class Product {
   @Column()
   storeName: string;
 
-  @Column()
+  @Column({
+    default: 0,
+  })
   stock: number;
 }
