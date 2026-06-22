@@ -3,6 +3,7 @@ import { ProductsModule } from './products/products.module';
 import { CartModule } from './cart/cart.module';
 import { OrdersModule } from './orders/orders.module';
 import { FavoritesModule } from './favorites/favorites.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { FavoritesModule } from './favorites/favorites.module';
     CartModule,
     OrdersModule,
     FavoritesModule,
+    ReviewsModule,
     
   ],
 })
