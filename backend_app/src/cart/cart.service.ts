@@ -1,24 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRespository } from '@nestjs/typeorm';
-import { Respository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import { CartItem } from './cart.entity';
 
 @Injectable()
 export class CartService {
   constructor(
-    @InjectRespository(CartItem)
-    private cartRespository: Respository<CartItem>,
+    @InjectRepository(CartItem)
+    private cartRepository: Repository<CartItem>,
   ) {}
 
   async addToCart(body: any) {
-    const item = this.cartRespository.create(body);
+    const item = this.cartRepository.create(body);
 
-    return await this.cartRespository.save(item);
+    return await this.cartRepository.save(item);
   }
 
   async getCart(userId: number) {
-    return await this.cartRespository.find({
+    return await this.cartRepository.find({
       where: {
         userId,
       },
