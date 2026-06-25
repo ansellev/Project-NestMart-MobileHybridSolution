@@ -12,10 +12,10 @@ export class CartItem {
   @Column()
   userId: number;
 
-  @column()
+  @Column()
   productId: number;
 
-  @column({
+  @Column({
     default: 1,
   })
   quantity: number;
