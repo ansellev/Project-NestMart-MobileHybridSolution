@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../favorites_state.dart';
+import '../seller_state.dart';
 import '../widgets/cart_state.dart';
+import 'models.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen({super.key});
@@ -16,6 +18,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final TextEditingController _commentController = TextEditingController();
 
   String getStoreName(String productId) {
+    // Produk seller memiliki prefix 'sp_' — kembalikan nama toko seller yang sebenarnya
+    if (productId.startsWith('sp_')) {
+      return SellerState().hasStore
+          ? SellerState().storeName
+          : 'NestMart Premium Seller';
+    }
     switch (productId) {
       case '1':
         return 'Megatoy Store Official';
@@ -65,7 +73,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
     final String id = args?['id'] ?? '4';
     final String name = args?['name'] ?? 'URBAN BAG';
-    final String price = args?['price'] ?? '\$20.16';
+    final String price = args?['price'] ?? 'Rp200.000';
     final String image =
         args?['image'] ??
         'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800';
@@ -325,17 +333,26 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(color: Colors.grey.shade200),
                         ),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 44,
-                              height: 44,
-                              decoration: const BoxDecoration(
-                                color: Color(0xFF7E4D2B),
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.storefront_rounded,
+                        child: GestureDetector(
+                          onTap: () {
+                            final storeItem = getStoreForProduct(id);
+                            Navigator.pushNamed(
+                              context,
+                              '/store',
+                              arguments: storeItem,
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 44,
+                                height: 44,
+                                decoration: const BoxDecoration(
+                                  color: Color(0xFF7E4D2B),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.storefront_rounded,
                                 color: Colors.white,
                                 size: 22,
                               ),
@@ -375,9 +392,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 ],
                               ),
                             ),
+                            const Icon(
+                              Icons.chevron_right_rounded,
+                              color: Color(0xFF7E4D2B),
+                              size: 20,
+                            ),
                           ],
                         ),
                       ),
+                    ),
 
                       // --- PENILAIAN PRODUK ---
                       const SizedBox(height: 28),

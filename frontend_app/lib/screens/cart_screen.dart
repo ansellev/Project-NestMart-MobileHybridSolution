@@ -54,7 +54,7 @@ class CartScreen extends StatelessWidget {
                   const SizedBox(height: 24),
                   Text(
                     'Keranjang Belanja Kosong',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.merriweather(
                       fontSize: 18,
                       fontWeight: FontWeight.w900,
                       color: Colors.black87,
@@ -269,7 +269,7 @@ class CartScreen extends StatelessWidget {
                         ),
                         child: Text(
                           'CHECKOUT SEKARANG',
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.merriweather(
                             color: Colors.white,
                             fontWeight: FontWeight.w900,
                             fontSize: 15,
@@ -284,6 +284,87 @@ class CartScreen extends StatelessWidget {
             ],
           );
         },
+      ),
+      bottomNavigationBar: Container(
+        height: 76,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 15,
+              offset: const Offset(0, -4),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildNavTab(
+              Icons.storefront_rounded,
+              'Home',
+              false,
+              () => Navigator.pushNamedAndRemoveUntil(
+                  context, '/menu', (route) => false),
+            ),
+            _buildNavTab(
+              Icons.manage_search_rounded,
+              'Kategori',
+              false,
+              () => Navigator.pushNamed(context, '/category'),
+            ),
+            _buildNavTab(
+              Icons.shopping_cart_rounded,
+              'Keranjang',
+              true,
+              () {},
+            ),
+            _buildNavTab(
+              Icons.favorite_outline_rounded,
+              'Favorit',
+              false,
+              () => Navigator.pushNamed(context, '/favourite'),
+            ),
+            _buildNavTab(
+              Icons.person_outline_rounded,
+              'Akun',
+              false,
+              () => Navigator.pushNamed(context, '/account'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavTab(
+    IconData icon,
+    String label,
+    bool active,
+    VoidCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            color: active ? const Color(0xFF7E4D2B) : Colors.black38,
+            size: 26,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: GoogleFonts.inter(
+              fontSize: 10,
+              fontWeight: active ? FontWeight.w800 : FontWeight.w600,
+              color: active ? const Color(0xFF7E4D2B) : Colors.black38,
+            ),
+          ),
+        ],
       ),
     );
   }

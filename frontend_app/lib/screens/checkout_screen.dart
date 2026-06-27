@@ -361,7 +361,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       child: Text(
                         'KONFIRMASI PESANAN',
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.merriweather(
                           color: Colors.white,
                           fontSize: 16,
                           fontWeight: FontWeight.w900,
@@ -410,7 +410,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   Navigator.pushNamed(
                                     context,
                                     '/delivery_address',
-                                  );
+                                  ).then((_) {
+                                    // Rebuild agar alamat yang baru dipilih langsung tampil
+                                    if (mounted) setState(() {});
+                                  });
                                 },
                                 child: Text(
                                   'Kelola Alamat',

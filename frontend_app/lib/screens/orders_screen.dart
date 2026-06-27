@@ -97,7 +97,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                           fontSize: 18,
                           fontWeight: FontWeight.w900,
                           letterSpacing: 1.5,
-                          color: Colors.black,
+                          color: const Color(0xFF7E4D2B),
                         ),
                       ),
                     ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../favorites_state.dart';
+import '../widgets/cart_state.dart';
 import 'models.dart';
 
 /// ============================================================================
@@ -698,10 +699,18 @@ class _SearchScreenState extends State<SearchScreen> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
+                                    CartState.addToCart(CartItem(
+                                      id: product.id,
+                                      name: product.name,
+                                      price: CartState.parsePrice(product.price),
+                                      image: product.image,
+                                      quantity: 1,
+                                    ));
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text('${product.name} telah berhasil ditambahkan ke Keranjang!'),
+                                        content: Text('${product.name} ditambahkan ke keranjang!'),
                                         duration: const Duration(seconds: 1),
+                                        backgroundColor: const Color(0xFF7E4D2B),
                                       ),
                                     );
                                   },

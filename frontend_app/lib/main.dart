@@ -16,6 +16,8 @@ import 'screens/search_screen.dart';
 import 'screens/store_screen.dart';
 import 'screens/checkout_screen.dart';
 import 'screens/notification_screen.dart';
+import 'screens/seller_register_screen.dart';
+import 'screens/seller_dashboard_screen.dart';
 import 'theme.dart';
 
 void main() {
@@ -50,6 +52,8 @@ class NestmartApp extends StatelessWidget {
         '/store': (context) => const StoreScreen(),
         '/checkout': (context) => const CheckoutScreen(),
         '/notification': (context) => const NotificationScreen(),
+        '/seller_register': (context) => const SellerRegisterScreen(),
+        '/seller_dashboard': (context) => const SellerDashboardScreen(),
         // Baris '/checkout' yang duplikat sudah dihapus dari sini
       },
     );

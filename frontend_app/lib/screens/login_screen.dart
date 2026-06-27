@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ), // Jarak sangat dekat agar menempel ke logo
                       Text(
                         'WELCOME BACK',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.merriweather(
                           fontWeight:
                               FontWeight.w900, // Dipertebal seperti Figma
                           fontSize: 22,
@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 4,
                       ), // Jarak sangat dekat ke subjudul
                       Text(
-                        'Masukan email dan password',
+                        'Masukkan email dan password',
                         style: GoogleFonts.inter(
                           color: Colors.black87,
                           fontWeight: FontWeight.w600,
@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 16), // Jarak seragam antar kolom
                       _buildPillTextField(
-                        hint: 'password',
+                        hint: 'Password',
                         controller: _passwordController,
                         isObscured: true,
                       ),
@@ -151,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           child: Text(
                             'LOG IN',
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.merriweather(
                               color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.w900,
@@ -165,54 +165,54 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 36),
 
                       // --- GRUP 3: OPSI LOGIN LAIN ---
-                      Text(
-                        'Or continue with',
-                        style: GoogleFonts.inter(
-                          color: Colors.black87,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 12,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
+                      // Text(
+                      //   'Or continue with',
+                      //   style: GoogleFonts.inter(
+                      //     color: Colors.black87,
+                      //     fontWeight: FontWeight.w800,
+                      //     fontSize: 12,
+                      //   ),
+                      // ),
+                      // const SizedBox(height: 16),
 
-                      SizedBox(
-                        width: double.infinity,
-                        height: 56,
-                        child: OutlinedButton(
-                          onPressed: () {
-                            _handleSignIn();
-                          },
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            side: const BorderSide(
-                              color: Colors.black,
-                              width: 1.2,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            elevation: 0,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.network(
-                                'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/120px-Google_%22G%22_logo.svg.png',
-                                height: 24,
-                              ),
-                              const SizedBox(width: 12),
-                              Text(
-                                'Google',
-                                style: GoogleFonts.inter(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      // SizedBox(
+                      //   width: double.infinity,
+                      //   height: 56,
+                      //   child: OutlinedButton(
+                      //     onPressed: () {
+                      //       _handleSignIn();
+                      //     },
+                      //     style: OutlinedButton.styleFrom(
+                      //       backgroundColor: Colors.white,
+                      //       side: const BorderSide(
+                      //         color: Colors.black,
+                      //         width: 1.2,
+                      //       ),
+                      //       shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(30),
+                      //       ),
+                      //       elevation: 0,
+                      //     ),
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.center,
+                      //       children: [
+                      //         Image.network(
+                      //           'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/120px-Google_%22G%22_logo.svg.png',
+                      //           height: 24,
+                      //         ),
+                      //         const SizedBox(width: 12),
+                      //         Text(
+                      //           'Google',
+                      //           style: GoogleFonts.inter(
+                      //             color: Colors.black,
+                      //             fontSize: 16,
+                      //             fontWeight: FontWeight.w900,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
 
                       // Spacer ini akan menekan elemen "Belum punya akun?" ke posisi paling bawah layar
                       const Spacer(),

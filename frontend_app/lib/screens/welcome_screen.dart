@@ -51,7 +51,7 @@ class WelcomeScreen extends StatelessWidget {
                       Text(
                         'WELCOME TO NESMART',
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.merriweather(
                           fontWeight: FontWeight.w900,
                           fontSize: 22,
                           letterSpacing: 0.5,

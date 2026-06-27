@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../favorites_state.dart';
+import '../widgets/cart_state.dart';
 
 class FlutterProduct {
   final String id;
@@ -32,6 +33,19 @@ class CategoryScreen extends StatefulWidget {
 class _CategoryScreenState extends State<CategoryScreen> {
   String? _selectedCategory;
   bool _hasInitialArgument = false;
+
+  /// Format angka double ke format Rupiah dengan titik pemisah ribuan (e.g. 150000 → Rp150.000)
+  String _formatRupiah(double amount) {
+    final str = amount.toStringAsFixed(0);
+    String result = '';
+    int count = 0;
+    for (int i = str.length - 1; i >= 0; i--) {
+      result = str[i] + result;
+      count++;
+      if (count % 3 == 0 && i != 0) result = '.$result';
+    }
+    return 'Rp$result';
+  }
 
   @override
   void didChangeDependencies() {
@@ -92,7 +106,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   List<FlutterProduct> get _products {
     return FavoritesState.allProducts.map((p) {
-      final cleanPriceStr = p.price.replaceAll('\$', '').replaceAll('.', '');
+      final cleanPriceStr = p.price.replaceAll('Rp', '').replaceAll('.', '');
       final priceVal = double.tryParse(cleanPriceStr) ?? 0.0;
       final ratingVal = FavoritesState.getProductAverageRating(p.id);
       return FlutterProduct(
@@ -156,7 +170,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     ),
                   ),
                   Text(
-                    _selectedCategory ?? 'EXPLORE CATEGORIES',
+                    _selectedCategory ?? 'KATEGORI',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.merriweather(
@@ -381,7 +395,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
           itemBuilder: (context, index) {
             final product = refreshedProducts[index];
 
-            return GestureDetector(
+            return Stack(
+              children: [
+            GestureDetector(
               onTap: () {
                 Navigator.pushNamed(
                   context,
@@ -389,8 +405,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   arguments: {
                     'id': product.id,
                     'name': product.name,
-                    'price':
-                        '\$${product.price == 1199 ? "1.199" : product.price.toStringAsFixed(0)}',
+                    'price': _formatRupiah(product.price),
                     'rating': product.rating.toStringAsFixed(1),
                     'image': product.image,
                     'description': product.description,
@@ -473,26 +488,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '\$${product.price == 1199 ? "1.199" : product.price.toStringAsFixed(0)}',
+                                _formatRupiah(product.price),
                                 style: GoogleFonts.inter(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w900,
                                   color: const Color(0xFF864F1F),
                                 ),
                               ),
-                              Container(
-                                width: 28,
-                                height: 28,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF864F1F),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                  size: 16,
-                                ),
-                              ),
+                              const SizedBox(width: 28, height: 28),
                             ],
                           ),
                         ],
@@ -501,6 +504,44 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   ],
                 ),
               ),
+            ),
+              Positioned(
+                right: 12,
+                bottom: 12,
+                child: GestureDetector(
+                  onTap: () {
+                    CartState.addToCart(CartItem(
+                      id: product.id,
+                      name: product.name,
+                      price: product.price,
+                      image: product.image,
+                      quantity: 1,
+                    ));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                            '${product.name} ditambahkan ke keranjang!'),
+                        duration: const Duration(seconds: 1),
+                        backgroundColor: const Color(0xFF7E4D2B),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: 28,
+                    height: 28,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF864F1F),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ],
             );
           },
         );

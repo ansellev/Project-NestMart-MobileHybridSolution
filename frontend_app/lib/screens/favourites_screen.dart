@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../favorites_state.dart';
+import '../widgets/cart_state.dart';
 
 class FavouritesScreen extends StatefulWidget {
   const FavouritesScreen({super.key});
@@ -67,15 +68,15 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                           Navigator.pushReplacementNamed(context, '/menu');
                         },
                         behavior: HitTestBehavior.opaque,
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          // child: Icon(
-                          //   Icons.arrow_back_rounded,
-                          //   color: Colors.black,
-                          //   size: 26,
-                          // ),
-                        ),
+                        child: Container(
+                      padding: const EdgeInsets.all(8),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: Color(0xFF864F1F),
+                        size: 20,
                       ),
+                    ),
+                  ),
                       Text(
                         'FAVOURITES',
                         style: GoogleFonts.merriweather(
@@ -255,7 +256,9 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                             itemCount: filteredFavs.length,
                             itemBuilder: (context, idx) {
                               final item = filteredFavs[idx];
-                              return GestureDetector(
+                              return Stack(
+                                children: [
+                              GestureDetector(
                                 onTap: () {
                                   Navigator.pushNamed(
                                     context,
@@ -382,21 +385,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                                                       ),
                                                     ),
                                                   ),
-                                                  Container(
-                                                    width: 24,
-                                                    height: 24,
-                                                    decoration: const BoxDecoration(
-                                                      color: Color(
-                                                        0xFF864F1F,
-                                                      ), // Brown button with white plus inside
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                    child: const Icon(
-                                                      Icons.add,
-                                                      color: Colors.white,
-                                                      size: 14,
-                                                    ),
-                                                  ),
+                                                  const SizedBox(width: 24, height: 24),
                                                 ],
                                               ),
                                             ],
@@ -406,6 +395,44 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                                     ],
                                   ),
                                 ),
+                              ),
+                                Positioned(
+                                  right: 10,
+                                  bottom: 10,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      CartState.addToCart(CartItem(
+                                        id: item.id,
+                                        name: item.name,
+                                        price: CartState.parsePrice(item.price),
+                                        image: item.image,
+                                        quantity: 1,
+                                      ));
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                              '${item.name} ditambahkan ke keranjang!'),
+                                          duration: const Duration(seconds: 1),
+                                          backgroundColor: const Color(0xFF7E4D2B),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 24,
+                                      height: 24,
+                                      decoration: const BoxDecoration(
+                                        color: Color(0xFF864F1F),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: const Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                        size: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                               );
                             },
                           ),

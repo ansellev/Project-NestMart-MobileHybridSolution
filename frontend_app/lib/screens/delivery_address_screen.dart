@@ -101,7 +101,7 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
                       alignment: Alignment.centerLeft,
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.pushReplacementNamed(context, '/account');
+                          Navigator.pop(context);
                         },
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),

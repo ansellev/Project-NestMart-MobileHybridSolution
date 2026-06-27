@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'search_screen.dart';
 import 'notification_screen.dart';
+import '../favorites_state.dart';
+import '../widgets/cart_state.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
@@ -21,78 +23,26 @@ class MenuScreen extends StatelessWidget {
     ];
 
     // ==========================================
-    // 2. DATA PRODUK
+    // 2. DATA PRODUK — sumber tunggal: FavoritesState.allProducts
+    //    Menjamin produk di home konsisten dengan hasil search bar
     // ==========================================
-    final recomendations = [
-      {
-        'id': '1',
-        'name': 'Action Figure',
-        'price': 'Rp250.000',
-        'image': 'assets/Figure.png',
-        'description':
-            'Action figure eksklusif dengan detail karakter yang presisi dan cat berkualitas tinggi. Sangat cocok untuk melengkapi pajangan koleksi Anda di kamar atau meja kerja.',
-      },
-      {
-        'id': '2',
-        'name': 'Iphone 17 Pro Max',
-        'price': 'Rp15.999.000',
-        'image': 'assets/IPhone17pm.png',
-        'description':
-            'Smartphone flagship terbaru dengan performa chip tercanggih, kamera resolusi tinggi untuk fotografi profesional, dan daya tahan baterai seharian penuh.',
-      },
-      {
-        'id': '3',
-        'name': 'Adidas Training',
-        'price': 'Rp824.000',
-        'image': 'assets/adidas.png',
-        'description':
-            'Sepatu olahraga berkualitas tinggi dengan desain modern dan bahan yang nyaman digunakan selama aktivitas fisik.',
-      },
+    Map<String, String> _toMap(FavoriteProduct p) => {
+      'id': p.id,
+      'name': p.name,
+      'price': p.price,
+      'image': p.image,
+      'description': p.description,
+    };
 
-      {
-        'id': '4',
-        'name': 'Samsung Galaxy S25 Ultra',
-        'price': 'Rp13.590.000',
-        'image': 'assets/SamsungS25U.png',
-        'description':
-            'Smartphone flagship terbaru dengan performa chip tercanggih, kamera resolusi tinggi untuk fotografi profesional, dan daya tahan baterai seharian penuh.',
-      },
-    ];
+    final recomendations = FavoritesState.allProducts
+        .where((p) => ['2', '3', '4', '8'].contains(p.id))
+        .map(_toMap)
+        .toList();
 
-    final justForYou = [
-      {
-        'id': '4',
-        'name': 'Nike Dunk Retro',
-        'price': 'Rp1.200.000',
-        'image': 'assets/nike.png',
-        'description':
-            'Sepatu sneakers ikonik dengan gaya retro klasik. Terbuat dari bahan kulit premium yang nyaman dan awet untuk gaya hypebeast kamu.',
-      },
-      {
-        'id': '5',
-        'name': 'Retro Helmet',
-        'price': 'Rp440.000',
-        'image': 'assets/retro.png',
-        'description':
-            'Helm berdesain klasik retro yang sudah berstandar SNI. Memberikan keamanan maksimal sekaligus membuat tampilan riding kamu makin stylish.',
-      },
-      {
-        'id': '6',
-        'name': 'Superman Figure',
-        'price': 'Rp35.000',
-        'image': 'assets/Superman.png',
-        'description':
-            'Action figure Superman dengan detail yang presisi dan cat berkualitas tinggi. Sangat cocok untuk melengkapi pajangan koleksi Anda di kamar atau meja kerja.',
-      },
-      {
-        'id': '7',
-        'name': 'Logitech Keyboard',
-        'price': 'Rp150.000',
-        'image': 'assets/Logitech.png',
-        'description':
-            'Keyboard gaming berkualitas tinggi dengan respons key yang cepat dan desain ergonomis untuk kenyamanan penggunaan jangka panjang.',
-      },
-    ];
+    final justForYou = FavoritesState.allProducts
+        .where((p) => ['1', '5', '7', '10'].contains(p.id))
+        .map(_toMap)
+        .toList();
 
     const bgColor = Color(0xFFECEAE6);
     const primaryBrown = Color(0xFF7E4D2B);
@@ -534,25 +484,61 @@ class MenuScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Center(
-                        child: Image.asset(
-                          item['image']!,
-                          fit: BoxFit.contain,
-                          errorBuilder: (context, error, stackTrace) =>
-                              const Icon(
-                                Icons.broken_image_rounded,
-                                color: Colors.black26,
-                                size: 40,
+                        child: item['image']!.startsWith('http')
+                            ? Image.network(
+                                item['image']!,
+                                fit: BoxFit.contain,
+                                errorBuilder: (_, __, ___) => const Icon(
+                                  Icons.broken_image_rounded,
+                                  color: Colors.black26,
+                                  size: 40,
+                                ),
+                              )
+                            : Image.asset(
+                                item['image']!,
+                                fit: BoxFit.contain,
+                                errorBuilder: (_, __, ___) => const Icon(
+                                  Icons.broken_image_rounded,
+                                  color: Colors.black26,
+                                  size: 40,
+                                ),
                               ),
-                        ),
                       ),
                     ),
-                    const Positioned(
-                      top: 12,
-                      right: 12,
-                      child: Icon(
-                        Icons.favorite_border_rounded,
-                        color: Color(0xFF7E4D2B),
-                        size: 22,
+                    Positioned(
+                      top: 10,
+                      right: 10,
+                      child: ValueListenableBuilder<Set<String>>(
+                        valueListenable: FavoritesState.favoriteIds,
+                        builder: (_, favIds, __) {
+                          final isFav = favIds.contains(item['id']!);
+                          return GestureDetector(
+                            onTap: () =>
+                                FavoritesState.toggleFavorite(item['id']!),
+                            child: Container(
+                              padding: const EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.08),
+                                    blurRadius: 6,
+                                  ),
+                                ],
+                              ),
+                              child: Icon(
+                                isFav
+                                    ? Icons.favorite_rounded
+                                    : Icons.favorite_border_rounded,
+                                color: isFav
+                                    ? Colors.red
+                                    : const Color(0xFF7E4D2B),
+                                size: 18,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],
@@ -612,16 +598,35 @@ class MenuScreen extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: const BoxDecoration(
-                            color: Color(0xFF864F1F),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.add,
-                            color: Colors.white,
-                            size: 16,
+                        GestureDetector(
+                          onTap: () {
+                            CartState.addToCart(CartItem(
+                              id: item['id']!,
+                              name: item['name']!,
+                              price: CartState.parsePrice(item['price']!),
+                              image: item['image']!,
+                              quantity: 1,
+                            ));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    '${item['name']} ditambahkan ke keranjang!'),
+                                duration: const Duration(seconds: 1),
+                                backgroundColor: const Color(0xFF7E4D2B),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: const BoxDecoration(
+                              color: Color(0xFF864F1F),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.add,
+                              color: Colors.white,
+                              size: 16,
+                            ),
                           ),
                         ),
                       ],

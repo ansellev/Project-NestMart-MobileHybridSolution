@@ -37,6 +37,8 @@ class StoreItem {
 
 /// Helper pemetaan statis id produk ke id tokonya (Store ID Mapper)
 String getStoreIdForProduct(String productId) {
+  // Produk seller memiliki prefix 'sp_' — petakan ke ID toko seller
+  if (productId.startsWith('sp_')) return 'seller_owned_store';
   switch (productId) {
     case '1': return 's1';
     case '2': return 's2';
@@ -71,7 +73,8 @@ StoreItem getStoreForProduct(String productId) {
 /// ============================================================================
 /// DATA STATIS: STORES (Daftar Toko Terpercaya)
 /// ============================================================================
-const List<StoreItem> STORES = [
+// ignore: non_constant_identifier_names
+final List<StoreItem> STORES = [
   StoreItem(
     id: 's1',
     name: 'NestMart Official Store',

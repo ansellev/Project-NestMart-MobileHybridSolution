@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../user_session.dart';
+import '../seller_state.dart';
 import 'app_settings_screen.dart'; // Pastikan Anda memiliki file ini untuk navigasi ke pengaturan aplikasi
+import 'seller_register_screen.dart';
+import 'seller_dashboard_screen.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -124,10 +127,10 @@ class _AccountScreenState extends State<AccountScreen> {
                 children: [
                   Text(
                     'Akun Saya',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.merriweather(
                       fontSize: 22,
                       fontWeight: FontWeight.w900,
-                      color: Colors.black87,
+                      color: const Color(0xFF7E4D2B),
                     ),
                   ),
                   GestureDetector(
@@ -140,9 +143,9 @@ class _AccountScreenState extends State<AccountScreen> {
                         color: Colors.white,
                       ),
                       child: const Icon(
-                        Icons.close,
+                        Icons.arrow_back_ios_new_rounded,
+                        color: Color(0xFF864F1F),
                         size: 20,
-                        color: Colors.black87,
                       ),
                     ),
                   ),
@@ -233,7 +236,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       _buildListTile(
                         icon: Icons.inventory_2_outlined,
                         title: 'Pesanan Saya',
-                        badgeCount: 3, // Indikator notifikasi merah
+                        
                         onTap: () => Navigator.pushNamed(context, '/orders'),
                       ),
                       _buildDivider(),
@@ -254,7 +257,17 @@ class _AccountScreenState extends State<AccountScreen> {
                     const SizedBox(height: 24),
 
                     // ==========================================
-                    // BAGIAN 2: PENGATURAN
+                    // BAGIAN 2: BERJUALAN DI NESTMART
+                    // ==========================================
+                    _buildSectionHeader('BERJUALAN DI NESTMART'),
+                    const SizedBox(height: 12),
+                    _buildCardContainer([
+                      _buildSellerTile(),
+                    ]),
+                    const SizedBox(height: 24),
+
+                    // ==========================================
+                    // BAGIAN 3: PENGATURAN
                     // ==========================================
                     _buildSectionHeader('PENGATURAN'),
                     const SizedBox(height: 12),
@@ -481,6 +494,98 @@ class _AccountScreenState extends State<AccountScreen> {
     return const Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.0),
       child: Divider(height: 1, thickness: 1, color: Color(0xFFF0F0F0)),
+    );
+  }
+
+  // Tile khusus untuk akses dashboard penjual dengan preview status toko
+  Widget _buildSellerTile() {
+    // ValueListenableBuilder memastikan tile ini rebuild otomatis
+    // setiap kali hasStore berubah, termasuk saat kembali dari register/dashboard
+    return ValueListenableBuilder<bool>(
+      valueListenable: SellerState.hasStoreNotifier,
+      builder: (context, hasToko, _) {
+        final seller = SellerState();
+        return InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => hasToko
+                    ? const SellerDashboardScreen()
+                    : const SellerRegisterScreen(),
+              ),
+            );
+          },
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+            child: Row(
+              children: [
+                // Icon box
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF3EBE6),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(Icons.storefront_outlined,
+                      size: 20, color: Color(0xFF7E4D2B)),
+                ),
+                const SizedBox(width: 16),
+                // Text
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Toko Saya',
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        hasToko ? seller.storeName : 'Daftar sebagai penjual',
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: hasToko
+                              ? const Color(0xFF7E4D2B)
+                              : Colors.black38,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Badge "BARU" hanya jika belum punya toko
+                if (!hasToko)
+                  Container(
+                    margin: const EdgeInsets.only(right: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF3EBE6),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      'BARU',
+                      style: GoogleFonts.inter(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                        color: const Color(0xFF7E4D2B),
+                      ),
+                    ),
+                  ),
+                const Icon(Icons.chevron_right_rounded,
+                    size: 20, color: Colors.black38),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

@@ -90,18 +90,18 @@ class FavoritesState {
     FavoriteProduct(
       id: '1',
       name: 'Action Figure',
-      price: '\$10',
+      price: 'Rp35.000',
       rating: '5.0',
       category: 'Hobi',
       description:
           'Mainan figur pahlawan Superman berkualitas premium dengan detail kostum, jubah, dan anatomi yang sangat presisi. Sangat cocok sebagai koleksi atau pajangan meja para penggemar komik dan film pahlawan super.',
       image:
-          'https://images.unsplash.com/photo-1608889174637-3c44f6326f1a?w=400&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1702138129392-364adea0ad00?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWN0aW9uJTIwZmlndXJlfGVufDB8fDB8fHww',
     ),
     FavoriteProduct(
       id: '2',
       name: 'Iphone 17 Pro Max',
-      price: '\$1.199',
+      price: 'Rp17.999.000',
       rating: '5.0',
       category: 'Elekronik',
       description:
@@ -112,7 +112,7 @@ class FavoritesState {
     FavoriteProduct(
       id: '3',
       name: 'Adidas training fullset',
-      price: '\$124',
+      price: 'Rp824.000',
       rating: '5.0',
       category: 'Pakaian',
       description:
@@ -123,7 +123,7 @@ class FavoritesState {
     FavoriteProduct(
       id: '4',
       name: 'Nike dunk retro',
-      price: '\$60',
+      price: 'Rp1.200.000',
       rating: '5.0',
       category: 'Fashion',
       description:
@@ -134,7 +134,7 @@ class FavoritesState {
     FavoriteProduct(
       id: '5',
       name: 'Retro helmet',
-      price: '\$40',
+      price: 'Rp440.000',
       rating: '5.0',
       category: 'Hobi',
       description:
@@ -144,7 +144,7 @@ class FavoritesState {
     FavoriteProduct(
       id: '6',
       name: 'Superman figure',
-      price: '\$35',
+      price: 'Rp35.000',
       rating: '5.0',
       category: 'Hobi',
       description:
@@ -155,7 +155,7 @@ class FavoritesState {
     FavoriteProduct(
       id: '7',
       name: 'Logitech Keyboard',
-      price: '\$50',
+      price: 'Rp150.000',
       rating: '5.0',
       category: 'Elekronik',
       description:
@@ -166,7 +166,7 @@ class FavoritesState {
     FavoriteProduct(
       id: '8',
       name: 'Luxury Leather Handbag',
-      price: '\$150',
+      price: 'Rp1.500.000',
       rating: '4.9',
       category: 'Fashion',
       description:
@@ -177,7 +177,7 @@ class FavoritesState {
     FavoriteProduct(
       id: '9',
       name: 'Sleek Black Duffle Bag',
-      price: '\$85',
+      price: 'Rp850.000',
       rating: '4.8',
       category: 'Fashion',
       description:
@@ -188,18 +188,18 @@ class FavoritesState {
     FavoriteProduct(
       id: '10',
       name: 'Esthetic Skincare Serum Set',
-      price: '\$45',
+      price: 'Rp450.000',
       rating: '5.0',
       category: 'Kecantikan',
       description:
           'Paket serum wajah organik premium yang mengandung Hyaluronic Acid dan Niacinamide murni untuk hidrasi mendalam, mencerahkan bintik hitam, dan memberikan efek glowing alami sepanjang hari.',
       image:
-          'https://images.unsplash.com/photo-1608248597481-496100c8c836?w=400&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1580870069867-74c57ee1bb07?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c2tpbmNhcmV8ZW58MHx8MHx8fDA%3D',
     ),
     FavoriteProduct(
       id: '11',
       name: 'Organic Matte Lip Cream',
-      price: '\$24',
+      price: 'Rp240.000',
       rating: '4.7',
       category: 'Kecantikan',
       description:
@@ -210,7 +210,7 @@ class FavoritesState {
     FavoriteProduct(
       id: '12',
       name: 'Premium Oat & Nut Salad Pack',
-      price: '\$15',
+      price: 'Rp150.000',
       rating: '4.9',
       category: 'Makanan',
       description:
@@ -221,7 +221,7 @@ class FavoritesState {
     FavoriteProduct(
       id: '13',
       name: 'Sleek Remote Car Key Fob',
-      price: '\$28',
+      price: 'Rp280.000',
       rating: '4.8',
       category: 'Otomotif',
       description:
@@ -232,7 +232,7 @@ class FavoritesState {
     FavoriteProduct(
       id: '14',
       name: 'Pro Mirrorless Leather Straps',
-      price: '\$39',
+      price: 'Rp390.000',
       rating: '5.0',
       category: 'Hobi',
       description:
@@ -243,13 +243,24 @@ class FavoritesState {
     FavoriteProduct(
       id: '15',
       name: 'Specialty Cold Brew Bottle',
-      price: '\$18',
+      price: 'Rp18.000',
       rating: '4.9',
       category: 'Minuman',
       description:
           'Espresso cold brew organik segar siap minum, diekstrak perlahan selama 18 jam penuh dari biji kopi Arabika pilihan untuk rasa lembut tanpa pahit berlebih dan keasaman rendah yang nyaman di perut.',
       image:
           'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&auto=format&fit=crop',
+    ),
+    FavoriteProduct(
+      id: '16',
+      name: 'Iphone 17 Pro',
+      price: 'Rp15.999.000',
+      rating: '5',
+      category: 'Elektronik',
+      description:
+          'Smartphone flagship terbaru dengan performa chip tercanggih, kamera resolusi tinggi untuk fotografi profesional, dan daya tahan baterai seharian penuh.',
+      image:
+          'assets/IPhone17pm.png',
     ),
   ];
 
@@ -687,6 +698,18 @@ class FavoritesState {
       comment:
           'Porsinya pas and botol kacanya estetik. Enak diminum dingin seger.',
       date: '14 MEI 2026',
+    ),
+
+    ProductReview(
+      id: 'r16_1',
+      productId: '16',
+      userName: 'Budi Santoso',
+      userPhotoUrl:
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100',
+      rating: 5.0,
+      comment:
+          'Performa mantap',
+      date: '11 MEI 2026',
     ),
   ]);
 
