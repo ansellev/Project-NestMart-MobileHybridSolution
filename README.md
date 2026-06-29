@@ -1,39 +1,43 @@
-Nestmart adalah aplikasi mobile berbasis marketplace yang bertujuan untuk membantu pelaku Usaha Mikro, Kecil, dan Menengah (UMKM) dalam mempromosikan profil usaha serta menjual produk mereka secara digital dalam satu platform terintegrasi. Aplikasi ini memungkinkan pengguna untuk menemukan UMKM kategori usaha, melihat profil UMKM, katalog produk, serta melakukan pemesanan produk secara langsung.
+Nestmart adalah aplikasi berbasis mobile yang bertujuan untuk membantu pelaku usaha mikro, kecil, dan menengah (UMKM) dalam mempromosikan profil bisnis mereka dan menjual produk mereka melalui saluran digital dalam satu platform terintegrasi. Aplikasi ini memungkinkan pengguna untuk menemukan kategori bisnis UMKM, profil, katalog produk, dan memesan produk mereka secara langsung.
 
-Aplikasi ini mendukung SDG 8: Decent Work and Economic Growth dengan memberikan akses digital yang lebih luas bagi UMKM untuk meningkatkan visibilitas usaha, memperluas pasar, serta mendorong pertumbuhan ekonomi lokal secara berkelanjutan.
+Aplikasi ini akan mendukung SDG 8: Pekerjaan Layak dan Pertumbuhan Ekonomi dengan menyediakan akses digital yang lebih luas bagi UMKM untuk meningkatkan visibilitas bisnis mereka, memperluas pasar mereka, dan mendorong pertumbuhan ekonomi berkelanjutan.
 
-Project Objective:
+Tujuan proyek:
 
-- Membantu UMKM untuk mempromosikan produk dan profil usahanya secara digital.
-- Menyediakan platform pemesanan produk UMKM yang sederhana dan terintegrasi.
-- Memudahkan transaksi pelaku usaha UMKM kepada masyarakat.
-- Mendukung pertumbuhan ekonomi lokal dan pemberdayaan UMKM sesuai SDG 8.
+- Membantu UMKM mempromosikan produk dan profil bisnis mereka melalui sarana digital.
 
-Aplikasi Nestmart memiliki berbagai fitur yaitu:
-- Login dan Membuat Akun 
-User dapat membuat akun baru terlebih dahulu dengan memasukkan username, email, dan password. Selanjutnya, user dapat melakukan login ke dalam aplikasinya.
+- Menyediakan platform pemesanan terintegrasi untuk produk UMKM.
 
-- Search Product / Store
-User dapat mencari produk UMKM yang diinginkan dengan menggunakan search bar. Selain itu, user juga dapat mencari nama toko UMKM yang diinginkan.
+- Mempermudah transaksi bagi UMKM kepada masyarakat.
 
-- Favorite
-User dapat memilih dan menyimpan produk atau toko langganan mereka sehingga memudahkan user karena tidak perlu search ulang produk atau toko yang sama.
+- Mendukung pertumbuhan ekonomi lokal dan pemberdayaan UMKM berdasarkan SDG 8.
 
-- Keranjang
-User dapat menambahkan produk yang ingin dibeli ke dalam fitur keranjang. User dapat melihat kembali produk yang ingin dibeli, menambah atau mengurangi jumlah produk, serta melakukan pemesanan.
+Fitur aplikasi Nestmart meliputi:
 
-- Review dan Rating Produk
-User dapat melihat review dan rating produk. Selain itu, user dapat melakukan rating produk yang telah dibeli sebelumnya.
+- Login dan Pembuatan Akun
+Pengguna dapat membuat akun baru terlebih dahulu dengan memasukkan nama pengguna, alamat email, dan kata sandi. Kemudian, pengguna dapat masuk ke aplikasi ini.
 
-Project fullstack menggunakan:
+- Pencarian Produk/Toko
+Pengguna dapat mencari produk UMKM yang diinginkan menggunakan kolom pencarian. Selain itu, pengguna juga dapat mencari nama toko UMKM yang diinginkan.
+
+- Favorit
+Pengguna dapat memilih dan menyimpan produk dan toko favorit agar lebih mudah karena pengguna tidak perlu mencari produk dan toko yang sama lagi.
+
+- Keranjang Belanja
+Pengguna dapat menambahkan produk yang ingin dibeli ke fitur keranjang belanja. Pengguna dapat memeriksa kembali produk yang ingin dibeli, mengubah atau mengurangi jumlah produk, dan melakukan pemesanan.
+
+- Ulasan dan Peringkat Produk
+Pengguna dapat melihat ulasan dan peringkat produk. Selain itu, pengguna dapat memberikan peringkat pada produk yang telah dibeli sebelumnya.
+
+Stack Full-Stack yang digunakan dalam proyek ini:
 
 - Flutter (Frontend Mobile)
 - NestJS (Backend API)
 - MySQL (Database)
 
-Requirements
+Persyaratan
 
-Pastikan software berikut sudah terinstall:
+Pastikan perangkat lunak berikut telah diinstal:
 
 - Frontend (Flutter)
 Flutter SDK
@@ -48,38 +52,37 @@ npm
 NestJS CLI
 MySQL Server
 
-Clone Repository
+Kloning Repositori
 git clone https://github.com/USERNAME/Project-NestMart-MobileHybridSolution.git
-Masuk ke folder project:
+Masuk ke folder proyek:
 cd Project-NestMart-MobileHybridSolution
 
-Setup Backend (NestJS)
+Pengaturan Backend (NestJS)
 1. Masuk ke folder backend - cd backend_app
-2. Install dependency - npm install
-3. Setup database MySQL
+2. Instal dependensi - npm install
+3. Siapkan database MySQL
 Buat database baru di MySQL: CREATE DATABASE nestmart_db;
-4. Konfigurasi database
-Buat file: .env
-Isi:
+
+4. Konfigurasi basis data
+Buat file baru: .env
+Masukkan konfigurasi:
 DB_HOST=localhost
 DB_PORT=3306
 DB_USERNAME=root
-DB_PASSWORD=YOUR_PASSWORD
+DB_PASSWORD=KATA_SANDI_ANDA
 DB_DATABASE=nestmart_db
-5. Jalankan backend - npm run start:dev (Backend berjalan di: http://localhost:3000)
+5. Jalankan backend - npm run start:dev (Backend berjalan di http://localhost:3000)
 
-Setup Frontend (Flutter)
-1. Masuk ke folder frontend - cd frontend
-2. Install dependency Flutter - flutter pub get
+Siapkan Frontend (Flutter)
+1. Navigasi ke folder frontend - cd frontend
+2. Instal dependensi Flutter - flutter pub get
 3. Jalankan Flutter - flutter run -d chrome
 
-Koneksi Flutter ke Backend
+Hubungkan Flutter ke Backend
 Web / Chrome - http://localhost:3000
 
-Git Commands (Push perubahan ke GitHub)
+Perintah Git (Dorong perubahan ke GitHub)
 git add .
+
 git commit -m "update project"
 git push
-
-
-
