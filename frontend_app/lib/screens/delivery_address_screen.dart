@@ -10,7 +10,7 @@ class DeliveryAddressScreen extends StatefulWidget {
 }
 
 class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
-  final _session = UserSession();
+  final _session = UserSession.instance;
 
   // Inputs for adding a new address
   final TextEditingController _newNameController = TextEditingController();
@@ -107,7 +107,7 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
                           padding: EdgeInsets.all(8.0),
                           child: Icon(
                             Icons.arrow_back_ios_new_rounded,
-                            color: Colors.black,
+                            color: Color(0xFF864F1F),
                             size: 24,
                           ),
                         ),

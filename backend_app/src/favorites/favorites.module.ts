@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { Favorite } from './favorite.entity';
+import { Product } from '../products/product.entity';
+
 import { FavoritesController } from './favorites.controller';
 import { FavoritesService } from './favorites.service';
 
@@ -9,12 +11,16 @@ import { FavoritesService } from './favorites.service';
   imports: [
     TypeOrmModule.forFeature([
       Favorite,
+      Product,
     ]),
   ],
   controllers: [
     FavoritesController,
   ],
   providers: [
+    FavoritesService,
+  ],
+  exports: [
     FavoritesService,
   ],
 })

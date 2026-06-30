@@ -154,7 +154,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                           padding: EdgeInsets.all(8.0),
                           child: Icon(
                             Icons.arrow_back_ios_new_rounded,
-                            color: Colors.black,
+                            color: Color(0xFF864F1F),
                             size: 24,
                           ),
                         ),

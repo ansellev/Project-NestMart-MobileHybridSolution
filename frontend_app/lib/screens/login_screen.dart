@@ -12,13 +12,14 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _rememberMe = true;
+  bool _loading = false;
   late TextEditingController _emailController;
   final TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _emailController = TextEditingController(text: UserSession().email);
+    _emailController = TextEditingController();
   }
 
   @override
@@ -28,18 +29,38 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _handleSignIn() {
-    final session = UserSession();
-    final inputEmail = _emailController.text.trim();
-    if (inputEmail.isNotEmpty) {
-      session.email = inputEmail.toUpperCase();
-      if (inputEmail.toUpperCase() != 'ANDI@GMAIL.COM' &&
-          session.name == 'ANDI') {
-        session.name = inputEmail.split('@')[0].toUpperCase();
-      }
-    }
-    Navigator.pushNamed(context, '/welcome');
+  Future<void> _handleSignIn() async {
+  setState(() {
+    _loading = true;
+  });
+
+  final result = await UserSession.instance.login(
+    email: _emailController.text.trim(),
+    password: _passwordController.text,
+  );
+
+  setState(() {
+    _loading = false;
+  });
+
+  if (!mounted) return;
+
+  if (result["success"] == true) {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/welcome',
+      (route) => false,
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          result["message"] ?? "Login failed",
+        ),
+      ),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: double.infinity,
                         height: 56,
                         child: ElevatedButton(
-                          onPressed: _handleSignIn,
+                          onPressed: _loading ? null : _handleSignIn,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF864F1F),
                             elevation: 0,
@@ -149,72 +170,30 @@ class _LoginScreenState extends State<LoginScreen> {
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
-                          child: Text(
-                            'LOG IN',
-                            style: GoogleFonts.merriweather(
+                          child: _loading
+                              ? const SizedBox(
+                              width: 22,
+                              height: 22,
+                              child: CircularProgressIndicator(
+                              strokeWidth: 2,
                               color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w900,
-                              letterSpacing: 0.5,
+                              ),
+                            )
+                              : Text(
+                                'LOG IN',
+                                style: GoogleFonts.merriweather(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 0.5,
+                              ),
                             ),
                           ),
                         ),
-                      ),
 
                       // Jarak pemisah yang tegas untuk opsi "Grup Alternatif"
                       const SizedBox(height: 36),
 
-                      // --- GRUP 3: OPSI LOGIN LAIN ---
-                      // Text(
-                      //   'Or continue with',
-                      //   style: GoogleFonts.inter(
-                      //     color: Colors.black87,
-                      //     fontWeight: FontWeight.w800,
-                      //     fontSize: 12,
-                      //   ),
-                      // ),
-                      // const SizedBox(height: 16),
-
-                      // SizedBox(
-                      //   width: double.infinity,
-                      //   height: 56,
-                      //   child: OutlinedButton(
-                      //     onPressed: () {
-                      //       _handleSignIn();
-                      //     },
-                      //     style: OutlinedButton.styleFrom(
-                      //       backgroundColor: Colors.white,
-                      //       side: const BorderSide(
-                      //         color: Colors.black,
-                      //         width: 1.2,
-                      //       ),
-                      //       shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(30),
-                      //       ),
-                      //       elevation: 0,
-                      //     ),
-                      //     child: Row(
-                      //       mainAxisAlignment: MainAxisAlignment.center,
-                      //       children: [
-                      //         Image.network(
-                      //           'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/120px-Google_%22G%22_logo.svg.png',
-                      //           height: 24,
-                      //         ),
-                      //         const SizedBox(width: 12),
-                      //         Text(
-                      //           'Google',
-                      //           style: GoogleFonts.inter(
-                      //             color: Colors.black,
-                      //             fontSize: 16,
-                      //             fontWeight: FontWeight.w900,
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
-
-                      // Spacer ini akan menekan elemen "Belum punya akun?" ke posisi paling bawah layar
                       const Spacer(),
 
                       Padding(

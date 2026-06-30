@@ -1,72 +1,153 @@
+import 'package:flutter/foundation.dart';
+
+import 'favorites_state.dart';
+import 'models/user_model.dart';
+import 'services/api_service.dart';
+
 class FlutterAddress {
-  String id;
+  FlutterAddress({
+    required this.id,
+    required this.name,
+    required this.fullAddress,
+  });
+
+  final String id;
   String name;
   String fullAddress;
-
-  FlutterAddress({required this.id, required this.name, required this.fullAddress});
 }
 
-class UserSession {
-  static final UserSession _instance = UserSession._internal();
-  factory UserSession() => _instance;
-  UserSession._internal();
+class UserSession extends ChangeNotifier {
+  static final UserSession instance = UserSession._();
 
-  String name = 'ANDI';
-  String email = 'ANDI@GMAIL.COM';
-  String password = 'password123';
-  String photoUrl = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80';
+  UserSession._();
 
-  List<FlutterAddress> addresses = [
+  UserModel? _user;
+  bool _loggedIn = false;
+  bool _loading = false;
+  String _selectedAddressId = "1";
+
+  final List<FlutterAddress> _addresses = [
     FlutterAddress(
-      id: '1',
-      name: 'HOME ADDRESS',
-      fullAddress: 'Jl. Diponegoro No 51, Kecamatan Menteng, Jakarta Pusat, DKI Jakarta 15082',
-    ),
-    FlutterAddress(
-      id: '2',
-      name: 'OFFICE ADDRESS',
-      fullAddress: 'Jl. Kebayoran No 41, Kecamatan Kebayoran Baru, Jakarta Selatan, DKI Jakarta 15023',
+      id: "1",
+      name: "HOME ADDRESS",
+      fullAddress: "Jl. NestMart No. 1, Jakarta",
     ),
   ];
-  String selectedAddressId = '1';
 
-  // Dynamic cart items shared session state
-  List<Map<String, dynamic>> cartItems = [
-    {
-      'name': 'LUXURY BAG',
-      'price': 23.16,
-      'qty': 1,
-      'img': 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400',
-    },
-    {
-      'name': 'URBAN BAG',
-      'price': 20.16,
-      'qty': 1,
-      'img': 'https://images.unsplash.com/photo-1547949003-9792a18a2601?w=400',
-    },
-    {
-      'name': 'YAMATO',
-      'price': 66.16,
-      'qty': 1,
-      'img': 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400',
-    },
-  ];
+  UserModel? get user => _user;
 
-  void addToCart(String name, double price, int qty, String img) {
-    final existingIndex = cartItems.indexWhere(
-      (item) => (item['name'] as String).toLowerCase() == name.toLowerCase()
-    );
-    if (existingIndex != -1) {
-      cartItems[existingIndex]['qty'] = (cartItems[existingIndex]['qty'] as int) + qty;
-    } else {
-      cartItems.add({
-        'name': name,
-        'price': price,
-        'qty': qty,
-        'img': img,
-      });
+  bool get isLoggedIn => _loggedIn;
+
+  bool get isLoading => _loading;
+
+  String get name => _user?.name ?? "Pengguna NestMart";
+  set name(String value) {}
+
+  String get email => _user?.email ?? "user@nestmart.com";
+  set email(String value) {}
+
+  String get photoUrl => "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150";
+  set photoUrl(String value) {}
+
+  String get password => "••••••••";
+  set password(String value) {}
+
+  List<FlutterAddress> get addresses => _addresses;
+  String get selectedAddressId => _selectedAddressId;
+  set selectedAddressId(String value) {
+    _selectedAddressId = value;
+    notifyListeners();
+  }
+
+  Future<bool> autoLogin() async {
+    _loading = true;
+    notifyListeners();
+
+    try {
+      final token = await ApiService.instance.getToken();
+
+      if (token == null || token.isEmpty) {
+        _loggedIn = false;
+        _user = null;
+        return false;
+      }
+
+      final response =
+          await ApiService.instance.getProfile();
+
+      if (response["success"] == true) {
+        _user = UserModel.fromJson(
+          response["user"],
+        );
+
+         _loggedIn = true;
+        // await FavoritesState.bootstrap(includeUserData: true);
+
+        return true;
+      }
+
+      await logout();
+
+      return false;
+    } catch (_) {
+      await logout();
+      return false;
+    } finally {
+      _loading = false;
+      notifyListeners();
     }
+  }
+
+  Future<Map<String, dynamic>> login({
+  required String email,
+  required String password,
+}) async {
+  _loading = true;
+  notifyListeners();
+
+  try {
+    final response = await ApiService.instance.login(
+      email: email,
+      password: password,
+    );
+
+    if (response["success"] == true) {
+      _user = UserModel.fromJson(response["user"]);
+      _loggedIn = true;
+    }
+
+    return Map<String, dynamic>.from(response);
+  } catch (e) {
+    return {
+      "success": false,
+      "message": "Invalid email or password",
+    };
+  } finally {
+    _loading = false;
+    notifyListeners();
   }
 }
 
+  Future<Map<String, dynamic>> register({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    final res = await ApiService.instance.register(
+      name: name,
+      email: email,
+      password: password,
+    );
+    return Map<String, dynamic>.from(res);
+  }
 
+  Future<void> logout() async {
+    await ApiService.instance.logout();
+
+    _user = null;
+    _loggedIn = false;
+    FavoritesState.favoriteIds.value = {};
+
+    notifyListeners();
+  }
+}

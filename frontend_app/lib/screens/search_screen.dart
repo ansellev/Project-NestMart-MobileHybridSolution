@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../favorites_state.dart';
 import '../widgets/cart_state.dart';
 import 'models.dart';
+import '../seller_state.dart';
 
 /// ============================================================================
 /// SCREEN: SearchScreen (Pencarian Dinamis Barang & Toko)

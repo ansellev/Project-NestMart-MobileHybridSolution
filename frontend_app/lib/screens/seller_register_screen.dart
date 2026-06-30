@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../seller_state.dart';
+import '../services/api_service.dart';
 import 'models.dart';
 import 'seller_dashboard_screen.dart';
 
@@ -60,7 +61,7 @@ class _SellerRegisterScreenState extends State<SellerRegisterScreen> {
 
   // ── Submit ────────────────────────────────────────────────
 
-  void _submit() {
+  Future<void> _submit() async {
     final name = _nameCtrl.text.trim();
     final address = _addressCtrl.text.trim();
 
@@ -77,6 +78,12 @@ class _SellerRegisterScreenState extends State<SellerRegisterScreen> {
         _showCustomImg && _customImgCtrl.text.trim().startsWith('http')
             ? _customImgCtrl.text.trim()
             : _selectedImage;
+
+    await ApiService.instance.createStore({
+      "name": name,
+      "description": address,
+      "image": finalImg,
+    });
 
     final s = SellerState();
     s.hasStore = true;

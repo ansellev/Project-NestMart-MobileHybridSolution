@@ -7,6 +7,7 @@ import { CartModule } from './cart/cart.module';
 import { OrdersModule } from './orders/orders.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { StoreModule } from './store/store.module';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { ReviewsModule } from './reviews/reviews.module';
       port: 3306,
       username: 'root',
       password: '',
-      database: 'nestmart_db',
+      database: 'nestmart',
       autoLoadEntities: true,
       synchronize: true,
     }),
@@ -27,6 +28,7 @@ import { ReviewsModule } from './reviews/reviews.module';
     OrdersModule,
     FavoritesModule,
     ReviewsModule,
+    StoreModule,
     
   ],
 })

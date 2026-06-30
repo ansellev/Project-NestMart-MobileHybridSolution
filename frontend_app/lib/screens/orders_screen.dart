@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../services/api_service.dart';
 // Import OrderDetailsScreen dengan 'show' untuk menghindari konflik import
 import 'order_details_screen.dart' show OrderDetailsScreen;
 
@@ -33,11 +34,6 @@ class FlutterOrder {
   });
 }
 
-// ==========================================
-// KUNCI PERUBAHANNYA ADA DI SINI:
-// Kita ubah list ini menjadi kosong secara default.
-// Nantinya, file checkout_screen.dart akan otomatis mengisi list ini.
-// ==========================================
 List<FlutterOrder> mockOrders = [];
 
 class OrdersScreen extends StatefulWidget {
@@ -49,6 +45,48 @@ class OrdersScreen extends StatefulWidget {
 
 class _OrdersScreenState extends State<OrdersScreen> {
   String? _activeFilter;
+  bool _loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchOrders();
+  }
+
+  Future<void> _fetchOrders() async {
+    setState(() => _loading = true);
+    try {
+      final res = await ApiService.instance.getOrders();
+      final orders = res is List
+          ? res
+          : (res is Map && res['data'] is List ? res['data'] as List : []);
+
+      if (orders.isNotEmpty) {
+        mockOrders = orders.map((item) {
+          final items = item['items'] as List? ?? [];
+          final firstProd = items.isNotEmpty ? items.first['product'] : null;
+          return FlutterOrder(
+            id: item['id'].toString(),
+            orderId: 'ORD-#${item['id']}',
+            date: item['createdAt'] != null ? item['createdAt'].toString().substring(0, 10) : '2026-06-29',
+            status: item['status'] ?? 'DIPROSES',
+            productName: firstProd != null ? firstProd['name'] ?? 'Produk NestMart' : 'Pesanan NestMart',
+            productPrice: firstProd != null ? 'Rp ${firstProd['price']}' : 'Rp 0',
+            productImage: firstProd != null ? firstProd['image'] ?? '' : '',
+            quantity: items.isNotEmpty ? items.first['quantity'] ?? 1 : 1,
+            shippingAddress: item['shippingAddress'] ?? 'Alamat Pengiriman',
+            paymentMethod: item['paymentMethod'] ?? 'Transfer Bank',
+            shippingCost: 'Rp 10.000',
+            totalPrice: 'Rp ${item['total'] ?? item['totalPrice'] ?? 0}',
+          );
+        }).toList();
+      }
+    } catch (e) {
+      debugPrint('Error fetching orders: $e');
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
 
   void _toggleFilter(String filter) {
     setState(() {

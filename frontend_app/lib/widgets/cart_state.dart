@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../seller_state.dart';
 
 // Model untuk menyimpan data per item di keranjang
 class CartItem {
@@ -83,4 +84,52 @@ class CartState {
     }
     return total;
   }
+
+  static void checkout() {
+  final currentOrders = List<SellerOrder>.from(SellerState.orders.value);
+
+  for (final item in cartItems.value) {
+    // hanya produk seller yang masuk dashboard seller
+    if (item.id.startsWith('sp_')) {
+      currentOrders.insert(
+        0,
+        SellerOrder(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          productName: item.name,
+          productImage: item.image,
+          buyerName: "Pembeli",
+          quantity: item.quantity,
+          totalPrice: formatRupiah(item.price * item.quantity),
+          date: _today(),
+          status: "BARU",
+        ),
+      );
+    }
+  }
+
+  SellerState.orders.value = currentOrders;
+
+  cartItems.value = [];
+}
+
+static String _today() {
+  const months = [
+    'JAN',
+    'FEB',
+    'MAR',
+    'APR',
+    'MEI',
+    'JUN',
+    'JUL',
+    'AGU',
+    'SEP',
+    'OKT',
+    'NOV',
+    'DES'
+  ];
+
+  final now = DateTime.now();
+
+  return '${now.day} ${months[now.month - 1]} ${now.year}';
+}
 }

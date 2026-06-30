@@ -142,4 +142,3 @@ final List<StoreItem> STORES = [
     isOfficial: true,
   ),
 ];
-

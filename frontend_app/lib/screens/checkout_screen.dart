@@ -42,7 +42,7 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  final _session = UserSession();
+  final _session = UserSession.instance;
 
   final List<ShippingOption> _shipOptions = const [
     ShippingOption(

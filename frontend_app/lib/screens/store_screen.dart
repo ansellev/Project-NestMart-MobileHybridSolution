@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../favorites_state.dart';
 import 'models.dart';
+import '../services/api_service.dart';
+import '../models/product_model.dart';
 
 /// ============================================================================
 /// SCREEN: StoreScreen (Detail Toko Pelapak)
@@ -19,6 +21,7 @@ class StoreScreen extends StatefulWidget {
 class _StoreScreenState extends State<StoreScreen> {
   String _activeTab = 'semua'; // 'semua' atau 'terpopuler'
   bool _isFollowing = false;
+  
 
   @override
   Widget build(BuildContext context) {

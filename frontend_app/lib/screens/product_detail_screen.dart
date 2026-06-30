@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../favorites_state.dart';
+import '../models/product_model.dart';
 import '../seller_state.dart';
 import '../widgets/cart_state.dart';
+import '../services/api_service.dart';
 import 'models.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -68,17 +70,28 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic>? args =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final Object? routeArgs = ModalRoute.of(context)?.settings.arguments;
+    final Map<String, dynamic>? args = routeArgs is ProductModel
+        ? {
+            'id': routeArgs.id.toString(),
+            'name': routeArgs.name,
+            'price': 'Rp ${routeArgs.price.toStringAsFixed(0)}',
+            'rating': '5.0',
+            'image': routeArgs.image,
+            'description': routeArgs.description,
+          }
+        : routeArgs is Map<String, dynamic>
+            ? routeArgs
+            : null;
 
-    final String id = args?['id'] ?? '4';
-    final String name = args?['name'] ?? 'URBAN BAG';
-    final String price = args?['price'] ?? 'Rp200.000';
+    final String id = args?['id']?.toString() ?? '4';
+    final String name = args?['name']?.toString() ?? 'URBAN BAG';
+    final String price = args?['price']?.toString() ?? 'Rp200.000';
     final String image =
         args?['image'] ??
         'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800';
     final String description =
-        args?['description'] ??
+        args?['description']?.toString() ??
         'Urban Bag hadir dengan desain modern dan minimalis menggunakan material premium yang tahan air serta nyaman digunakan sehari-hari.';
 
     final bool canReview = args?['canReview'] ?? false;
@@ -115,8 +128,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           child: const Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Icon(
-                              Icons.arrow_back_rounded,
-                              color: Colors.black,
+                              Icons.arrow_back_ios_new_rounded,
+                              color: Color(0xFF864F1F),
                               size: 26,
                             ),
                           ),
@@ -624,7 +637,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               SizedBox(
                                 width: double.infinity,
                                 child: ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     final comment = _commentController.text
                                         .trim();
                                     if (comment.isEmpty) {
@@ -640,6 +653,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                       );
                                       return;
                                     }
+                                    final prodId = int.tryParse(id) ?? 1;
+                                    await ApiService.instance.createReview({
+                                      "productId": prodId,
+                                      "rating": _myRating,
+                                      "comment": comment,
+                                    });
                                     FavoritesState.addReview(
                                       id,
                                       _myRating.toDouble(),
@@ -758,7 +777,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           const SizedBox(width: 12),
 
                           GestureDetector(
-                            onTap: () {
+                            onTap: () async {
+                              final prodId = int.tryParse(id) ?? 1;
+                              await ApiService.instance.addToCart(prodId, _quantity);
                               CartState.addToCart(
                                 CartItem(
                                   id: id,
@@ -768,6 +789,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   quantity: _quantity,
                                 ),
                               );
+                              if (!mounted) return;
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
@@ -812,7 +834,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 ],
                               ),
                               child: ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
+                                  final prodId = int.tryParse(id) ?? 1;
+                                  await ApiService.instance.addToCart(prodId, _quantity);
                                   CartState.addToCart(
                                     CartItem(
                                       id: id,
@@ -822,6 +846,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                       quantity: _quantity,
                                     ),
                                   );
+                                  if (!mounted) return;
                                   Navigator.pushNamed(context, '/checkout');
                                 },
                                 style: ElevatedButton.styleFrom(

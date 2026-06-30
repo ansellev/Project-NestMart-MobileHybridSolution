@@ -1,43 +1,48 @@
 import {
   Controller,
-  Post,
   Get,
+  Post,
   Param,
-  Body,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 
 import { OrdersService } from './orders.service';
+import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 
 @Controller('orders')
+@UseGuards(JwtAuthGuard)
 export class OrdersController {
   constructor(
     private readonly ordersService: OrdersService,
   ) {}
 
-  @Post()
-  createOrder(
-    @Body() body: any,
+  @Post('checkout')
+  checkout(
+    @Request() req,
   ) {
-    return this.ordersService.createOrder(
-      body,
+    return this.ordersService.checkout(
+      req.user.id,
     );
   }
 
-  @Get(':userId')
-  getOrders(
-    @Param('userId') userId: string,
+  @Get('my')
+  getMyOrders(
+    @Request() req,
   ) {
-    return this.ordersService.getOrders(
-      Number(userId),
+    return this.ordersService.getMyOrders(
+      req.user.id,
     );
   }
 
-  @Get('detail/:id')
+  @Get(':id')
   getOrderDetail(
+    @Request() req,
     @Param('id') id: string,
   ) {
     return this.ordersService.getOrderDetail(
       Number(id),
+      req.user.id,
     );
   }
 }

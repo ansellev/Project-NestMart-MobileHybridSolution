@@ -61,7 +61,7 @@ class _AccountScreenState extends State<AccountScreen> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    UserSession().photoUrl =
+                    UserSession.instance.photoUrl =
                         'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=80';
                   });
                   Navigator.pop(context);
@@ -105,7 +105,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final session = UserSession();
+    final session = UserSession.instance;
     const primaryBrown = Color(0xFF7E4D2B);
     const bgColor = Color(0xFFF8F6F4); // Abu-abu krem terang khas Nestmart
 

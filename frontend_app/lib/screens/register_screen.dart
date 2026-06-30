@@ -15,6 +15,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmController = TextEditingController();
   final TextEditingController _customUrlController = TextEditingController();
+  bool _loading = false;
 
   final List<String> _presetAvatars = [
     'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80', // Elegant Female Portrait
@@ -42,21 +43,61 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  void _handleRegister() {
-    final session = UserSession();
-    session.name = _nameController.text.trim().isEmpty
-        ? 'ANDI'
-        : _nameController.text.trim().toUpperCase();
-    session.email = _emailController.text.trim().isEmpty
-        ? 'ANDI@GMAIL.COM'
-        : _emailController.text.trim().toUpperCase();
-    session.photoUrl =
-        _showCustomInput && _customUrlController.text.trim().startsWith('http')
-        ? _customUrlController.text.trim()
-        : _selectedPhoto;
-
-    Navigator.pushNamed(context, '/welcome');
+  Future<void> _handleRegister() async {
+  if (_nameController.text.trim().isEmpty ||
+      _emailController.text.trim().isEmpty ||
+      _passwordController.text.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Semua field wajib diisi"),
+      ),
+    );
+    return;
   }
+
+  // if (_passwordController.text != _confirmController.text) {
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     const SnackBar(
+  //       content: Text("Konfirmasi password tidak sama"),
+  //     ),
+  //   );
+  //   return;
+  // }
+
+  setState(() {
+    _loading = true;
+  });
+
+  final result = await UserSession.instance.register(
+    name: _nameController.text.trim(),
+    email: _emailController.text.trim(),
+    password: _passwordController.text,
+  );
+
+  setState(() {
+    _loading = false;
+  });
+
+  if (!mounted) return;
+
+  if (result["success"] == true) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Register berhasil"),
+      ),
+    );
+
+    Navigator.pop(context);
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          result["message"] ?? "Register gagal",
+        ),
+      ),
+    );
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Lengkapi data akun dan pilih foto profile',
+                        'Lengkapi data akun',
                         style: GoogleFonts.inter(
                           color: Colors.black54,
                           fontWeight: FontWeight.w600,
@@ -102,148 +143,148 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 20),
 
                       // 3. Profile custom photo uploader block
-                      Text(
-                        'FOTO PROFIL',
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 12,
-                          letterSpacing: 1.0,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
+                      // Text(
+                      //   'FOTO PROFIL',
+                      //   style: GoogleFonts.inter(
+                      //     fontWeight: FontWeight.w800,
+                      //     fontSize: 12,
+                      //     letterSpacing: 1.0,
+                      //     color: Colors.black87,
+                      //   ),
+                      // ),
+                      // const SizedBox(height: 10),
 
-                      // Circle photo preview showing current photo state
-                      Center(
-                        child: Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: const Color(0xFFE2DFDC),
-                            border: Border.all(
-                              color: const Color(0xFF7E4D2B),
-                              width: 2,
-                            ),
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                _showCustomInput &&
-                                        _customUrlController.text
-                                            .trim()
-                                            .startsWith('http')
-                                    ? _customUrlController.text.trim()
-                                    : _selectedPhoto,
-                              ),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ),
+                      // // Circle photo preview showing current photo state
+                      // Center(
+                      //   child: Container(
+                      //     width: 80,
+                      //     height: 80,
+                      //     decoration: BoxDecoration(
+                      //       shape: BoxShape.circle,
+                      //       color: const Color(0xFFE2DFDC),
+                      //       border: Border.all(
+                      //         color: const Color(0xFF7E4D2B),
+                      //         width: 2,
+                      //       ),
+                      //       image: DecorationImage(
+                      //         image: NetworkImage(
+                      //           _showCustomInput &&
+                      //                   _customUrlController.text
+                      //                       .trim()
+                      //                       .startsWith('http')
+                      //               ? _customUrlController.text.trim()
+                      //               : _selectedPhoto,
+                      //         ),
+                      //         fit: BoxFit.cover,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       const SizedBox(height: 12),
 
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            // Simulate selecting customized photo
-                            _selectedPhoto =
-                                'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80';
-                            _showCustomInput = false;
-                          });
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                'Foto profil berhasil diupload secara real-time!',
-                              ),
-                              backgroundColor: Color(0xFF7E4D2B),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(vertical: 18),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFCF6F0),
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: const Color(0xFF7E4D2B).withOpacity(0.3),
-                              style: BorderStyle.solid,
-                            ),
-                          ),
-                          child: Column(
-                            children: [
-                              const Icon(
-                                Icons.cloud_upload_outlined,
-                                size: 28,
-                                color: Color(0xFF7E4D2B),
-                              ),
-                              const SizedBox(height: 6),
-                              Text(
-                                'AMBIL / PILIH FOTO DARI GALERI',
-                                style: GoogleFonts.inter(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 11,
-                                  color: const Color(0xFF7E4D2B),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     setState(() {
+                      //       // Simulate selecting customized photo
+                      //       _selectedPhoto =
+                      //           'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80';
+                      //       _showCustomInput = false;
+                      //     });
+                      //     ScaffoldMessenger.of(context).showSnackBar(
+                      //       const SnackBar(
+                      //         content: Text(
+                      //           'Foto profil berhasil diupload secara real-time!',
+                      //         ),
+                      //         backgroundColor: Color(0xFF7E4D2B),
+                      //       ),
+                      //     );
+                      //   },
+                      //   child: Container(
+                      //     width: double.infinity,
+                      //     padding: const EdgeInsets.symmetric(vertical: 18),
+                      //     decoration: BoxDecoration(
+                      //       color: const Color(0xFFFCF6F0),
+                      //       borderRadius: BorderRadius.circular(16),
+                      //       border: Border.all(
+                      //         color: const Color(0xFF7E4D2B).withOpacity(0.3),
+                      //         style: BorderStyle.solid,
+                      //       ),
+                      //     ),
+                      //     child: Column(
+                      //       children: [
+                      //         const Icon(
+                      //           Icons.cloud_upload_outlined,
+                      //           size: 28,
+                      //           color: Color(0xFF7E4D2B),
+                      //         ),
+                      //         const SizedBox(height: 6),
+                      //         Text(
+                      //           'AMBIL / PILIH FOTO DARI GALERI',
+                      //           style: GoogleFonts.inter(
+                      //             fontWeight: FontWeight.w900,
+                      //             fontSize: 11,
+                      //             color: const Color(0xFF7E4D2B),
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
 
-                      const SizedBox(height: 14),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Container(height: 1, color: Colors.black12),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(
-                              'ATAU GUNAKAN URL',
-                              style: GoogleFonts.inter(
-                                fontSize: 9,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black38,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(height: 1, color: Colors.black12),
-                          ),
-                        ],
-                      ),
+                      // const SizedBox(height: 14),
+                      // Row(
+                      //   children: [
+                      //     Expanded(
+                      //       child: Container(height: 1, color: Colors.black12),
+                      //     ),
+                      //     Padding(
+                      //       padding: const EdgeInsets.symmetric(horizontal: 10),
+                      //       child: Text(
+                      //         'ATAU GUNAKAN URL',
+                      //         style: GoogleFonts.inter(
+                      //           fontSize: 9,
+                      //           fontWeight: FontWeight.bold,
+                      //           color: Colors.black38,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     Expanded(
+                      //       child: Container(height: 1, color: Colors.black12),
+                      //     ),
+                      //   ],
+                      // ),
 
-                      const SizedBox(height: 10),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFE2DFDC),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: Colors.black26, width: 1.0),
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: TextField(
-                          controller: _customUrlController,
-                          onChanged: (val) {
-                            setState(() {
-                              if (val.trim().startsWith('http')) {
-                                _showCustomInput = true;
-                              } else {
-                                _showCustomInput = false;
-                              }
-                            });
-                          },
-                          style: GoogleFonts.inter(
-                            color: Colors.black,
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          decoration: const InputDecoration(
-                            hintText: 'Masukkan URL Gambar (https://...)',
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(vertical: 8),
-                          ),
-                        ),
-                      ),
+                      // const SizedBox(height: 10),
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //     color: const Color(0xFFE2DFDC),
+                      //     borderRadius: BorderRadius.circular(16),
+                      //     border: Border.all(color: Colors.black26, width: 1.0),
+                      //   ),
+                      //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                      //   child: TextField(
+                      //     controller: _customUrlController,
+                      //     onChanged: (val) {
+                      //       setState(() {
+                      //         if (val.trim().startsWith('http')) {
+                      //           _showCustomInput = true;
+                      //         } else {
+                      //           _showCustomInput = false;
+                      //         }
+                      //       });
+                      //     },
+                      //     style: GoogleFonts.inter(
+                      //       color: Colors.black,
+                      //       fontSize: 13,
+                      //       fontWeight: FontWeight.bold,
+                      //     ),
+                      //     decoration: const InputDecoration(
+                      //       hintText: 'Masukkan URL Gambar (https://...)',
+                      //       border: InputBorder.none,
+                      //       contentPadding: EdgeInsets.symmetric(vertical: 8),
+                      //     ),
+                      //   ),
+                      // ),
 
                       const SizedBox(height: 20),
 
@@ -271,7 +312,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         width: double.infinity,
                         height: 52,
                         child: ElevatedButton(
-                          onPressed: _handleRegister,
+                          onPressed: _loading ? null : _handleRegister,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF864F1F),
                             elevation: 0,
@@ -279,9 +320,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
-                          child: Text(
-                            'Create Account',
-                            style: GoogleFonts.inter(
+                          child: _loading
+                              ? const SizedBox(
+                                width: 22,
+                                height: 22,
+                                child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : Text(
+                              'Create Account',
+                              style: GoogleFonts.inter(
                               color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.bold,

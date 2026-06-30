@@ -36,27 +36,19 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
                 children: [
                   GestureDetector(
                     onTap: () => Navigator.pop(context),
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.black12),
-                        color: Colors.white,
-                      ),
-                      child: const Icon(
-                        Icons.arrow_back_rounded,
+                    child: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
                         size: 20,
-                        color: Colors.black87,
+                        color: Color(0xFF864F1F),
                       ),
-                    ),
                   ),
                   const SizedBox(width: 16),
                   Text(
                     'Pengaturan',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.merriweather(
                       fontSize: 20,
                       fontWeight: FontWeight.w900,
-                      color: Colors.black87,
+                      color: Color(0xFF864F1F),
                     ),
                   ),
                 ],
@@ -112,17 +104,17 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
                           );
                         },
                       ),
-                      _buildDivider(),
-                      _buildListTile(
-                        icon: Icons.lock_outline_rounded,
-                        title: 'Ubah Password',
-                        onTap: () {
-                          _showSnackBar(
-                            context,
-                            'Navigasi ke halaman ubah password',
-                          );
-                        },
-                      ),
+                      // _buildDivider(),
+                      // _buildListTile(
+                      //   icon: Icons.lock_outline_rounded,
+                      //   title: 'Ubah Password',
+                      //   onTap: () {
+                      //     _showSnackBar(
+                      //       context,
+                      //       'Navigasi ke halaman ubah password',
+                      //     );
+                      //   },
+                      // ),
                       _buildDivider(),
                       _buildSwitchTile(
                         icon: Icons.face_rounded,

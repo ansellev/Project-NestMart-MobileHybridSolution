@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { Review } from './review.entity';
+import { Product } from '../products/product.entity';
+
 import { ReviewsController } from './reviews.controller';
 import { ReviewsService } from './reviews.service';
 
@@ -9,12 +11,16 @@ import { ReviewsService } from './reviews.service';
   imports: [
     TypeOrmModule.forFeature([
       Review,
+      Product,
     ]),
   ],
   controllers: [
     ReviewsController,
   ],
   providers: [
+    ReviewsService,
+  ],
+  exports: [
     ReviewsService,
   ],
 })

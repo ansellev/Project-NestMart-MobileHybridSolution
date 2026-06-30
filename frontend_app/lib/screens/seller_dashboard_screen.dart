@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../seller_state.dart';
+import '../services/api_service.dart';
 import 'models.dart';
 
 class SellerDashboardScreen extends StatefulWidget {
@@ -400,7 +401,7 @@ class _SellerDashboardScreenState extends State<SellerDashboardScreen> {
                           style: GoogleFonts.merriweather(
                               fontWeight: FontWeight.w900,
                               fontSize: 20,
-                              color: Colors.black87)),
+                              color: Color(0xFF864F1F))),
                       Text('${products.length} produk',
                           style: GoogleFonts.inter(
                               fontSize: 13,
@@ -587,7 +588,7 @@ class _SellerDashboardScreenState extends State<SellerDashboardScreen> {
                       style: GoogleFonts.merriweather(
                           fontWeight: FontWeight.w900,
                           fontSize: 20,
-                          color: Colors.black87)),
+                          color: Color(0xFF864F1F))),
                   Text('${orders.length} total pesanan',
                       style: GoogleFonts.inter(
                           fontSize: 13,
@@ -845,7 +846,7 @@ class _SellerDashboardScreenState extends State<SellerDashboardScreen> {
               style: GoogleFonts.merriweather(
                   fontWeight: FontWeight.w900,
                   fontSize: 20,
-                  color: Colors.black87)),
+                  color: Color(0xFF864F1F))),
           const SizedBox(height: 20),
 
           // Store card
@@ -1084,11 +1085,11 @@ class _SellerDashboardScreenState extends State<SellerDashboardScreen> {
     String selectedImg =
         (existing?.image.isNotEmpty == true)
             ? existing!.image
-            : 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&auto=format&fit=crop';
+            : 'https://plus.unsplash.com/premium_photo-1683133263716-731795d25343?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
     bool showCustomImg = false;
 
     const presets = [
-      'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&auto=format&fit=crop',
+      'https://plus.unsplash.com/premium_photo-1683133263716-731795d25343?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=400&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&auto=format&fit=crop',
@@ -1289,7 +1290,7 @@ class _SellerDashboardScreenState extends State<SellerDashboardScreen> {
     );
   }
 
-  void _saveProduct({
+  Future<void> _saveProduct({
     required BuildContext ctx,
     required SellerProduct? existing,
     required String name,
@@ -1297,7 +1298,7 @@ class _SellerDashboardScreenState extends State<SellerDashboardScreen> {
     required String price,
     required String category,
     required String img,
-  }) {
+  }) async {
     if (name.isEmpty || desc.isEmpty || price.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Nama, deskripsi, dan harga harus diisi'),
@@ -1305,7 +1306,17 @@ class _SellerDashboardScreenState extends State<SellerDashboardScreen> {
       return;
     }
 
+    final cleanPrice = double.tryParse(price.replaceAll(RegExp(r'[^0-9.]'), '')) ?? 0.0;
+
     if (existing == null) {
+      await ApiService.instance.createProduct({
+        "name": name,
+        "description": desc,
+        "price": cleanPrice,
+        "category": category,
+        "image": img,
+        "stock": 100,
+      });
       SellerState.addProduct(SellerProduct(
         id: 'sp_${DateTime.now().millisecondsSinceEpoch}',
         name: name,
@@ -1315,6 +1326,14 @@ class _SellerDashboardScreenState extends State<SellerDashboardScreen> {
         image: img,
       ));
     } else {
+      final pId = int.tryParse(existing.id) ?? 1;
+      await ApiService.instance.updateProduct(pId, {
+        "name": name,
+        "description": desc,
+        "price": cleanPrice,
+        "category": category,
+        "image": img,
+      });
       existing.name = name;
       existing.description = desc;
       existing.price = price;

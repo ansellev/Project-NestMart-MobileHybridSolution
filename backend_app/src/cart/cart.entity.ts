@@ -2,6 +2,8 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('cart_items')
@@ -15,8 +17,15 @@ export class CartItem {
   @Column()
   productId: number;
 
-  @Column({
-    default: 1,
-  })
+  @Column()
+  sellerId: number;
+
+  @Column()
   quantity: number;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

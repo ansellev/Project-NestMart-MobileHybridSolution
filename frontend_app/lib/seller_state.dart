@@ -125,6 +125,7 @@ class SellerState {
     FavoritesState.allProducts.add(_toFavoriteProduct(p));
   }
 
+
   static void updateProduct(SellerProduct updated) {
     products.value =
         products.value.map((p) => p.id == updated.id ? updated : p).toList();
@@ -155,7 +156,7 @@ class SellerState {
         id: 'so_001',
         productName: 'Produk Terlaris',
         productImage:
-            'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&auto=format&fit=crop',
+            'https://plus.unsplash.com/premium_photo-1683133263716-731795d25343?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         buyerName: 'Rudi Hartono',
         quantity: 2,
         totalPrice: 'Rp140.000',
@@ -166,7 +167,7 @@ class SellerState {
         id: 'so_002',
         productName: 'Produk Premium',
         productImage:
-            'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=400&auto=format&fit=crop',
+            'https://plus.unsplash.com/premium_photo-1731927467592-7a18d438ba87?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Ym94fGVufDB8fDB8fHww',
         buyerName: 'Siti Rahayu',
         quantity: 1,
         totalPrice: 'Rp250.000',
@@ -187,7 +188,25 @@ class SellerState {
     ];
   }
 
-  // ── Reset (called when seller closes their store) ─────────
+  // ===============================
+// ORDER MANAGEMENT
+// ===============================
+
+static void addOrder(SellerOrder order) {
+  orders.value = [...orders.value, order];
+}
+
+static void updateOrderStatus(
+  String orderId,
+  String newStatus,
+) {
+  orders.value = orders.value.map((order) {
+    if (order.id == orderId) {
+      order.status = newStatus;
+    }
+    return order;
+  }).toList();
+}
 
   static void reset() {
     final s = SellerState();

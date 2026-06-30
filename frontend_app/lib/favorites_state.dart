@@ -798,7 +798,7 @@ class FavoritesState {
   /// Setelah ditambahkan, ia akan mengganti seluruh instansi `reviews.value`,
   /// memicu notifikasi re-render otomatis pada ValueListenableBuilder di mana-mana!
   static void addReview(String productId, double rating, String comment) {
-    final session = UserSession();
+    final session = UserSession.instance;
     final String dateString = _getFormattedDate();
     final newReview = ProductReview(
       id: 'r_user_${DateTime.now().millisecondsSinceEpoch}',

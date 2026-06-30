@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../user_session.dart';
+import '../services/api_service.dart';
 
 class MyDetailsScreen extends StatefulWidget {
   const MyDetailsScreen({super.key});
@@ -10,7 +11,7 @@ class MyDetailsScreen extends StatefulWidget {
 }
 
 class _MyDetailsScreenState extends State<MyDetailsScreen> {
-  final _session = UserSession();
+  final _session = UserSession.instance;
 
   bool _isEditingName = false;
   bool _isEditingEmail = false;
@@ -36,20 +37,59 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
     super.dispose();
   }
 
-  void _saveField(String field) {
+  Future<void> _saveField(String field) async {
+  try {
+    final name =
+        field == 'name'
+            ? _nameController.text.trim()
+            : null;
+
+    final email =
+        field == 'email'
+            ? _emailController.text.trim()
+            : null;
+
+    final password =
+        field == 'password'
+            ? _passwordController.text.trim()
+            : null;
+
+    await ApiService.instance.updateProfile(
+      name: name,
+      email: email,
+      password: password,
+    );
+
     setState(() {
       if (field == 'name') {
-        _session.name = _nameController.text.trim().toUpperCase();
+        _session.name = name!.toUpperCase();
         _isEditingName = false;
-      } else if (field == 'email') {
-        _session.email = _emailController.text.trim().toLowerCase();
+      }
+
+      if (field == 'email') {
+        _session.email = email!.toLowerCase();
         _isEditingEmail = false;
-      } else if (field == 'password') {
-        _session.password = _passwordController.text.trim();
+      }
+
+      if (field == 'password') {
+        _session.password = password!;
         _isEditingPassword = false;
       }
     });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Profile updated successfully"),
+      ),
+    );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(e.toString()),
+      ),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +130,7 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                           padding: EdgeInsets.all(8.0),
                           child: Icon(
                             Icons.arrow_back_ios_new_rounded,
-                            color: Colors.black,
+                            color: Color(0xFF864F1F),
                             size: 24,
                           ),
                         ),
@@ -135,11 +175,13 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                           isEditing: _isEditingName,
                           controller: _nameController,
                           displayValue: _session.name,
-                          onEditToggle: () {
+                          onEditToggle: () async {
                             if (_isEditingName) {
-                              _saveField('name');
+                              await _saveField('name');
                             } else {
-                              setState(() => _isEditingName = true);
+                              setState(() {
+                                _isEditingName = true;
+                              });
                             }
                           },
                           keyboardType: TextInputType.name,
@@ -153,11 +195,13 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                           isEditing: _isEditingEmail,
                           controller: _emailController,
                           displayValue: _session.email.toLowerCase(),
-                          onEditToggle: () {
+                          onEditToggle: () async {
                             if (_isEditingEmail) {
-                              _saveField('email');
+                              await _saveField('email');
                             } else {
-                              setState(() => _isEditingEmail = true);
+                              setState(() {
+                                _isEditingEmail = true;
+                              });
                             }
                           },
                           keyboardType: TextInputType.emailAddress,
@@ -175,13 +219,15 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                               (_session.password.length > 8
                                   ? _session.password.length
                                   : 12),
-                          onEditToggle: () {
-                            if (_isEditingPassword) {
-                              _saveField('password');
-                            } else {
-                              setState(() => _isEditingPassword = true);
-                            }
-                          },
+                          onEditToggle: () async {
+                          if (_isEditingPassword) {
+                            await _saveField('password');
+                          } else {
+                            setState(() {
+                              _isEditingPassword = true;
+                            });
+                          }
+                        },
                           obscureText: !_isEditingPassword,
                         ),
                       ],

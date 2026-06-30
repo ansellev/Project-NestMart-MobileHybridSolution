@@ -3,6 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('reviews')
@@ -16,12 +17,19 @@ export class Review {
   @Column()
   productId: number;
 
-  @Column()
+  @Column({
+    type: 'int',
+  })
   rating: number;
 
-  @Column('text')
+  @Column({
+    type: 'text',
+  })
   comment: string;
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

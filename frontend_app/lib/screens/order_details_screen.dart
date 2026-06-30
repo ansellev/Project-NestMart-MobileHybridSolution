@@ -58,7 +58,7 @@ class OrderDetailsScreen extends StatelessWidget {
                     children: [
                       Text(
                         'RINCIAN PESANAN',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.merriweather(
                           fontSize: 18,
                           fontWeight: FontWeight.w900,
                           letterSpacing: 1.5,
