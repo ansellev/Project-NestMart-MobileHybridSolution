@@ -64,14 +64,11 @@ Setup Backend (NestJS)
 3. Setup database MySQL
 Buat database baru di MySQL: CREATE DATABASE nestmart_db;
 4. Konfigurasi database
-Buat file: .env
-Isi:
-DB_HOST=localhost
-DB_PORT=3306
-DB_USERNAME=root
-DB_PASSWORD=YOUR_PASSWORD
-DB_DATABASE=nestmart_db
-5. Jalankan backend - npm run start:dev (Backend berjalan di: http://localhost:3000)
+npm install
+CREATE DATABASE nestmart;
+npm run migration:run
+
+6. Jalankan backend - npm run start:dev (Backend berjalan di: http://localhost:3000)
 
 Setup Frontend (Flutter)
 1. Masuk ke folder frontend - cd frontend
