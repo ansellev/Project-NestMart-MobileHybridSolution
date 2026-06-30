@@ -1,0 +1,122 @@
+// ============================================================
+// NestMart — Prisma Schema
+// Database: MySQL
+// ============================================================
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── USER ────────────────────────────────────────────────────
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
+
+  cartItems CartItem[]
+  orders    Order[]
+  favorites Favorite[]
+  reviews   Review[]
+
+  @@map("users")
+}
+
+// ─── PRODUCT ─────────────────────────────────────────────────
+
+model Product {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String  @db.Text
+  price       Decimal @db.Decimal(15, 2)
+  image       String
+  category    String
+  storeName   String
+  stock       Int     @default(0)
+
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+  favorites  Favorite[]
+  reviews    Review[]
+
+  @@map("products")
+}
+
+// ─── CART ────────────────────────────────────────────────────
+
+model CartItem {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  productId Int
+  quantity  Int     @default(1)
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("cart_items")
+}
+
+// ─── ORDER ───────────────────────────────────────────────────
+
+model Order {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  total     Decimal   @db.Decimal(15, 2)
+  status    String    @default("Paid")
+  createdAt DateTime  @default(now())
+
+  user  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int
+  price     Decimal @db.Decimal(15, 2)
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+// ─── FAVORITE ────────────────────────────────────────────────
+
+model Favorite {
+  id        Int @id @default(autoincrement())
+  userId    Int
+  productId Int
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("favorites")
+}
+
+// ─── REVIEW ──────────────────────────────────────────────────
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  rating    Int
+  comment   String   @db.Text
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("reviews")
+}

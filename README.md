@@ -1,3 +1,8 @@
+<img width="952" height="528" alt="image" src="https://github.com/user-attachments/assets/ad6bcb2d-aae0-40eb-9c08-1dce2f9335a2" />
+
+<img width="953" height="532" alt="image" src="https://github.com/user-attachments/assets/0272ced6-aa23-426a-82ef-d7dcc48e5277" />
+
+
 Nestmart adalah aplikasi mobile berbasis marketplace yang bertujuan untuk membantu pelaku Usaha Mikro, Kecil, dan Menengah (UMKM) dalam mempromosikan profil usaha serta menjual produk mereka secara digital dalam satu platform terintegrasi. Aplikasi ini memungkinkan pengguna untuk menemukan UMKM kategori usaha, melihat profil UMKM, katalog produk, serta melakukan pemesanan produk secara langsung.
 
 Aplikasi ini mendukung SDG 8: Decent Work and Economic Growth dengan memberikan akses digital yang lebih luas bagi UMKM untuk meningkatkan visibilitas usaha, memperluas pasar, serta mendorong pertumbuhan ekonomi lokal secara berkelanjutan.
@@ -59,14 +64,11 @@ Setup Backend (NestJS)
 3. Setup database MySQL
 Buat database baru di MySQL: CREATE DATABASE nestmart_db;
 4. Konfigurasi database
-Buat file: .env
-Isi:
-DB_HOST=localhost
-DB_PORT=3306
-DB_USERNAME=root
-DB_PASSWORD=YOUR_PASSWORD
-DB_DATABASE=nestmart_db
-5. Jalankan backend - npm run start:dev (Backend berjalan di: http://localhost:3000)
+npm install
+CREATE DATABASE nestmart;
+npm run migration:run
+
+6. Jalankan backend - npm run start:dev (Backend berjalan di: http://localhost:3000)
 
 Setup Frontend (Flutter)
 1. Masuk ke folder frontend - cd frontend
